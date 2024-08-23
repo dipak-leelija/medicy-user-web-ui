@@ -1,0 +1,225 @@
+//
+// forms.scss
+//
+
+// Form-control light
+
+// Form elements (Color and Range)
+input.form-control[type="color"],
+input.form-control[type="range"] {
+    min-height: 39px;
+}
+
+select.form-control {
+    &:not([size]):not([multiple]) {
+        height: $input-height;
+    }
+}
+
+select.form-control-sm {
+    &:not([size]):not([multiple]) {
+        height: $input-height-sm;
+    }
+}
+
+// Form-control light
+.form-control-light {
+    background-color: var(--#{$prefix}light)  !important;
+    border-color: var(--#{$prefix}light)  !important;
+}
+
+
+// Comment box
+.comment-area-box {
+    .form-control {
+        border-color: var(--#{$prefix}gray-300);
+        border-radius: $input-border-radius $input-border-radius 0 0;
+    }
+
+    .comment-area-btn {
+        background-color: var(--#{$prefix}gray-100);
+        padding: 10px;
+        border: 1px solid var(--#{$prefix}gray-300);
+        border-top: none;
+        border-radius: 0 0 $input-border-radius $input-border-radius;
+    }
+}
+
+
+
+// Search box
+.search-bar {
+    .form-control {
+        padding-left: 40px;
+        padding-right: 20px;
+        border-radius: 30px;
+    }
+
+    span {
+        position: absolute;
+        z-index: 10;
+        font-size: 16px;
+        line-height: $input-height;
+        left: 13px;
+        top: -2px;
+        color: $text-muted;
+    }
+}
+
+// Show/Hide Password
+.password-eye {
+    cursor: pointer;
+
+    &:before {
+        font-family: "Material Design Icons";
+        content: "\F06D0";
+        font-style: normal;
+        font-weight: 400;
+        font-variant: normal;
+        vertical-align: middle;
+        line-height: 1.2;
+        font-size: 16px;
+    }
+}
+
+.show-password {
+    .password-eye {
+        &:before {
+            content: "\F06D1";
+        }
+    }
+}
+
+// ............custom form css..................//
+
+// input tag custom border 
+.borderRemove
+{
+    border:none;
+    border-bottom: 1px solid var(--ct-border-color);
+    border-radius: 0%;
+    box-shadow: none;
+}
+.borderRemove:focus{
+    border:none;
+    border-bottom: 1px solid $primary-border-subtle;
+    box-shadow: none;
+}
+
+.inputBorderRemove
+{
+    border:none !important;
+    border-radius: 0%;
+    box-shadow: none !important;
+}
+.inputBorderRemove:focus{
+    outline: none !important;
+    border:none !important;
+    border-radius: 0%;
+    box-shadow: none !important;
+}
+
+.was-validated .form-control:invalid, .form-control.is-invalid,
+.was-validated .form-select:valid, .form-select.is-valid .form-control:valid, .form-control.is-valid{
+    background-image: none;
+    box-shadow: none !important;
+    border-bottom: 1px solid $primary-border-subtle;
+}
+.was-validated .form-select:valid, .form-select.is-valid .form-control:invalid, .form-control.is-invalid:focus{
+    box-shadow: none !important;
+    border-bottom: 1px solid $primary-border-subtle;
+}// end input tag custom border 
+
+.offcanvasbar{
+    width: 78%;
+}
+.rightoffcanvas{
+    width: 50%;
+}
+.offcanvas.offcanvas-bottom{
+    height: 75%;
+    margin: 0px 300px;
+    bottom: 1%;
+}
+
+.offcanvas.offcanvas-top{
+    height: 73%;
+    margin: 0px 300px;
+}
+@include media-breakpoint-down(md) {
+    .offcanvas.offcanvas-bottom{
+        height: 100%;
+        margin: 0px 0px;
+        bottom: 1%;
+    }
+    .offcanvasbar{
+        width: 92%;
+    }
+    .rightoffcanvas{
+        width: 100%;
+    }
+    .offcanvas.offcanvas-top{
+        height: 100%;
+        margin: 0px 0px;
+    }
+}
+
+// remoove number type input btn 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}// end remoove number type input btn //
+
+.invlabel label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 1rem 0.2rem;
+    overflow: hidden;
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    transform-origin: 0 0;
+    transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+// custom invoice dropdown 
+.invoiceDropdown {
+    position: absolute;
+    z-index: 1000;
+    background: white;
+    margin-top: -20px;
+    // border: 1px solid #ddd;
+    min-width: 30%;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.invoiceDropdown .dropdown-item {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+.dropdown-item:hover,
+.dropdown-item.focused {
+    color: #ffff;
+    background-color: #7e72e6;
+    border-radius: 8px;
+}
+
+.item-detail {
+    // display: flex;
+    // justify-content: space-between;
+    // padding: 4px 0;
+    // height: 50px;
+    // max-width: 33.33333%;
+    overflow: hidden;
+}
