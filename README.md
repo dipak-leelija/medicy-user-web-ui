@@ -1,4 +1,10 @@
-# Getting Started with Create React App
+# Getting Started with Medicy User Web UI
+
+# Required Version 
+Node - v22.5.1
+React - ^18.2.0
+yarn - 4.3.1
+npm - 10.8.2
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
