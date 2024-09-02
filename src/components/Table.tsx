@@ -49,23 +49,23 @@ const GlobalFilter = ({
   }, 200);
 
   // Custom Option component to render icons
-const CustomOption = (props: any) => {
-  return (
-    <components.Option {...props}>
-      <img
-        src={props.data.icon} // Use icon from options or a default icon
-        style={{ width: 15, marginRight: 20, marginLeft: 15}}
-        alt={props.data.label}
-      />
-      {props.data.label}
-    </components.Option>
-  );
-};
+  const CustomOption = (props: any) => {
+    return (
+      <components.Option {...props}>
+        <img
+          src={props.data.icon} // Use icon from options or a default icon
+          style={{ width: 15, marginRight: 20, marginLeft: 15 }}
+          alt={props.data.label}
+        />
+        {props.data.label}
+      </components.Option>
+    );
+  };
   const PaymentMode = [
     {
       label: "Payment Mode",
       options: [
-        {value:'', label: 'All', icon: Rupeeicon},
+        { value: '', label: 'All', icon: Rupeeicon },
         { value: "cash", label: "Cash", icon: CashIcon },
         { value: "cresit", label: "Credit", icon: Craditicon },
         { value: "upi", label: "UPI", icon: UpiIcon },
@@ -75,17 +75,27 @@ const CustomOption = (props: any) => {
 
   const Duration = [
     {
-      label: "Duration",
+      // label: "Duration",
       options: [
-        { value: "", label: "All"},
+        { value: "", label: "All" },
         { value: "today", label: "Today" },
         { value: "yesterday", label: "Yesterday" },
         { value: "last7Days", label: "Last 7 Days" },
         { value: "last30Days", label: "Last 30 Days" },
-        { value: "last90Days", label: "Last 90 Days"},
-        { value: "cuuresntFiscalYear", label: "Current Fiscal Year"},
-        { value: "previousFiscalYear", label: "Previous Fiscal Year"},
-        {}
+        { value: "last90Days", label: "Last 90 Days" },
+        { value: "cuuresntFiscalYear", label: "Current Fiscal Year" },
+        { value: "previousFiscalYear", label: "Previous Fiscal Year" },
+        { value: "customRange", label: "Custom Range" }
+      ]
+    }
+  ];
+
+  const admin = [
+    {
+      label: "Admin",
+      options: [
+        { value: "", label: "All" },
+        { value: "admin", label: "Admin" },
       ]
     }
   ]
@@ -107,19 +117,20 @@ const CustomOption = (props: any) => {
       </span>
       {isSalePage && (
         <>
-          <div className="me-2 w-25">
-            <select className="form-select my-1" id="duration">
-              <option value="0" >Select Duration</option>
-              <option value="1">Today</option>
-              <option value="2">Yesterday</option>
-              <option value="3">Last 7 Days</option>
-              <option value="4">Last 30 Days</option>
-              <option value="5">Last 90 Days</option>
-              <option value="6">Current Year</option>
-              <option value="7">Previous Year</option>
-              <option value="8">Custom Range</option>
-            </select>
-          </div>
+          <Form.Group className=" w-25">
+            <Select
+              className="react-select my-1 react-select-container"
+              classNamePrefix="react-select"
+              options={Duration}
+              // onChange={(selectedOption: any) => {
+              //   setPaymentMode(selectedOption.value);
+              //   onChange(selectedOption.value);
+              // }}
+              placeholder="Select Duration"
+              id="duration"
+            />
+          </Form.Group>
+
           <Form.Group className=" w-25">
             <Select
               className="react-select my-1 react-select-container"
@@ -139,27 +150,33 @@ const CustomOption = (props: any) => {
 
       {!isSalePage && (
         <>
-          <div className="me-2 w-25">
-            <select className="form-select my-1" id="return-duration">
-              <option value="0">Return Date Duration</option>
-              <option value="1">Today</option>
-              <option value="2">Yesterday</option>
-              <option value="3">Last 7 Days</option>
-              <option value="4">Last 30 Days</option>
-              <option value="5">Last 90 Days</option>
-              <option value="6">Current Year</option>
-              <option value="7">Previous Year</option>
-              <option value="8">Custom Range</option>
-            </select>
-          </div>
+          <Form.Group className=" w-25">
+            <Select
+              className="react-select my-1 react-select-container"
+              classNamePrefix="react-select"
+              options={Duration}
+              // onChange={(selectedOption: any) => {
+              //   setPaymentMode(selectedOption.value);
+              //   onChange(selectedOption.value);
+              // }}
+              placeholder="Return Date Duration"
+              id="return-duration"
+            />
+          </Form.Group>
           {!isPurchaseReturnPage && (
-            <div className="me-2 w-25">
-              <select className="form-select my-1" id="filter-admin">
-                <option value="0" >Filter By Admin</option>
-                <option value="1">Admin</option>
-                <option value="2">Jayanta</option>
-              </select>
-            </div>
+            <Form.Group className=" w-25">
+            <Select
+              className="react-select my-1 react-select-container"
+              classNamePrefix="react-select"
+              options={admin}
+              // onChange={(selectedOption: any) => {
+              //   setPaymentMode(selectedOption.value);
+              //   onChange(selectedOption.value);
+              // }}
+              placeholder="Select Staff"
+              id="admin"
+            />
+          </Form.Group>
           )}
         </>
       )}
@@ -180,13 +197,19 @@ const CustomOption = (props: any) => {
               id="Payment Mode"
             />
           </Form.Group>
-          <div className="me-2">
-            <select className="form-select my-1" id="filter-admin">
-              <option value="0">Select Staff</option>
-              <option value="1">Admin</option>
-              <option value="2">Jayanta</option>
-            </select>
-          </div>
+          <Form.Group className="" style={{width:'150px'}}>
+            <Select
+              className="react-select my-1 react-select-container"
+              classNamePrefix="react-select"
+              options={admin}
+              // onChange={(selectedOption: any) => {
+              //   setPaymentMode(selectedOption.value);
+              //   onChange(selectedOption.value);
+              // }}
+              placeholder="Select Staff"
+              id="admin"
+            />
+          </Form.Group>
         </>
       )}
     </div>
