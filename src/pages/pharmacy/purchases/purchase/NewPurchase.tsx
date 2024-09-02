@@ -7,6 +7,7 @@ import SalesOffcanvas from '../../SalesOffcanvas';
 import CusttomInvoiceDropdown from '../../../../components/CustomInvoiceDropdown';
 import { Link, useParams } from 'react-router-dom';
 import { stock, purchaseItem } from "../data";
+import { number } from 'yup';
 
 // Utility function to convert MM/DD/YYYY to yyyy-MM-dd
 const formatDate = (dateStr: string): string => {
@@ -21,7 +22,8 @@ export default function NewPurchase() {
     const [purchaseData, setPurchaseData] = useState<any | null>(null);
     const [addPurchaseDetails, setAddPurchaseDetails] = useState<any[]>([])
 
-    console.log('after add--', addPurchaseDetails);
+    console.log(addPurchaseDetails);
+
 
     // console.log('stok--', purchaseProductItem);
 
@@ -35,17 +37,20 @@ export default function NewPurchase() {
 
     const [purchaseItemDetails, setPurchaseItemDetails] = useState({
         // inputValue:'',
-        batchNo: '',
+        batch_no: '',
         ptr: '',
         mrp: '',
         gst: 0,
         discount: 0,
         d_price: 0,
-        amount: 0,
+        amount: '',
         freeQty: '',
         expiryDate: '',
+        qty: '',
+        // totalGst: '',
     });
 
+    // edit time data fetch 
     useEffect(() => {
         if (id) {
             const purchase = stock.find(stock => stock.bill_id === parseInt(id));
@@ -64,16 +69,20 @@ export default function NewPurchase() {
         }
     }, [id]);
 
+
+    // value change time data add 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target as HTMLInputElement | HTMLSelectElement;
 
         if (name == 'gst') {
             const gstValue = parseFloat(value);
-            const updatedPtr = Math.round(parseFloat(purchaseItemDetails.mrp) * 100 / (gstValue + 100)).toFixed(2);
+            const updatedPtr = ((parseFloat(purchaseItemDetails.mrp) * 100) / (gstValue + 100));
+            console.log('updatedPtr--', updatedPtr);
+
 
             setPurchaseItemDetails(prevValues => ({
                 ...prevValues,
-                ptr: updatedPtr,
+                ptr: updatedPtr.toFixed(2),
                 gst: gstValue,
             }));
         }
@@ -90,26 +99,27 @@ export default function NewPurchase() {
         }
 
         if (name == 'qty') {
-            const qtyValue = parseInt(value);
+            let qtyValue = parseInt(value);
             if (qtyValue) {
                 const discountValue = (purchaseItemDetails.d_price);
-                // console.log('qty discount value--',discountValue);
                 const gst = (purchaseItemDetails.gst);
                 const updateAmount = ((discountValue + (discountValue * ((gst) / 100))) * qtyValue).toFixed(2);
                 console.log('amount--', updateAmount);
                 setPurchaseItemDetails((prevValues) => ({
                     ...prevValues,
-                    amount: Number(updateAmount),
+                    amount: (updateAmount),
                 }));
             }
             else {
                 setPurchaseItemDetails((prevValues) => ({
                     ...prevValues,
-                    amount: 0,
+                    amount: '',
                 }))
             }
-
         }
+
+        // const totalGst = ((purchaseItemDetails.d_price * parseInt(value)) * purchaseItemDetails.gst / 100).toFixed(2);
+        // console.log('totalGst=========',totalGst);
         setFormValues(prevValues => ({
             ...prevValues,
             [name]: value,
@@ -120,8 +130,13 @@ export default function NewPurchase() {
             [name]: value,
         }));
 
+        
     };
 
+    // find gst of each item 
+    const eachItemGstAmnt = ((purchaseItemDetails.d_price * parseInt(purchaseItemDetails.qty)) * purchaseItemDetails.gst / 100).toFixed(2);
+        // console.log('totalGst=========',totalGst); // end find gst of each item 
+   
     const handleSelectStock = (selectedStockItem: number) => {
         const selectedItem = stock.find(item => item.bill_id === selectedStockItem);
         if (selectedItem) {
@@ -136,12 +151,11 @@ export default function NewPurchase() {
             // console.log(selectedItem);
             const mrpValue = selectedItem.mrp.toString();
             const gstValue = selectedItem.gst;
-            const updatedPtr = Math.round(parseFloat(mrpValue) * 100 / (gstValue + 100)).toFixed(2);
+            const updatedPtr = ((parseFloat(mrpValue) * 100) / (gstValue + 100)).toFixed(2);
 
             setInputValue(selectedItem ? selectedItem.item_name.toString() : '');
             setPurchaseItemDetails({
-                // inputValue: inputValue,
-                batchNo: '',
+                batch_no: '',
                 ptr: updatedPtr,
                 mrp: mrpValue,
                 gst: gstValue,
@@ -150,25 +164,14 @@ export default function NewPurchase() {
                 amount: selectedItem.amount,
                 freeQty: '',
                 expiryDate: '',
+                qty: '',
             });
         }
     };
 
-    // const handlePurchaseItemAdd = () => {
-    //     const newPurchaseDetail = {
-    //         item_name: inputValue,
-    //         ...purchaseItemDetails,
-    //     };
-
-    //     setAddPurchaseDetails((prevDetails: any[]) => [
-    //         ...prevDetails,
-    //         newPurchaseDetail,
-    //     ]);
-    // }
-
     const handlePurchaseItemAdd = () => {
         const {
-            batchNo,
+            batch_no,
             ptr,
             mrp,
             gst,
@@ -177,68 +180,109 @@ export default function NewPurchase() {
             amount,
             freeQty,
             expiryDate,
+            qty,
         } = purchaseItemDetails;
-    
+
         // Check if all fields are filled
         if (
             inputValue &&
-            batchNo &&
+            batch_no &&
             ptr &&
             mrp &&
-            gst !== 0 &&  // Assuming gst is a number, so 0 or a falsy value would mean it's not filled
-            discount !== 0 && // Assuming discount is a number, so 0 or a falsy value would mean it's not filled
-            d_price !== 0 && // Same logic for d_price
-            amount !== 0 && // Same logic for amount
+            gst !== 0 &&
+            discount !== 0 &&
+            d_price !== 0 &&
+            amount !== '' &&
             freeQty &&
-            expiryDate
+            expiryDate && qty
         ) {
             const newPurchaseDetail = {
                 item_name: inputValue,
+                totalGst :eachItemGstAmnt,
                 ...purchaseItemDetails,
             };
-    
+
             setAddPurchaseDetails((prevDetails: any[]) => [
                 ...prevDetails,
                 newPurchaseDetail,
             ]);
-    
+
             // Optionally, clear the fields after adding
             setInputValue('');
             setPurchaseItemDetails({
-                batchNo: '',
+                batch_no: '',
                 ptr: '',
                 mrp: '',
                 gst: 0,
                 discount: 0,
                 d_price: 0,
-                amount: 0,
+                amount: '',
                 freeQty: '',
                 expiryDate: '',
+                qty: '',
             });
-        } else {
-            // Show an alert or a validation message if any field is empty
+        }
+        else {
             alert('Please fill out all the fields before adding an item.');
         }
     };
-    
 
-    const handleEditPurchaseItem= (index: number)=>{
+
+    const handleEditPurchaseItem = (index: number) => {
+        const selectedItem = addPurchaseDetails[index];
         setAddPurchaseDetails(prevDetails => prevDetails.filter((_, i) => i !== index));
+        setInputValue(selectedItem.item_name);
+        setPurchaseItemDetails({
+            batch_no: selectedItem.batch_no,
+            ptr: selectedItem.ptr,
+            mrp: selectedItem.mrp,
+            gst: selectedItem.gst,
+            discount: selectedItem.discount,
+            d_price: selectedItem.d_price,
+            amount: selectedItem.amount,
+            freeQty: selectedItem.freeQty,
+            expiryDate: selectedItem.expiryDate,
+            qty: selectedItem.qty,
+        });
     }
 
 
     const [validated, setValidated] = useState(false);
+    const handleSubmit = (event: { currentTarget: any; preventDefault: () => void; stopPropagation: () => void; }) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
 
-  const handleSubmit = (event: { currentTarget: any; preventDefault: () => void; stopPropagation: () => void; }) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+        setValidated(true);
+    };
 
-    setValidated(true);
-  };
+    const totalAmount = addPurchaseDetails
+        .reduce((total, detail) => total + parseFloat(detail.amount), 0)
+        .toFixed(2);
 
+    const toatalMrp = addPurchaseDetails
+        .reduce((total, detail) => total + parseFloat(detail.mrp), 0)
+        .toFixed(2);
+    const toatalitem = addPurchaseDetails.length;
+    const toatalQty = addPurchaseDetails.reduce((total, detail) => total + parseInt(detail.qty), 0);
+    const toatalPtr = addPurchaseDetails
+        .reduce((total, detail) => total + parseFloat(detail.ptr), 0).toFixed(2);
+
+    const totalDisct = addPurchaseDetails.reduce((total, detail) => total + parseFloat(detail.discount), 0).toFixed(2);
+    const totalGst = addPurchaseDetails.reduce((total, detail) => total + parseFloat(detail.totalGst), 0).toFixed(2);
+    console.log('ajdsfhaslkdhfk', totalGst);
+
+    const toalPurchaseAddDetails = {
+        totalAmount: totalAmount,
+        toatalMrp: toatalMrp,
+        toatalitem: toatalitem,
+        toatalQty: toatalQty,
+        toatalPtr: toatalPtr,
+        totalDisct: totalDisct,
+        totalGst:totalGst
+    };
     return (
         <>
             <Row className='mt-4'>
@@ -260,24 +304,24 @@ export default function NewPurchase() {
                                             label="Distributor"
                                             className='invlabel'
                                             onAdd={() => {
-                                             }}
+                                            }}
                                         />
                                     </Col>
                                     <Col>
                                         <i className="fas fa-hashtag ms-n2" style={{ position: 'absolute', marginTop: '20px' }}></i>
                                         <FloatingLabel className='invlabel' controlId="floatingDistBillNo" label="Distributor Bill No.">
                                             <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='billId' value={formValues.billId}
-                                                onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required/>
+                                                onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
                                         </FloatingLabel>
                                     </Col>
                                     <Col>
                                         <FloatingLabel className='invlabel' controlId="floatingBillDate" label="Bill Date">
-                                            <Form.Control type="date" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='BillDate' value={formValues.billDate} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required/>
+                                            <Form.Control type="date" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='BillDate' value={formValues.billDate} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
                                         </FloatingLabel>
                                     </Col>
                                     <Col>
                                         <FloatingLabel className='invlabel' controlId="floatingDueDate" label="Due Date">
-                                            <Form.Control type="date" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='dueDate' value={formValues.billDate} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required/>
+                                            <Form.Control type="date" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='dueDate' value={formValues.billDate} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
                                         </FloatingLabel>
                                     </Col>
                                     <Col>
@@ -314,92 +358,92 @@ export default function NewPurchase() {
                             {/*-----------------item selected form ------------ */}
 
                             <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                            <Row>
-                                <Col lg>
-                                    <CusttomInvoiceDropdown
-                                        purchaseItems={purchaseItem}
-                                        onSelect={handleSelectItem}
-                                        inputValue={inputValue}
-                                        setInputValue={setInputValue}
-                                        searchType="name"
-                                        label="Item Name"
-                                        className='invlabel'
-                                    />
-                                </Col>
-                                <Col md>
-                                    <FloatingLabel className='invlabel' controlId="floatingBatchNo" label="Batch No.">
-                                        <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' name='batchNo' onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required/>
-                                    </FloatingLabel>
-                                </Col>
-                                <Col md>
-                                    <FloatingLabel className='invlabel' controlId="floatingMrpPckg" label="MRP/Package">
-                                        <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' name='mrp' value={purchaseItemDetails.mrp}
-                                            onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required/>
-                                    </FloatingLabel>
-                                </Col>
-                                <Col md>
-                                    <FloatingLabel className='invlabel' controlId="floatingPtrPckg" label="PTR/Package">
-                                        <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' name="ptr" value={purchaseItemDetails.ptr} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required/>
-                                    </FloatingLabel>
-                                </Col>
-                                <Col md>
-                                    <FloatingLabel
-                                        controlId="floatingDisct"
-                                        label="GST%"
-                                    >
-                                        <Form.Select aria-label="Floating label select example" className='borderRemove bg-transparent'
-                                            name='gst'
-                                            value={purchaseItemDetails.gst || ""}
-                                            onChange={handleChange as React.ChangeEventHandler<HTMLSelectElement>}
-                                            required
+                                <Row>
+                                    <Col lg>
+                                        <CusttomInvoiceDropdown
+                                            purchaseItems={purchaseItem}
+                                            onSelect={handleSelectItem}
+                                            inputValue={(inputValue) ? inputValue : ''}
+                                            setInputValue={setInputValue}
+                                            searchType="name"
+                                            label="Item Name"
+                                            className='invlabel'
+                                        />
+                                    </Col>
+                                    <Col md>
+                                        <FloatingLabel className='invlabel' controlId="floatingbatch_no" label="Batch No.">
+                                            <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' name='batch_no' value={purchaseItemDetails.batch_no} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col md>
+                                        <FloatingLabel className='invlabel' controlId="floatingMrpPckg" label="MRP/Package">
+                                            <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' name='mrp' value={purchaseItemDetails.mrp}
+                                                onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col md>
+                                        <FloatingLabel className='invlabel' controlId="floatingPtrPckg" label="PTR/Package">
+                                            <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' name="ptr" value={purchaseItemDetails.ptr} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col md>
+                                        <FloatingLabel
+                                            controlId="floatingDisct"
+                                            label="GST%"
                                         >
-                                            {purchaseItemDetails && (
-                                                <option value={purchaseItemDetails.gst}> {purchaseItemDetails.gst}</option>
-                                            )}
-                                            <option value="5">5</option>
-                                            <option value="12">12</option>
-                                            <option value="18">18</option>
-                                            <option value="28">28</option>
-                                        </Form.Select>
-                                    </FloatingLabel>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col md>
-                                    <FloatingLabel className='invlabel' controlId="floatingFree" label="Free">
-                                        <Form.Control type="text" name='freeQty' placeholder="" className='borderRemove px-0 ps-1' onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required/>
-                                    </FloatingLabel>
-                                </Col>
-                                <Col md>
-                                    <FloatingLabel className='invlabel' controlId="floatingExpDate" label="Expiry Date">
-                                        <Form.Control type="date" name='expiryDate' placeholder="" className='borderRemove px-0 ps-1' onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required/>
-                                    </FloatingLabel>
-                                </Col>
-                                <Col md>
-                                    <FloatingLabel className='invlabel' controlId="floatingGst" label="Discount% ">
-                                        <Form.Control type="text" name="discount" placeholder="" className='borderRemove px-0 ps-1' value={purchaseItemDetails.discount} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required/>
-                                    </FloatingLabel>
-                                </Col>
-                                <Col md>
-                                    <FloatingLabel className='invlabel' controlId="floatingDprice" label="D Price">
-                                        <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' name='d_price' value={(purchaseItemDetails.discount) ? purchaseItemDetails.d_price : ''} required/>
-                                    </FloatingLabel>
-                                </Col>
-                                <Col md>
-                                    <FloatingLabel className='invlabel' controlId="floatingQuantity" label="Quantity">
-                                        <Form.Control type="text" name='qty' placeholder="" className='borderRemove px-0 ps-1' onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required/>
-                                    </FloatingLabel>
-                                </Col>
-                                <Col md>
-                                    <FloatingLabel className='invlabel' controlId="floatingBillAmnt" label="Bill Amount">
-                                        <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' name='bill_amount' value={purchaseItemDetails.amount} required/>
-                                    </FloatingLabel>
-                                </Col>
-                            </Row>
-                            <Button variant="primary" type="submit" className='btn btn-primary waves-effect waves-light float-end mt-2'
-                                onClick={handlePurchaseItemAdd}>
-                                <i className="mdi mdi-plus-circle me-1"></i>Add
-                            </Button>
+                                            <Form.Select aria-label="Floating label select example" className='borderRemove bg-transparent'
+                                                name='gst'
+                                                value={(purchaseItemDetails.gst) ? purchaseItemDetails.gst : ''}
+                                                onChange={handleChange as React.ChangeEventHandler<HTMLSelectElement>}
+                                                required
+                                            >
+                                                {purchaseItemDetails && (
+                                                    <option value={purchaseItemDetails.gst}> {purchaseItemDetails.gst}</option>
+                                                )}
+                                                <option value="5">5</option>
+                                                <option value="12">12</option>
+                                                <option value="18">18</option>
+                                                <option value="28">28</option>
+                                            </Form.Select>
+                                        </FloatingLabel>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col md>
+                                        <FloatingLabel className='invlabel' controlId="floatingFree" label="Free">
+                                            <Form.Control type="text" name='freeQty' placeholder="" className='borderRemove px-0 ps-1' value={purchaseItemDetails.freeQty} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col md>
+                                        <FloatingLabel className='invlabel' controlId="floatingExpDate" label="Expiry Date">
+                                            <Form.Control type="date" name='expiryDate' placeholder="" className='borderRemove px-0 ps-1' value={purchaseItemDetails.expiryDate} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col md>
+                                        <FloatingLabel className='invlabel' controlId="floatingGst" label="Discount% ">
+                                            <Form.Control type="text" name="discount" placeholder="" className='borderRemove px-0 ps-1' value={(purchaseItemDetails.discount) ? purchaseItemDetails.discount : ''} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col md>
+                                        <FloatingLabel className='invlabel' controlId="floatingDprice" label="D Price">
+                                            <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' name='d_price' value={(purchaseItemDetails.discount) ? purchaseItemDetails.d_price : ''} required />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col md>
+                                        <FloatingLabel className='invlabel' controlId="floatingQuantity" label="Quantity">
+                                            <Form.Control type="text" name='qty' placeholder="" className='borderRemove px-0 ps-1' value={purchaseItemDetails.qty} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
+                                        </FloatingLabel>
+                                    </Col>
+                                    <Col md>
+                                        <FloatingLabel className='invlabel' controlId="floatingBillAmnt" label="Bill Amount">
+                                            <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' name='bill_amount' value={purchaseItemDetails.amount} required />
+                                        </FloatingLabel>
+                                    </Col>
+                                </Row>
+                                <Button variant="primary" type="submit" className='btn btn-primary waves-effect waves-light float-end mt-2'
+                                    onClick={handlePurchaseItemAdd}>
+                                    <i className="mdi mdi-plus-circle me-1"></i>Add
+                                </Button>
                             </Form>
                         </Card.Body>
                     </Card>
@@ -424,34 +468,42 @@ export default function NewPurchase() {
                                     </thead>
                                     <tbody className="border-0">
                                         {addPurchaseDetails.map((detail: any, index: number) => (
-                                            <>
-                                            <i className="fas fa-trash ms-n2 mt-2" style={{ position: 'absolute', color:'red'}}></i>
-                                            <tr key={index}
-                                            // className='border-bottom'
-                                            style={{cursor:'pointer', borderBottom:'1px solid #e1e1e1'}}
-                                            onClick={() => handleEditPurchaseItem(index)}>
-                                                <td>{detail.item_name}</td>
-                                                <td>{detail.batchNo}</td>
-                                                <td>{detail.expiryDate}</td>
-                                                <td>{detail.qty}</td>
-                                                <td>{detail.freeQty}</td>
-                                                <td>{detail.mrp}</td>
-                                                <td>{detail.ptr}</td>
-                                                <td>{detail.d_price}</td>
-                                                <td>{detail.gst}</td>
-                                                <td>{detail.amount}</td>
-                                            </tr>
-                                            </>
+                                            // console.log('totalGst=========',totalGst);
+                                            <React.Fragment key={index}>
+                                                <i className="fas fa-trash ms-n2 mt-2" style={{ position: 'absolute', color: 'red' }}></i>
+                                                <tr
+                                                    // className='border-bottom'
+                                                    style={{ cursor: 'pointer', borderBottom: '1px solid #e1e1e1' }}
+                                                    onClick={() => handleEditPurchaseItem(index)}>
+                                                    <td>{detail.item_name}</td>
+                                                    <td>{detail.batch_no}</td>
+                                                    <td>{detail.expiryDate}</td>
+                                                    <td>{detail.qty}</td>
+                                                    <td>{detail.freeQty}</td>
+                                                    <td>{detail.mrp}</td>
+                                                    <td>{detail.ptr}</td>
+                                                    <td>{detail.d_price}</td>
+                                                    <td>{detail.gst}</td>
+                                                    <td>{detail.amount}</td>
+                                                    {/* <td>{detail.totalGst}</td> */}
+                                                </tr>
+
+                                                {/* <tr>
+                                            <td>{detail.totalGst}</td>
+                                            </tr> */}
+                                            </React.Fragment>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
                         </Card.Body>
                     </Card>
-                    <SalesOffcanvas isNewSale={true} />
+                    <SalesOffcanvas isPurchase={true} toalPurchaseAddDetails={toalPurchaseAddDetails} />
                 </Col>
             </Row>
 
         </>
     )
 }
+
+

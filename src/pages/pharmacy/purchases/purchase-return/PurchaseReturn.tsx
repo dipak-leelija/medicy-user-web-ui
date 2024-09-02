@@ -52,7 +52,7 @@ const LastOrderColumn = ({ row }: { row: any }) => {
 const ActionColumn = ({ row }: { row: any }) => {
   return (
     <>
-      <Link to={`/add-purchase/${row.original.bill_id}`} className="action-icon">
+      <Link to={`/Edit-purchase-return/${row.original.bill_id}`} className="action-icon">
         {" "}
         <i className="mdi mdi-square-edit-outline"></i>
       </Link>
@@ -139,7 +139,7 @@ const PurchaseReturn = () => {
                     <i className="mdi mdi-plus-circle me-2"></i> New Sell
                   </Button> */}
                    <Link
-                      to="/add-purchase"
+                      to="/add-purchase-return"
                       className="btn btn-danger waves-effect waves-light"
                     >
                       <i className="mdi mdi-plus-circle me-1"></i> Add Purchase
