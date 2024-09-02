@@ -188,7 +188,7 @@ export default function NewPurchase() {
         } = purchaseItemDetails;
 
         // Check if all fields are filled
-        
+
         if (parseFloat(mrp) < parseFloat(ptr)) {
             setToastMessage('Ptr should be less than Mrp !')
             setShowToast(true);
@@ -234,7 +234,6 @@ export default function NewPurchase() {
         else {
             setToastMessage('Please fill out all the fields before adding an item.');
             setShowToast(true);
-            // alert('Please fill out all the fields before adding an item.');
         }
     };
 
@@ -483,7 +482,6 @@ export default function NewPurchase() {
                                             <React.Fragment key={index}>
                                                 <i className="fas fa-trash ms-n2 mt-2" style={{ position: 'absolute', color: 'red' }}></i>
                                                 <tr
-                                                    // className='border-bottom'
                                                     style={{ cursor: 'pointer', borderBottom: '1px solid #e1e1e1' }}
                                                     onClick={() => handleEditPurchaseItem(index)}>
                                                     <td>{detail.item_name}</td>
@@ -496,12 +494,7 @@ export default function NewPurchase() {
                                                     <td>{detail.d_price}</td>
                                                     <td>{detail.gst}</td>
                                                     <td>{detail.amount}</td>
-                                                    {/* <td>{detail.totalGst}</td> */}
                                                 </tr>
-
-                                                {/* <tr>
-                                            <td>{detail.totalGst}</td>
-                                            </tr> */}
                                             </React.Fragment>
                                         ))}
                                     </tbody>
@@ -518,7 +511,7 @@ export default function NewPurchase() {
             <ToastContainer position="top-end" className="p-3">
                 <Toast onClose={() => setShowToast(false)} show={showToast} delay={6000} autohide bg="danger">
                     <Toast.Header>
-                        <strong className="me-auto">Error !</strong>
+                        <strong className="me-auto">Validation Error !</strong>
                     </Toast.Header>
                     <Toast.Body className='text-white'>{toastMessage}</Toast.Body>
                 </Toast>

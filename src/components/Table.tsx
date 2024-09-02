@@ -274,6 +274,10 @@ interface TableProps {
   isPurchaseReturnPage?: boolean;
 }
 
+const ViewData = () =>{
+  
+}
+
 const Table = (props: TableProps) => {
   const isSearchable = props["isSearchable"] || false;
   const isSortable = props["isSortable"] || false;
@@ -426,7 +430,7 @@ const Table = (props: TableProps) => {
             {(rows || []).map((row: any, i: number) => {
               dataTable.prepareRow(row);
               return (
-                <tr {...row.getRowProps()}>
+                <tr {...row.getRowProps()} className="CustomTableRow" onClick={ViewData}>
                   {(row.cells || []).map((cell: any) => {
                     return (
                       <td
