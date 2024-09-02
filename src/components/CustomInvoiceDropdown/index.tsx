@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import AddNewDistrbutor from '../../pages/pharmacy/purchases/purchase/AddNewDistrbutor';
@@ -35,12 +35,23 @@ interface SearchDropdownProps {
     searchType: 'id' | 'name';
     label: string;
     className: string;
+    defaultDropDown?:boolean,
 }
 
-const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems, stocks, onSelect, onAdd, inputValue, setInputValue, searchType, label, className }) => {
+const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems, stocks, onSelect, onAdd, inputValue, setInputValue, searchType, label, className,defaultDropDown }) => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const [filteredItems, setFilteredItems] = useState<(Seller | PurchaseItem | stocks)[]>([]);
     const [focusIndex, setFocusIndex] = useState<number>(-1);
+
+    // show purchasereturn defaultDropDown 
+    useEffect(() => {
+        if (defaultDropDown) {
+            setShowDropdown(true);
+            if (purchaseItems) {
+                setFilteredItems(purchaseItems);
+            }
+        }
+    }, [defaultDropDown, purchaseItems]);// end purchasereturn defaultDropDown 
 
     const searchItems = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -104,7 +115,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems,
 
     return (
         <>
-            <FloatingLabel controlId="floatingCustomer" label={label} className={`classNameb`}>
+            <FloatingLabel controlId="floatingCustomer" label={label} className={className}>
                 <Form.Control
                     type="text"
                     placeholder="Search Invoice No"
@@ -114,7 +125,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems,
                     onKeyDown={handleKeyDown}
                 />
             </FloatingLabel>
-            {showDropdown && (
+            {showDropdown &&  (
                 <div className='invoiceDropdown mt-1'>
                     <div className='p-2 py-1 bg-secondary bg-opacity-25 text-dark'>
                         {searchType === 'id' ? 'Invoice Id' : (
@@ -191,7 +202,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems,
                         ))
 
                     ) : (
-                        <div className='dropdown-item'>{searchType === 'id' ? 'No Invoice Id found' : 'No Name found'}</div>
+                        <div className='dropdown-item text-center text-danger'>{searchType === 'id' ? `No ${label} Id found` : `No ${label} found`}</div>
                     )}
 
                     {filteredItems.length === 0 && stocks && (

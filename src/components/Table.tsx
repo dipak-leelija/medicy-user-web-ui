@@ -1,4 +1,6 @@
 import React, { useRef, useEffect, forwardRef, useState } from "react";
+import { Row, Col, Card, Form } from "react-bootstrap";
+import Select, { components } from "react-select";
 import {
   useTable,
   useSortBy,
@@ -9,13 +11,15 @@ import {
   useExpanded,
 } from "react-table";
 import classNames from "classnames";
-
+import Rupeeicon from '../assets/icon/rupee.svg'
+import CashIcon from '../assets/icon/cash.svg'
+import Craditicon from '../assets/icon/cradit.svg'
+import UpiIcon from '../assets/icon/bhimUpi.png'
 // components
 import Pagination from "./Pagination";
 
 // const currentPath = window.location.pathname;
 // console.log('current path is-',currentPath);
-
 
 interface GlobalFilterProps {
   preGlobalFilteredRows: any;
@@ -39,9 +43,52 @@ const GlobalFilter = ({
 }: GlobalFilterProps) => {
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = useState<any>(globalFilter);
+  const [paymentMode, setPaymentMode] = useState<any>(globalFilter);
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
   }, 200);
+
+  // Custom Option component to render icons
+const CustomOption = (props: any) => {
+  return (
+    <components.Option {...props}>
+      <img
+        src={props.data.icon} // Use icon from options or a default icon
+        style={{ width: 15, marginRight: 20, marginLeft: 15}}
+        alt={props.data.label}
+      />
+      {props.data.label}
+    </components.Option>
+  );
+};
+  const PaymentMode = [
+    {
+      label: "Payment Mode",
+      options: [
+        {value:'', label: 'All', icon: Rupeeicon},
+        { value: "cash", label: "Cash", icon: CashIcon },
+        { value: "cresit", label: "Credit", icon: Craditicon },
+        { value: "upi", label: "UPI", icon: UpiIcon },
+      ],
+    },
+  ];
+
+  const Duration = [
+    {
+      label: "Duration",
+      options: [
+        { value: "", label: "All"},
+        { value: "today", label: "Today" },
+        { value: "yesterday", label: "Yesterday" },
+        { value: "last7Days", label: "Last 7 Days" },
+        { value: "last30Days", label: "Last 30 Days" },
+        { value: "last90Days", label: "Last 90 Days"},
+        { value: "cuuresntFiscalYear", label: "Current Fiscal Year"},
+        { value: "previousFiscalYear", label: "Previous Fiscal Year"},
+        {}
+      ]
+    }
+  ]
 
   return (
     <div className={classNames('d-flex justify-content-between', searchBoxClass)}>
@@ -73,15 +120,20 @@ const GlobalFilter = ({
               <option value="8">Custom Range</option>
             </select>
           </div>
-          <div className="me-3 w-25">
-            <select className="form-select my-1" id="payment">
-              <option value="0" >Payment Mode</option>
-              <option value="1">Cash</option>
-              <option value="2">Credit</option>
-              <option value="3">UPI</option>
-              <option value="4">Card</option>
-            </select>
-          </div>
+          <Form.Group className=" w-25">
+            <Select
+              className="react-select my-1 react-select-container"
+              classNamePrefix="react-select"
+              options={PaymentMode}
+              onChange={(selectedOption: any) => {
+                setPaymentMode(selectedOption.value);
+                onChange(selectedOption.value);
+              }}
+              components={{ Option: CustomOption }}
+              placeholder="Payment Mode"
+              id="Payment Mode"
+            />
+          </Form.Group>
         </>
       )}
 
@@ -114,16 +166,20 @@ const GlobalFilter = ({
 
       {isPurchaseReturnPage && !isSalePage && (
         <>
-
-          <div className="me-3 w-25">
-            <select className="form-select my-1" id="payment">
-              <option value="0" >Payment Mode</option>
-              <option value="1">Cash</option>
-              <option value="2">Credit</option>
-              <option value="3">UPI</option>
-              <option value="4">Card</option>
-            </select>
-          </div>
+          <Form.Group className=" w-25">
+            <Select
+              className="react-select my-1 react-select-container"
+              classNamePrefix="react-select"
+              options={PaymentMode}
+              onChange={(selectedOption: any) => {
+                setPaymentMode(selectedOption.value);
+                onChange(selectedOption.value);
+              }}
+              components={{ Option: CustomOption }}
+              placeholder="Payment Mode"
+              id="Payment Mode"
+            />
+          </Form.Group>
           <div className="me-2">
             <select className="form-select my-1" id="filter-admin">
               <option value="0">Select Staff</option>
@@ -310,7 +366,7 @@ const Table = (props: TableProps) => {
           setGlobalFilter={dataTable.setGlobalFilter}
           searchBoxClass={props["searchBoxClass"]}
           isSalePage={isSalePage} // Pass this prop to GlobalFilter
-          isPurchasePage= {isPurchasePage}
+          isPurchasePage={isPurchasePage}
           isPurchaseReturnPage={isPurchaseReturnPage}
         />
       )}

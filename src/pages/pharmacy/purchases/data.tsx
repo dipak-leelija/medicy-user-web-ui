@@ -74,9 +74,9 @@ export interface StockItemTypes {
   amount: number;
   payment_mode: string;
 }
- export interface PurchaseItem {
+export interface PurchaseItem {
   id: number;
-  invoice_id: number;
+  bill_id: number;
   item_id: number;
   product_id: string;
   item_name: string;
@@ -96,7 +96,8 @@ export interface StockItemTypes {
   sales_margin: number;
   profit_margin: number;
   taxable: number;
-  amount: number;
+  amount: string;
+  created_on:string;
   updated_by: string;
   updated_on: string;
 }
@@ -2622,21 +2623,21 @@ const cartItems: CartItemTypes[] = [
 
 const stock: StockItemTypes[] = [
   {
-    bill_id: 1,
+    bill_id: 100001,
     name: 'Jayanta',
     created_on: '07/18/2019',
     amount: 5000,
     payment_mode: 'UPI'
   },
   {
-    bill_id: 2,
+    bill_id: 100002,
     name: 'Rahul',
     created_on: '07/18/2019',
     amount: 6000,
     payment_mode: 'Cash'
   },
   {
-    bill_id: 3,
+    bill_id: 100003,
     name: 'Sourav',
     created_on: '07/18/2019',
     amount: 7000,
@@ -2645,10 +2646,10 @@ const stock: StockItemTypes[] = [
 ];
 
 const purchaseItem: PurchaseItem[] =
-[
-  {
+  [
+    {
       "id": 1,
-      "invoice_id": 100001,
+      "bill_id": 100001,
       "item_id": 1,
       "product_id": "PROD001",
       "item_name": "Deriphyllin BM Expectorant",
@@ -2668,15 +2669,70 @@ const purchaseItem: PurchaseItem[] =
       "sales_margin": 15.99,
       "profit_margin": 12.50,
       "taxable": 85.00,
-      "amount": 0,
+      "amount": '',
+      "created_on":'2024-08-29',
       "updated_by": "admin",
       "updated_on": "2024-08-19 12:00:00"
-  },
-  {
+    },
+    {
       "id": 2,
-      "invoice_id": 100002,
-      "item_id": 2,
+      "bill_id": 100002,
+      "item_id": 1,
       "product_id": "PROD002",
+      "item_name": "Fimanta 120 Tablet",
+      "batch_no": "BATCH001",
+      "comp_1": "Fimasartan (120mg)",
+      "comp_2": "",
+      "exp_date": "2026-01-31",
+      "weightage": "250mg",
+      "unit": "Pack",
+      "qty": "20",
+      "loosely_count": "200",
+      "mrp": 199.99,
+      "ptr": 160.00,
+      "discount": 0,
+      "gst": 12,
+      "d_price": 19.20,
+      "sales_margin": 39.99,
+      "profit_margin": 30.00,
+      "taxable": 170.00,
+      "amount": '',
+      "created_on":'2024-08-29',
+      "updated_by": "admin",
+      "updated_on": "2024-08-19 12:30:00"
+    },
+    {
+      "id": 4,
+      "bill_id": 100002,
+      "item_id": 2,
+      "product_id": "PROD004",
+      "item_name": "Nervite XT Capsule",
+      "batch_no": "BATCH002",
+      "comp_1": "Nervite XT(120mg)",
+      "comp_2": "",
+      "exp_date": "2026-01-31",
+      "weightage": "250mg",
+      "unit": "Pack",
+      "qty": "20",
+      "loosely_count": "200",
+      "mrp": 330,
+      "ptr": 330,
+      "discount": 10,
+      "gst": 12,
+      "d_price": 19.20,
+      "sales_margin": 39.99,
+      "profit_margin": 30.00,
+      "taxable": 170.00,
+      "amount": '100',
+      "created_on":'2024-08-29',
+      "updated_by": "admin",
+      "updated_on": "2024-08-19 12:30:00"
+    },
+    {
+      "id": 3,
+      "bill_id": 100003,
+      "item_id": 3,
+      "product_id": "PROD003",
       "item_name": "Fimanta 120 Tablet",
       "batch_no": "BATCH002",
       "comp_1": "Fimasartan (120mg)",
@@ -2694,11 +2750,12 @@ const purchaseItem: PurchaseItem[] =
       "sales_margin": 39.99,
       "profit_margin": 30.00,
       "taxable": 170.00,
-      "amount": 0,
+      "amount": '',
+      "created_on":'2024-08-29',
       "updated_by": "admin",
       "updated_on": "2024-08-19 12:30:00"
-  }
-];
+    },
+  ];
 
 
 // const invoiceOptions = ['INV001', 'INV002', 'INV003', 'INV004', 'INV005']; 

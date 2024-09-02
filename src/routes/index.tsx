@@ -47,6 +47,7 @@ const NewSaleReturn = React.lazy(() => import("../pages/pharmacy/sales/new-sale-
 const Purchase = React.lazy(() => import("../pages/pharmacy/purchases/purchase/Purchase"));
 const NewPurchase = React.lazy(() => import("../pages/pharmacy/purchases/purchase/NewPurchase"));
 const PurchaseReturn = React.lazy(() => import("../pages/pharmacy/purchases/purchase-return/PurchaseReturn"));
+const NewPurchaseReturn = React.lazy(() => import("../pages/pharmacy/purchases/purchase-return/NewPurchaseReturn"));
 const CurrentStock = React.lazy(() => import("../pages/pharmacy/stocks/current-stock"));
 const StockExpiring = React.lazy(() => import("../pages/pharmacy/stocks/stock-expiring"));
 const Distrbutor = React.lazy(() => import("../pages/pharmacy/distributor"));
@@ -352,6 +353,18 @@ const pharmacyRoutes: RoutesProps = {
       path: "/purchase-return",
       name: "Purchase Return",
       element: <PurchaseReturn />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/add-purchase-return",
+      name: "Purchase Return",
+      element: < NewPurchaseReturn />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/Edit-purchase-return/:id",
+      name: "Purchase Return",
+      element: < NewPurchaseReturn />,
       route: PrivateRoute,
     },
     {

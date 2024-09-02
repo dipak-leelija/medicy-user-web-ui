@@ -120,25 +120,47 @@ select.form-control-sm {
 }
 
 .was-validated .form-control:invalid, .form-control.is-invalid,
-.was-validated .form-select:valid, .form-select.is-valid .form-control:valid, .form-control.is-valid{
+.was-validated .form-select:invalid, .form-select.is-invalid,
+.was-validated .form-control:invalid, .form-control.is-invalid{
     background-image: none;
     box-shadow: none !important;
-    border-bottom: 1px solid $primary-border-subtle;
+    border-bottom: 1px solid red;
 }
-.was-validated .form-select:valid, .form-select.is-valid .form-control:invalid, .form-control.is-invalid:focus{
+.was-validated .form-select:valid, .form-select.is-valid,
+.was-validated .form-control:valid, .form-control.is-valid
+{
     box-shadow: none !important;
-    border-bottom: 1px solid $primary-border-subtle;
+    border-bottom: 1px solid  var(--ct-border-color);
+    background-image: none;
 }// end input tag custom border 
 
+.was-validated .form-control:valid:focus, .form-control.is-valid:focus,
+.was-validated .form-select:valid, .form-select.is-valid,
+.was-validated .form-control:valid:focus, .form-control.is-valid:focus{
+    border:none;
+    border-bottom: 1px solid $primary-border-subtle;
+    box-shadow: none;
+    background-image: none;
+}
+
+.purchaseOffCanBG{
+    background-color: rgba(221, 78, 90, 1);
+}
 .offcanvasbar{
     width: 78%;
 }
+.offCanText{
+    color: hsla(0, 0%, 100%, .6);
+    cursor: pointer;
+}
 .rightoffcanvas{
-    width: 50%;
+    min-width: 55%;
+    width: auto;
+    background-color: rgba(0, 0, 0, .1);
 }
 .offcanvas.offcanvas-bottom{
-    height: 75%;
-    margin: 0px 300px;
+    height: 65%;
+    margin: 0px 320px;
     bottom: 1%;
 }
 
