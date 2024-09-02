@@ -8,6 +8,7 @@ import CusttomInvoiceDropdown from '../../../../components/CustomInvoiceDropdown
 import { Link, useParams } from 'react-router-dom';
 import { stock, purchaseItem } from "../data";
 import { number } from 'yup';
+import { Toast, ToastContainer } from 'react-bootstrap';
 
 // Utility function to convert MM/DD/YYYY to yyyy-MM-dd
 const formatDate = (dateStr: string): string => {
@@ -21,6 +22,9 @@ export default function NewPurchase() {
     const { id } = useParams<{ id: string }>();
     const [purchaseData, setPurchaseData] = useState<any | null>(null);
     const [addPurchaseDetails, setAddPurchaseDetails] = useState<any[]>([])
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState<string>('');
+
 
     console.log(addPurchaseDetails);
 
@@ -45,7 +49,7 @@ export default function NewPurchase() {
         d_price: 0,
         amount: '',
         freeQty: '',
-        expiryDate: '',
+        expiryDate: new Date().toISOString().slice(0, 7),
         qty: '',
         // totalGst: '',
     });
@@ -130,13 +134,13 @@ export default function NewPurchase() {
             [name]: value,
         }));
 
-        
+
     };
 
     // find gst of each item 
     const eachItemGstAmnt = ((purchaseItemDetails.d_price * parseInt(purchaseItemDetails.qty)) * purchaseItemDetails.gst / 100).toFixed(2);
-        // console.log('totalGst=========',totalGst); // end find gst of each item 
-   
+    // console.log('totalGst=========',totalGst); // end find gst of each item 
+
     const handleSelectStock = (selectedStockItem: number) => {
         const selectedItem = stock.find(item => item.bill_id === selectedStockItem);
         if (selectedItem) {
@@ -163,7 +167,7 @@ export default function NewPurchase() {
                 d_price: selectedItem.d_price,
                 amount: selectedItem.amount,
                 freeQty: '',
-                expiryDate: '',
+                expiryDate: new Date().toISOString().slice(0, 7),
                 qty: '',
             });
         }
@@ -184,7 +188,12 @@ export default function NewPurchase() {
         } = purchaseItemDetails;
 
         // Check if all fields are filled
-        if (
+        
+        if (parseFloat(mrp) < parseFloat(ptr)) {
+            setToastMessage('Ptr should be less than Mrp !')
+            setShowToast(true);
+        }
+        else if (
             inputValue &&
             batch_no &&
             ptr &&
@@ -198,7 +207,7 @@ export default function NewPurchase() {
         ) {
             const newPurchaseDetail = {
                 item_name: inputValue,
-                totalGst :eachItemGstAmnt,
+                totalGst: eachItemGstAmnt,
                 ...purchaseItemDetails,
             };
 
@@ -223,7 +232,9 @@ export default function NewPurchase() {
             });
         }
         else {
-            alert('Please fill out all the fields before adding an item.');
+            setToastMessage('Please fill out all the fields before adding an item.');
+            setShowToast(true);
+            // alert('Please fill out all the fields before adding an item.');
         }
     };
 
@@ -281,7 +292,7 @@ export default function NewPurchase() {
         toatalQty: toatalQty,
         toatalPtr: toatalPtr,
         totalDisct: totalDisct,
-        totalGst:totalGst
+        totalGst: totalGst
     };
     return (
         <>
@@ -416,7 +427,7 @@ export default function NewPurchase() {
                                     </Col>
                                     <Col md>
                                         <FloatingLabel className='invlabel' controlId="floatingExpDate" label="Expiry Date">
-                                            <Form.Control type="date" name='expiryDate' placeholder="" className='borderRemove px-0 ps-1' value={purchaseItemDetails.expiryDate} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
+                                            <Form.Control type="month" name='expiryDate' placeholder="" className='borderRemove px-0 ps-1' value={purchaseItemDetails.expiryDate} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
                                         </FloatingLabel>
                                     </Col>
                                     <Col md>
@@ -502,6 +513,16 @@ export default function NewPurchase() {
                 </Col>
             </Row>
 
+
+            {/* Toast Component */}
+            <ToastContainer position="top-end" className="p-3">
+                <Toast onClose={() => setShowToast(false)} show={showToast} delay={6000} autohide bg="danger">
+                    <Toast.Header>
+                        <strong className="me-auto">Error !</strong>
+                    </Toast.Header>
+                    <Toast.Body className='text-white'>{toastMessage}</Toast.Body>
+                </Toast>
+            </ToastContainer> {/*end Toast Component */}
         </>
     )
 }
