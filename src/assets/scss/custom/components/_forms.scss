@@ -245,3 +245,11 @@ input[type=number] {
     // max-width: 33.33333%;
     overflow: hidden;
 }
+
+.CustomTableRow{
+    position: relative;
+}
+.CustomTableRow:hover{
+   background-color: #f3f7f9;
+   cursor: pointer;
+}

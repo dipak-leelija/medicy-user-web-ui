@@ -9,6 +9,7 @@ import CusttomInvoiceDropdown from '../../../../components/CustomInvoiceDropdown
 import { Link, useParams } from 'react-router-dom';
 import { stock, purchaseItem } from "../data";
 import { number } from 'yup';
+import { Toast, ToastContainer } from 'react-bootstrap';
 
 // Utility function to convert MM/DD/YYYY to yyyy-MM-dd
 // const formatDate = (dateStr: string): string => {
@@ -23,6 +24,8 @@ export default function NewPurchaseReturn() {
     const [defaultDropDown, setDefaultDropDown] = useState<boolean>(false);
     const [addPurchaseReturnItem, setAddPurchaseReturnItem] = useState<any[]>([]);
     const { id } = useParams<{ id: string }>();
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState<string>('');
 
 
     console.log('addPurchaseReturnItem--', addPurchaseReturnItem);
@@ -185,7 +188,8 @@ export default function NewPurchaseReturn() {
                 ref_amount: '',
             });
         } else {
-            alert('Please fill all the fields');
+            setToastMessage('Please fill all the fields !');
+            setShowToast(true);
         }
 
 
@@ -249,7 +253,7 @@ export default function NewPurchaseReturn() {
         toatalQty: toatalQty,
         toatalPtr: toatalPtr,
         totalDisct: totalDisct,
-        totalGst:totalGst
+        totalGst: totalGst
     }
     return (
         <>
@@ -420,7 +424,10 @@ export default function NewPurchaseReturn() {
 
                                     <tbody className="border-0">
                                         {addPurchaseReturnItem.map((item, index) => (
-                                            <tr key={index} onClick={() => handleEditPurchaseItem(index)}>
+                                             <React.Fragment key={index}>
+                                                <i className="fas fa-trash ms-n2 mt-2" style={{ position: 'absolute', color: 'red' }}></i>
+                                            <tr onClick={() => handleEditPurchaseItem(index)}
+                                            style={{ cursor: 'pointer', borderBottom: '1px solid #e1e1e1' }}>
                                                 <td>{item.item_name}</td>
                                                 <td>{item.batch_no}</td>
                                                 <td>{item.exp_date}</td>
@@ -431,6 +438,7 @@ export default function NewPurchaseReturn() {
                                                 <td>{item.gst}</td>
                                                 <td>{item.amount}</td>
                                             </tr>
+                                            </React.Fragment>
                                         ))}
                                     </tbody>
                                 </table>
@@ -441,6 +449,15 @@ export default function NewPurchaseReturn() {
                 </Col>
             </Row>
 
+            {/* Toast Component */}
+            <ToastContainer position="top-end" className="p-3">
+                <Toast onClose={() => setShowToast(false)} show={showToast} delay={6000} autohide bg="danger">
+                    <Toast.Header>
+                        <strong className="me-auto">Error !</strong>
+                    </Toast.Header>
+                    <Toast.Body className='text-white'>{toastMessage}</Toast.Body>
+                </Toast>
+            </ToastContainer> {/*end Toast Component */}
         </>
     )
 }
