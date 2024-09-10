@@ -17,8 +17,8 @@ export default function ViewPurchase() {
 
 
   const purchaseData = useSelector((state: RootState) => state.purchase.data);
-    const purchaseLoading = useSelector((state: RootState) => state.purchase.loading);
-    const purchaseError = useSelector((state: RootState) => state.purchase.error);
+  const purchaseLoading = useSelector((state: RootState) => state.purchase.loading);
+  const purchaseError = useSelector((state: RootState) => state.purchase.error);
 
 
   console.log('purchase data-', purchaseData);
@@ -28,30 +28,30 @@ export default function ViewPurchase() {
     dispatch(fetchPurchaseDistributorRequest());
   }, [dispatch]);
 
-    if (purchaseLoading) return <p>Loading...</p>;
-    if (purchaseError) return <p>{purchaseError}</p>;
+  if (purchaseLoading) return <p>Loading...</p>;
+  if (purchaseError) return <p>{purchaseError}</p>;
 
   const filteredPurchaseData = purchaseData.filter(
     (item: { bill_id: string | number }) => item.bill_id === Number(cleanedId));
 
-    const totalitem = filteredPurchaseData.length;
-    const totalamount = filteredPurchaseData.reduce((acc: any, item: { amount: number; }) => acc + (item.amount),
+  const totalitem = filteredPurchaseData.length;
+  const totalamount = filteredPurchaseData.reduce((acc: any, item: { amount: number; }) => acc + (item.amount),
     0);
-    const totalQty = filteredPurchaseData.reduce((acc:any, item: {qty: any;}) => acc + parseInt(item.qty), 0);
-    const totalGst = filteredPurchaseData.reduce((acc:any, item: {gst: any}) => acc + parseInt(item.gst), 0);
-    const totalPtr = filteredPurchaseData.reduce((acc:any, item: {ptr: any}) => acc + parseInt(item.ptr),0);
-    const totalMrp = filteredPurchaseData.reduce((acc:any, item: {mrp: any}) => acc + parseFloat(item.mrp),0);
+  const totalQty = filteredPurchaseData.reduce((acc: any, item: { qty: any; }) => acc + parseInt(item.qty), 0);
+  const totalGst = filteredPurchaseData.reduce((acc: any, item: { gst: any }) => acc + parseInt(item.gst), 0);
+  const totalPtr = filteredPurchaseData.reduce((acc: any, item: { ptr: any }) => acc + parseInt(item.ptr), 0);
+  const totalMrp = filteredPurchaseData.reduce((acc: any, item: { mrp: any }) => acc + parseFloat(item.mrp), 0);
 
-    console.log('total gst-',totalGst);
-    
-    const totalViewPurchase = {
-      totalitem : totalitem,
-      totalQty : totalQty,
-      totalPtr : totalPtr,
-      totalMrp : totalMrp,
-      totalamount : totalamount,
-      totalGst : totalGst,
-    }
+  console.log('total gst-', totalGst);
+
+  const totalViewPurchase = {
+    totalitem: totalitem,
+    totalQty: totalQty,
+    totalPtr: totalPtr,
+    totalMrp: totalMrp,
+    totalamount: totalamount,
+    totalGst: totalGst,
+  }
   // console.log('filtered purchase data-', filteredPurchaseData.length);
 
 
@@ -150,7 +150,7 @@ export default function ViewPurchase() {
           </Card>
         </Col>
       </Row>
-      <SalesOffcanvas isPurchaseView={true} totalViewPurchase={totalViewPurchase}/>
+      <SalesOffcanvas isPurchaseView={true} totalViewPurchase={totalViewPurchase} />
     </>
   );
 }

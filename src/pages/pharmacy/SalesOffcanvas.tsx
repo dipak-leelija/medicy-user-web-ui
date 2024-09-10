@@ -143,7 +143,7 @@ export default function SalesOffcanvas({ isNewSale, isPurchase, isPurchaseView, 
                             )}
                             <Card>
                                 <Card.Body className='bg-warning p-2 bg-opacity-25 rounded'>
-                                    {!isPurchaseReturn && (
+                                    {!isPurchaseReturn || !isPurchaseView && (
                                         <>
                                     <div className='fs-4'>Note <span className='text-primary fs-6'>(0/150)</span></div>
                                     <textarea className='border-0 p-0 m-0 w-100 bg-transparent inputBorderRemove' name="" id="" placeholder='type note...' style={{ height: '60px' }}>
