@@ -377,9 +377,9 @@ const Topbar = ({
             <li className="dropdown notification-list">
               <NotificationDropdown notifications={Notifications} />
             </li>
-            <li className="dropdown">
+            <li className="dropdown profiledata">
               <ProfileDropdown
-
+              
                 username={"Geneva"}
                 userTitle={"Founder"}
                 profilePic={profilePic}
