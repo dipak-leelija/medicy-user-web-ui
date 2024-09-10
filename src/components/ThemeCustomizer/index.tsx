@@ -99,7 +99,7 @@ const ThemeCustomizer = () => {
     setDisableSidebarUser(
       layoutType !== layoutConstants.LayoutTypes.LAYOUT_HORIZONTAL &&
       layoutType !== layoutConstants.LayoutTypes.LAYOUT_TWO_COLUMN &&
-      layoutMode !== layoutConstants.LayoutMode.LAYOUT_DETACHED
+      layoutMode !== layoutConstants.LayoutMode.LAYOUT_FLUID
     );
     setShowTwoColumnTheme(
       layoutType === layoutConstants.LayoutTypes.LAYOUT_TWO_COLUMN
@@ -135,11 +135,11 @@ const ThemeCustomizer = () => {
   const changeLayoutMode = (value: any) => {
     var layout = value;
     switch (layout) {
-      case "fluid":
+      case "detached":
         dispatch(changeLayoutModes(layoutConstants.LayoutMode.LAYOUT_DEFAULT));
         break;
-      case "detached":
-        dispatch(changeLayoutModes(layoutConstants.LayoutMode.LAYOUT_DETACHED));
+      case "fluid":
+        dispatch(changeLayoutModes(layoutConstants.LayoutMode.LAYOUT_FLUID));
         break;
       default:
         dispatch(changeLayoutModes(layoutConstants.LayoutMode.LAYOUT_DEFAULT));

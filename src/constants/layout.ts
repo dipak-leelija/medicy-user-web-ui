@@ -8,8 +8,8 @@ export enum LayoutTypes {
 }
 
 export enum LayoutMode {
-  LAYOUT_DEFAULT = "fluid",
-  LAYOUT_DETACHED = "detached",
+  LAYOUT_DEFAULT = "detached",
+  LAYOUT_FLUID = "fluid",
 }
 
 export enum TwoColumnTheme {
