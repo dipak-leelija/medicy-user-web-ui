@@ -22,16 +22,26 @@ interface PurchaseReturnDetails {
     totalDisct: number;
     totalGst: number;
 }
+interface ViewDetails{
+    totalitem: number;
+    totalQty: string;
+    totalamount: number;
+    totalPtr: number;
+    totalMrp: string;
+    totalGst: number;
+}
 interface SalesOffcanvasProps {
     isNewSale?: boolean;
     isPurchase?: boolean;
     isPurchaseReturn?: boolean;
     toalPurchaseAddDetails?: PurchaseDetails;
     totalPurchaseReturnAdd?: PurchaseReturnDetails;
+    isPurchaseView?: boolean;
+    totalViewPurchase?: ViewDetails;
 }
 
 
-export default function SalesOffcanvas({ isNewSale, isPurchase, isPurchaseReturn, toalPurchaseAddDetails, totalPurchaseReturnAdd }: SalesOffcanvasProps) {
+export default function SalesOffcanvas({ isNewSale, isPurchase, isPurchaseView, isPurchaseReturn, toalPurchaseAddDetails, totalPurchaseReturnAdd, totalViewPurchase }: SalesOffcanvasProps) {
 
     const [show, setShow] = useState(false);
     const [cashValu, setCashValue] = useState('');
@@ -42,17 +52,17 @@ export default function SalesOffcanvas({ isNewSale, isPurchase, isPurchaseReturn
 
     console.log('Total Amount:', totalPurchaseReturnAdd?.toatalQty);
 
-    const Qty = toalPurchaseAddDetails?.toatalQty || totalPurchaseReturnAdd?.toatalQty || '0';
-    const Item = toalPurchaseAddDetails?.toatalitem || totalPurchaseReturnAdd?.toatalitem || '0'
-    const TotalAmount = toalPurchaseAddDetails?.totalAmount || totalPurchaseReturnAdd?.totalAmount || '0'
-    const MrpTotal = toalPurchaseAddDetails?.toatalMrp || totalPurchaseReturnAdd?.toatalMrp || '';
-    const TotalPtr = toalPurchaseAddDetails?.toatalPtr || totalPurchaseReturnAdd?.toatalPtr || '0';
+    const Qty = toalPurchaseAddDetails?.toatalQty || totalPurchaseReturnAdd?.toatalQty || totalViewPurchase?.totalQty ||'0';
+    const Item = toalPurchaseAddDetails?.toatalitem || totalPurchaseReturnAdd?.toatalitem || totalViewPurchase?.totalitem || '0'
+    const TotalAmount = toalPurchaseAddDetails?.totalAmount || totalPurchaseReturnAdd?.totalAmount || totalViewPurchase?.totalamount || '0'
+    const MrpTotal = toalPurchaseAddDetails?.toatalMrp || totalPurchaseReturnAdd?.toatalMrp || totalViewPurchase?.totalMrp || '';
+    const TotalPtr = toalPurchaseAddDetails?.toatalPtr || totalPurchaseReturnAdd?.toatalPtr || totalViewPurchase?.totalPtr || '0';
     const TotalDisct = toalPurchaseAddDetails?.totalDisct || totalPurchaseReturnAdd?.totalDisct || '0';
-    const TotalGst = toalPurchaseAddDetails?.totalGst || totalPurchaseReturnAdd?.totalGst || '0';
+    const TotalGst = toalPurchaseAddDetails?.totalGst || totalPurchaseReturnAdd?.totalGst || totalViewPurchase?.totalGst || '0';
 
     return (
         <>
-            <div className={`position-fixed ${isPurchase || isPurchaseReturn ? 'purchaseOffCanBG' : 'bg-primary'} bottom-0 rounded-0 fs-5 offcanvasbar `}>
+            <div className={`position-fixed ${isPurchase || isPurchaseReturn ||isPurchaseView ? 'purchaseOffCanBG' : 'bg-primary'} bottom-0 rounded-0 fs-5 offcanvasbar `}>
                 {/* ${(isPurchaseReturnPage) ? 'bg-danger' : 'bg-primary'} */}
                 <div className='d-flex justify-content-between'>
                     <div></div>
@@ -75,12 +85,12 @@ export default function SalesOffcanvas({ isNewSale, isPurchase, isPurchaseReturn
                             </div>
                         )}
 
-                        {isPurchase || isPurchaseReturn && (
+                        {isPurchase || isPurchaseReturn || isPurchaseView && (
                             <div style={{ height: '30px', marginTop: '9px' }} onClick={handleShow}>{TotalGst} <span className='offCanText'>GST</span></div>
                         )}
 
-                        {isPurchase && (
-                            <div className={`${isPurchase ? 'text-white' : 'bg-primary'} px-2`} style={{ maxWidth: '160px' }}>
+                        {isPurchase || isPurchaseView && (
+                            <div className={`${isPurchase || isPurchaseView ? 'text-white' : 'bg-primary'} px-2`} style={{ maxWidth: '160px' }}>
                                 <div className='d-flex justify-content-between align-items-center '>
                                     0.0<span className='offCanText'>% Margin </span>
                                 </div>
@@ -106,7 +116,9 @@ export default function SalesOffcanvas({ isNewSale, isPurchase, isPurchaseReturn
                 <Offcanvas.Header className='bg-primary d-flex justify-content-between py-1'>
                     <Offcanvas.Title className='fs-3 text-white'>Invoice Breakdown</Offcanvas.Title>
                     <div className="d-flex justify-content-end align-items-center">
+                        {!isPurchaseView && 
                         <Button className='btn-sm btn-info fs-5'>Submit</Button>
+                        }
                         <Button onClick={handleClose} className="me-1 shadow-none">
                             <span aria-hidden="true">&times;</span>
                         </Button>
