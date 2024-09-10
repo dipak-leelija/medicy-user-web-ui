@@ -1,159 +1,156 @@
-import React, { useState } from 'react'
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import { Row, Col, Button } from "react-bootstrap";
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Form from 'react-bootstrap/Form';
-import { Formik, FormikProps } from 'formik';
-import * as yup from 'yup';
-
-interface FormValues {
-    distName: string;
-    Mobnumber?: string;
-    gstId?: string;
-    emailAddrs?: string;
-    areaPin?: string;
-    address?: string;
-    descrption?: string;
-}
+// ViewPurchase.tsx
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../redux/store";
+import { fetchPurchaseItemsRequest, fetchPurchaseDistributorRequest } from "../../../../redux/DataFetch/actions";
+import { useParams } from "react-router-dom";
+import Table from "../../../../components/Table";
+import { Card, Col, Row } from "react-bootstrap";
+import SalesOffcanvas from "../../SalesOffcanvas";
+import { totalmem } from "os";
 
 export default function ViewPurchase() {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  // Remove the colon (:) from the id
+  const cleanedId = id?.replace(':', '');
 
-    const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+  const purchaseData = useSelector((state: RootState) => state.purchase.data);
+    const purchaseLoading = useSelector((state: RootState) => state.purchase.loading);
+    const purchaseError = useSelector((state: RootState) => state.purchase.error);
 
-    const schema = yup.object().shape({
-        distName: yup.string().required(),
-        Mobnumber: yup.string().matches(/^[0-9]{10}$/, 'Mobile number must be exactly 10 digits')
-        .required('Mobile Number is a required field'),
-        gstId: yup.string().required(),
-        emailAddrs: yup.string().email('Invalid email address').required('Email Address is a required field'),
-        areaPin: yup.string().matches(/^\d{6}$/, 'Area PIN must be exactly 6 digits').required('Area PIN is a required field'),
-        address: yup.string().required(),
-        descrption: yup.string().required(),
-    });
-    return (
-        <>
-            <div className="m-1 p-1 bg-secondary fs-5 bg-opacity-25 text-primary text-center add-new-item" onClick={handleShow} style={{ cursor: 'pointer' }}>
-                <i className="mdi mdi-plus-circle me-1"></i> Add New Distributor
-            </div>
-            <div>
-                <Offcanvas show={show} onHide={handleClose} placement="top" responsive="md">
-                    <Offcanvas.Header closeButton className='bg-primary bg-opacity-10'>
-                        <Offcanvas.Title className='px-4'>Add Distributor</Offcanvas.Title>
-                    </Offcanvas.Header>
-                    <hr className='my-0' />
-                    <Offcanvas.Body className='px-4 mt-2'>
 
-                        <Formik<FormValues>
-                            validationSchema={schema}
-                            onSubmit={(values: FormValues) => console.log(values)}
-                            initialValues={{
-                                distName: '',
-                                Mobnumber: '',
-                                gstId: '',
-                            }}
-                        >
-                            {({
-                                handleSubmit,
-                                handleChange,
-                                values,
-                                errors
-                            }: FormikProps<FormValues>) => (
-                                <Form noValidate onSubmit={handleSubmit}>
+  console.log('purchase data-', purchaseData);
 
-                                    <Row>
-                                        <Form.Group as={Col} md="6" controlId="validationFormik01">
-                                            <FloatingLabel className='invlabel' controlId="floatingDistName" label="Distributor Name">
-                                                <Form.Control
-                                                    type="text"
-                                                    placeholder=""
-                                                    className='borderRemove px-0 ps-1 bg-transparent'
-                                                    name='distName'
-                                                    value={values.distName}
-                                                    onChange={handleChange}
-                                                    isInvalid={!!errors.distName}
-                                                />
-                                                <Form.Control.Feedback type="invalid">
-                                                    Distributor Nmae is a required field
-                                                </Form.Control.Feedback>
-                                            </FloatingLabel>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="6" controlId="validationFormik01">
-                                            <FloatingLabel className='invlabel' controlId="floatingMobNo" label="Mobile Number">
-                                                <Form.Control type="number" placeholder=""
-                                                    name='Mobnumber'
-                                                    value={values.Mobnumber}
-                                                    className='borderRemove px-0 ps-1 bg-transparent'
-                                                    onChange={handleChange}
-                                                    isInvalid={!!errors.Mobnumber}
-                                                    maxLength={10} />
-                                                <Form.Control.Feedback type="invalid">{errors.Mobnumber}</Form.Control.Feedback>
-                                            </FloatingLabel>
-                                        </Form.Group>
-                                    </Row>
-                                    <Row>
-                                        <Form.Group as={Col} md="6" controlId="validationFormik01">
-                                            <FloatingLabel className='invlabel' controlId="floatingGstId" label="GST ID">
-                                                <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='gstId'
-                                                    value={values.gstId}
-                                                    onChange={handleChange}
-                                                    isInvalid={!!errors.gstId} />
-                                                <Form.Control.Feedback type="invalid">GST ID is a required field</Form.Control.Feedback>
-                                            </FloatingLabel>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="6" controlId="validationFormik01">
-                                            <FloatingLabel className='invlabel' controlId="floatingEmailAddrs" label="Email Address">
-                                                <Form.Control type="email" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='emailAddrs'
-                                                    value={values.emailAddrs}
-                                                    onChange={handleChange}
-                                                    isInvalid={!!errors.emailAddrs} />
-                                                <Form.Control.Feedback type="invalid">{errors.emailAddrs}</Form.Control.Feedback>
-                                            </FloatingLabel>
-                                        </Form.Group>
-                                    </Row>
-                                    <Row>
-                                        <Form.Group as={Col} md="6" controlId="validationFormik01">
-                                            <FloatingLabel className='invlabel' controlId="floatingAreaPin" label="Area PIN Code">
-                                                <Form.Control type="number" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='areaPin'
-                                                    value={values.areaPin}
-                                                    onChange={handleChange}
-                                                    isInvalid={!!errors.areaPin}
-                                                    maxLength={6} />
-                                                <Form.Control.Feedback type="invalid">{errors.areaPin}</Form.Control.Feedback>
-                                            </FloatingLabel>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="6" controlId="validationFormik01">
-                                            <FloatingLabel className='invlabel' controlId="floatingAddrs" label="Address">
-                                                <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='address'
-                                                value={values.address}
-                                                onChange={handleChange}
-                                                isInvalid={!!errors.address} />
-                                                <Form.Control.Feedback type="invalid">Address is a required field</Form.Control.Feedback>
-                                            </FloatingLabel>
-                                            </Form.Group>
-                                    </Row>
-                                    <Row>
-                                    <Form.Group as={Col} md="12" controlId="validationFormik01">
-                                            <FloatingLabel className='invlabel' controlId="floatingDiscrption" label="Description">
-                                                <Form.Control as="textarea" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='descrption'
-                                                value={values.descrption}
-                                                onChange={handleChange}
-                                                isInvalid={!!errors.descrption} style={{ height: '100px' }} />
-                                                <Form.Control.Feedback type="invalid">Description is a required field</Form.Control.Feedback>
-                                            </FloatingLabel>
-                                            </Form.Group>
-                                    </Row>
-                                    <Button variant="primary" type="submit" className='btn btn-primary waves-effect waves-light float-end mt-2'>
-                                        <i className="mdi mdi-plus-circle me-1"></i>Submit
-                                    </Button>
-                                </Form>
-                            )}
-                        </Formik>
-                    </Offcanvas.Body>
-                </Offcanvas>
-            </div>
-        </>
-    )
+  useEffect(() => {
+    dispatch(fetchPurchaseItemsRequest());
+    dispatch(fetchPurchaseDistributorRequest());
+  }, [dispatch]);
+
+    if (purchaseLoading) return <p>Loading...</p>;
+    if (purchaseError) return <p>{purchaseError}</p>;
+
+  const filteredPurchaseData = purchaseData.filter(
+    (item: { bill_id: string | number }) => item.bill_id === Number(cleanedId));
+
+    const totalitem = filteredPurchaseData.length;
+    const totalamount = filteredPurchaseData.reduce((acc: any, item: { amount: number; }) => acc + (item.amount),
+    0);
+    const totalQty = filteredPurchaseData.reduce((acc:any, item: {qty: any;}) => acc + parseInt(item.qty), 0);
+    const totalGst = filteredPurchaseData.reduce((acc:any, item: {gst: any}) => acc + parseInt(item.gst), 0);
+    const totalPtr = filteredPurchaseData.reduce((acc:any, item: {ptr: any}) => acc + parseInt(item.ptr),0);
+    const totalMrp = filteredPurchaseData.reduce((acc:any, item: {mrp: any}) => acc + parseFloat(item.mrp),0);
+
+    console.log('total gst-',totalGst);
+    
+    const totalViewPurchase = {
+      totalitem : totalitem,
+      totalQty : totalQty,
+      totalPtr : totalPtr,
+      totalMrp : totalMrp,
+      totalamount : totalamount,
+      totalGst : totalGst,
+    }
+  // console.log('filtered purchase data-', filteredPurchaseData.length);
+
+
+  // get all columns
+  const columns = [
+    {
+      Header: "Item Name",
+      accessor: "item_name",
+      sort: true,
+      // Cell: NameColumn,
+    },
+    {
+      Header: "Batch",
+      accessor: "batch_no",
+      sort: true,
+    },
+    {
+      Header: "Expiry",
+      accessor: "exp_date",
+      sort: true,
+      // Cell: LastOrderColumn,
+    },
+    {
+      Header: "MRP",
+      accessor: "mrp",
+      sort: true,
+    },
+    {
+      Header: "PTR",
+      accessor: "ptr",
+      sort: true,
+    },
+    {
+      Header: "D.Price",
+      accessor: "d_price",
+      sort: true,
+    },
+    {
+      Header: "QTY",
+      accessor: "qty",
+      sort: true,
+    },
+    {
+      Header: "FREE",
+      accessor: "0",
+      sort: true,
+    },
+    {
+      Header: "GST",
+      accessor: "gst",
+      sort: true,
+    },
+    {
+      Header: "Amount",
+      accessor: "amount",
+      sort: true,
+    },
+  ];
+
+  // get pagelist to display
+  const sizePerPageList = [
+    {
+      text: "10",
+      value: 10,
+    },
+    {
+      text: "25",
+      value: 25,
+    },
+    {
+      text: "All",
+      value: filteredPurchaseData.length,
+    },
+  ];
+
+  return (
+    <>
+      <Row className="mt-4">
+        <Col>
+          <Card>
+            <Card.Body>
+              <Table
+                columns={columns}
+                data={filteredPurchaseData}
+                pageSize={10}
+                sizePerPageList={sizePerPageList}
+                isSortable={true}
+                pagination={true}
+                isSelectable={true}
+                // isSearchable={true}
+                theadClass="table-light"
+                // searchBoxClass="mt-2 mb-3"
+                isViewPage={true} // Pass this prop to modify the select dropdown
+              />
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      <SalesOffcanvas isPurchaseView={true} totalViewPurchase={totalViewPurchase}/>
+    </>
+  );
 }

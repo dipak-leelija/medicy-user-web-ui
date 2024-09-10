@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, forwardRef, useState } from "react";
 import { Row, Col, Card, Form } from "react-bootstrap";
 import Select, { components } from "react-select";
+
 import {
   useTable,
   useSortBy,
@@ -17,6 +18,7 @@ import Craditicon from '../assets/icon/cradit.svg'
 import UpiIcon from '../assets/icon/bhimUpi.png'
 // components
 import Pagination from "./Pagination";
+import { useNavigate } from "react-router-dom";
 
 // const currentPath = window.location.pathname;
 // console.log('current path is-',currentPath);
@@ -29,6 +31,7 @@ interface GlobalFilterProps {
   isSalePage?: boolean; // Add this prop
   isPurchasePage?: boolean;
   isPurchaseReturnPage?: boolean;
+  isViewPage?: boolean;
 }
 
 // Define a default UI for filtering
@@ -40,6 +43,7 @@ const GlobalFilter = ({
   isSalePage, // Add this prop
   isPurchasePage,
   isPurchaseReturnPage,
+  isViewPage,
 }: GlobalFilterProps) => {
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = useState<any>(globalFilter);
@@ -61,6 +65,8 @@ const GlobalFilter = ({
       </components.Option>
     );
   };
+  
+
   const PaymentMode = [
     {
       label: "Payment Mode",
@@ -272,10 +278,7 @@ interface TableProps {
   isSalePage?: boolean; // Add this prop
   isPurchasePage?: boolean;
   isPurchaseReturnPage?: boolean;
-}
-
-const ViewData = () =>{
-  
+  isViewPage?: boolean;
 }
 
 const Table = (props: TableProps) => {
@@ -288,6 +291,9 @@ const Table = (props: TableProps) => {
   const isSalePage = props["isSalePage"] || false;
   const isPurchasePage = props["isPurchasePage"] || false;
   const isPurchaseReturnPage = props["isPurchaseReturnPage"] || false;
+  const isViewPage = props["isViewPage"] || false;
+
+  const navigate = useNavigate();
 
   let otherProps: any = {};
 
@@ -384,6 +390,15 @@ const Table = (props: TableProps) => {
 
   let rows = pagination ? dataTable.page : dataTable.rows;
 
+  const ViewData = (row: any) => {
+    const billId = row.original.bill_id;
+  if (billId) {
+    navigate(`/View/:${billId}`);
+  } else {
+    console.error("billId is undefined for the row:", row);
+  }
+  };
+
   return (
     <>
       {isSearchable && (
@@ -429,8 +444,10 @@ const Table = (props: TableProps) => {
           <tbody {...dataTable.getTableBodyProps()}>
             {(rows || []).map((row: any, i: number) => {
               dataTable.prepareRow(row);
+              // console.log(row);
+              
               return (
-                <tr {...row.getRowProps()} className="CustomTableRow" onClick={ViewData}>
+                <tr {...row.getRowProps()} className="CustomTableRow"   onClick={isViewPage ? undefined : () => ViewData(row)}>
                   {(row.cells || []).map((cell: any) => {
                     return (
                       <td

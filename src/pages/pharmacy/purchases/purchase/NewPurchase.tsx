@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Card, Button } from "react-bootstrap";
-import classNames from "classnames";
+// import classNames from "classnames";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import SalesOffcanvas from '../../SalesOffcanvas';
 import CusttomInvoiceDropdown from '../../../../components/CustomInvoiceDropdown';
-import { Link, useParams } from 'react-router-dom';
+import {useParams } from 'react-router-dom';
 import { stock, purchaseItem } from "../data";
-import { number } from 'yup';
+// import { number } from 'yup';
 import { Toast, ToastContainer } from 'react-bootstrap';
 
 // Utility function to convert MM/DD/YYYY to yyyy-MM-dd
@@ -78,7 +78,7 @@ export default function NewPurchase() {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target as HTMLInputElement | HTMLSelectElement;
 
-        if (name == 'gst') {
+        if (name === 'gst') {
             const gstValue = parseFloat(value);
             const updatedPtr = ((parseFloat(purchaseItemDetails.mrp) * 100) / (gstValue + 100));
             console.log('updatedPtr--', updatedPtr);
@@ -91,7 +91,7 @@ export default function NewPurchase() {
             }));
         }
 
-        if (name == 'discount') {
+        if (name === 'discount') {
             const discValue = parseFloat(value);
             const updatedPtr = parseFloat(purchaseItemDetails.ptr);
             const discountValue = (updatedPtr - (updatedPtr * (discValue / 100))).toFixed(2);
@@ -102,7 +102,7 @@ export default function NewPurchase() {
             }));
         }
 
-        if (name == 'qty') {
+        if (name === 'qty') {
             let qtyValue = parseInt(value);
             if (qtyValue) {
                 const discountValue = (purchaseItemDetails.d_price);

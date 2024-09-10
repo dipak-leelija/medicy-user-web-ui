@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import classNames from "classnames";
-
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../redux/store";
+import { fetchPurchaseItemsRequest, fetchPurchaseDistributorRequest } from "../../../../redux/DataFetch/actions";
 // components
-import PageTitle from "../../../../components/PageTitle";
 import Table from "../../../../components/Table";
-
-// dummy data
-import { stock } from "../data";
 
 /* name column render */
 const NameColumn = ({ row }: { row: any }) => {
@@ -23,30 +21,6 @@ const NameColumn = ({ row }: { row: any }) => {
     </>
   );
 };
-
-/* ratings column render */
-// const RatingsColumn = ({ row }: { row: any }) => {
-//   const variant =
-//     row.original.ratings >= 3.0 && row.original.ratings <= 5.0
-//       ? "text-warning"
-//       : "text-danger";
-//   return (
-//     <>
-//       <i className={classNames("mdi", "mdi-star", variant)}></i>{" "}
-//       {row.original.ratings}
-//     </>
-//   );
-// };
-
-/* last order column render */
-// const LastOrderColumn = ({ row }: { row: any }) => {
-//   return (
-//     <>
-//       {row.original.created_on.date}{" "}
-//       <small className="text-muted">{row.original.created_on.time}</small>
-//     </>
-//   );
-// };
 
 /* action column render */
 const ActionColumn = ({ row }: { row: any }) => {
@@ -101,7 +75,16 @@ const columns = [
   },
 ];
 
-// get pagelist to display
+
+// main component
+const Purchase = () => {
+  const dispatch = useDispatch();
+  const distributorData = useSelector((state: RootState) => state.purchaseDistributer.data);
+  useEffect(() => {
+    dispatch(fetchPurchaseDistributorRequest());
+  }, [dispatch]);
+
+  // get pagelist to display
 const sizePerPageList = [
   {
     text: "10",
@@ -113,31 +96,17 @@ const sizePerPageList = [
   },
   {
     text: "All",
-    value: stock.length,
+    value: distributorData.length,
   },
 ];
-
-// main component
-const Purchase = () => {
   return (
     <>
-      {/* <PageTitle
-        breadCrumbItems={[
-          // { label: "Ecommerce", path: "/apps/ecommerce/sellers" },
-          // { label: "Sellers", path: "/apps/ecommerce/sellers", active: true },
-        ]}
-        title={"Seles"}
-      /> */}
-
       <Row className="mt-4">
         <Col>
           <Card>
             <Card.Body>
               <Row>
                 <Col sm={4}>
-                  {/* <Button variant="danger" className="mb-2">
-                    <i className="mdi mdi-plus-circle me-2"></i> New Sell
-                  </Button> */}
                    <Link
                       to="/add-purchase"
                       className="btn btn-danger waves-effect waves-light"
@@ -165,7 +134,7 @@ const Purchase = () => {
               
               <Table
                 columns={columns}
-                data={stock}
+                data={distributorData}
                 pageSize={10}
                 sizePerPageList={sizePerPageList}
                 isSortable={true}
