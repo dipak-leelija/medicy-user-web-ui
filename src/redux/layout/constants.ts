@@ -34,7 +34,7 @@ export interface LayoutStateTypes {
     | TwoColumnTheme.TWOCOLUMN_DARK
     | TwoColumnTheme.TWOCOLUMN_BRAND
     | TwoColumnTheme.TWOCOLUMN_GRADIENT;
-  layoutMode: LayoutMode.LAYOUT_DEFAULT | LayoutMode.LAYOUT_DETACHED;
+  layoutMode: LayoutMode.LAYOUT_DEFAULT | LayoutMode.LAYOUT_FLUID;
   layoutType:
     | LayoutTypes.LAYOUT_VERTICAL
     | LayoutTypes.LAYOUT_TWO_COLUMN

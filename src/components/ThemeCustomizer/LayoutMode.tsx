@@ -26,7 +26,7 @@ const LayoutMode = ({
           checked={layoutMode === layoutConstants.LAYOUT_DEFAULT}
         />
         <Form.Check.Label htmlFor="default-layout-mode">
-          Default Layout
+          Detached Layout
         </Form.Check.Label>
       </Form.Check>
 
@@ -35,12 +35,12 @@ const LayoutMode = ({
           type="radio"
           onChange={(e) => changeLayoutMode(e.target.value)}
           name="layout-mode"
-          value={layoutConstants.LAYOUT_DETACHED}
+          value={layoutConstants.LAYOUT_FLUID}
           id="detached-layout-mode"
-          checked={layoutMode === layoutConstants.LAYOUT_DETACHED}
+          checked={layoutMode === layoutConstants.LAYOUT_FLUID}
         />
         <Form.Check.Label htmlFor="detached-layout-mode">
-          Detached Layout
+          Fluid Layout
         </Form.Check.Label>
       </Form.Check>
     </>
