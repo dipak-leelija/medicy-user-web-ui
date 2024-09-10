@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import {AppDispatch } from "../redux/store";
+
 import { Link } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 import classNames from "classnames";
+import { showRightSidebar } from "../redux/actions";
 
 interface ProfileMenuItem {
   label: string;
@@ -16,9 +20,15 @@ interface ProfileDropdownProps {
   userTitle?: string;
 }
 
+
 const ProfileDropdown = (props: ProfileDropdownProps) => {
   const profilePic = props["profilePic"] || null;
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleRightSideBar = () => {
+    dispatch(showRightSidebar());
+  };
 
   /*
    * toggle profile-dropdown
@@ -31,7 +41,7 @@ const ProfileDropdown = (props: ProfileDropdownProps) => {
     <Dropdown show={dropdownOpen} onToggle={toggleDropdown}>
       <Dropdown.Toggle
         id="dropdown-profile"
-        as="a"
+        as="a"  
         onClick={toggleDropdown}
         className={classNames(
           "nav-link nav-user me-0 waves-effect waves-light",
@@ -54,14 +64,36 @@ const ProfileDropdown = (props: ProfileDropdownProps) => {
                 {i === props["menuItems"].length - 1 && (
                   <div className="dropdown-divider"></div>
                 )}
-                <Link
-                  to={item.redirectTo}
-                  className="dropdown-item notify-item"
-                  key={i + "-profile-menu"}
-                >
-                  <i className={`${item.icon} me-1`}></i>
-                  <span>{item.label}</span>
-                </Link>
+
+
+                {/* {item.label === 'Customize UI' && (
+                  <div className="customize-ui">
+                    <p>Special content for Customize UI</p>
+                  </div>
+                )} */}
+
+                {item.label === 'Customize UI' ? (
+                  <span
+                    key={i + "-profile-menu"}
+                    className="dropdown-item notify-item"
+                    onClick={handleRightSideBar}
+                  >
+                    <i className={`${item.icon} me-1`}></i>
+                    <span>{item.label}</span>
+                  </span>
+                  // <div className="customize-ui">Special content for Customize UI</div>
+                ) : (
+                  <Link
+                    to={item.redirectTo}
+                    className="dropdown-item notify-item"
+                    key={i + "-profile-menu"}
+                  >
+                    <i className={`${item.icon} me-1`}></i>
+                    <span>{item.label}</span>
+                  </Link>
+                )}
+
+
               </React.Fragment>
             );
           })}

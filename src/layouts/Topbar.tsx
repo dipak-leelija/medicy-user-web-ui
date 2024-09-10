@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 // import classNames from 'classnames';
 
 // actions
-import { showRightSidebar, changeSidebarType } from "../redux/actions";
+import { changeSidebarType } from "../redux/actions";
 
 // store
 import { RootState, AppDispatch } from "../redux/store";
@@ -101,6 +101,11 @@ const ProfileMenus = [
     label: "Lock Screen",
     icon: "fe-lock",
     redirectTo: "/auth/lock-screen",
+  },
+  {
+    label: "Customize UI",
+    icon: "fe-sidebar",
+    redirectTo: "#",
   },
   {
     label: "Logout",
@@ -287,13 +292,6 @@ const Topbar = ({
   }
 
   /**
-   * Toggles the right sidebar
-   */
-  const handleRightSideBar = () => {
-    dispatch(showRightSidebar());
-  };
-
-  /**
    * Toggles the left sidebar width
    */
   // const toggleLeftSidebarWidth = () => {
@@ -381,19 +379,16 @@ const Topbar = ({
             </li>
             <li className="dropdown">
               <ProfileDropdown
-                profilePic={profilePic}
-                menuItems={ProfileMenus}
+
                 username={"Geneva"}
                 userTitle={"Founder"}
+                profilePic={profilePic}
+                menuItems={ProfileMenus}
+
               />
             </li>
             <li>
-              <button
-                className="nav-link dropdown-toggle right-bar-toggle waves-effect waves-light btn btn-link shadow-none"
-                onClick={handleRightSideBar}
-              >
-                <i className="fe-settings noti-icon font-22"></i>
-              </button>
+
             </li>
           </ul>
         </div>
