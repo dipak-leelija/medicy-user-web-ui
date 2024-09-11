@@ -90,6 +90,59 @@ select.form-control-sm {
     }
 }
 
+//....My account section from css......//
+
+.main-container{
+    display: flex;
+    gap: 5%;
+}
+.sec1{
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 50%;
+    height: 70%;
+}
+.sec2{
+    width: 100%;
+}
+ .accountlogo{
+    width: 200px;
+    border-radius: 50%;
+    
+   
+
+    img{
+        width: 100%;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        position: relative;
+       
+       
+       
+    }
+    
+ }
+.profile-items{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-data{
+    text-align: center;
+ }
+.camicon{
+    position: absolute;
+      top: 40%;
+  
+    transform: translate(-50% ,50%);
+    border-radius: 50%;
+}
+
+
+
+
 // ............custom form css..................//
 
 // input tag custom border 

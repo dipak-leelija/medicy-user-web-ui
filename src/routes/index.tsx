@@ -30,6 +30,10 @@ const SignInSignUp2 = React.lazy(() => import("../pages/auth2/SignInSignUp2"));
 // landing
 const Landing = React.lazy(() => import("../pages/landing/"));
 
+//profile
+const MyAccount= React.lazy(() => import("../pages/profile/Myaccount"));
+
+
 // dashboard
 const Dashboard1 = React.lazy(() => import("../pages/dashboard/Dashboard1/"));
 const Dashboard2 = React.lazy(() => import("../pages/dashboard/Dashboard2/"));
@@ -273,6 +277,17 @@ const dashboardRoutes: RoutesProps = {
     },
   ],
 };
+
+
+
+
+      const profileRoutes: RoutesProps = {
+        path: "/Myaccount",
+        name: "Myaccount",
+        route: PrivateRoute,
+        element: <MyAccount/>,
+        // header: "Apps",
+      };
 
 // Pharmacy Routes
 const pharmacyRoutes: RoutesProps = {
@@ -1271,6 +1286,7 @@ const flattenRoutes = (routes: RoutesProps[]) => {
 // All routes
 const authProtectedRoutes = [
   dashboardRoutes,
+  profileRoutes,
   pharmacyRoutes,
   ...appRoutes,
   extrapagesRoutes,
