@@ -5,9 +5,10 @@ import { RootState } from "../../../../redux/store";
 import { fetchPurchaseItemsRequest, fetchPurchaseDistributorRequest } from "../../../../redux/DataFetch/actions";
 import { useParams } from "react-router-dom";
 import Table from "../../../../components/Table";
-import { Card, Col, Row } from "react-bootstrap";
+import { Card, Col,  Row } from "react-bootstrap";
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Form from 'react-bootstrap/Form';
 import SalesOffcanvas from "../../SalesOffcanvas";
-import { totalmem } from "os";
 
 export default function ViewPurchase() {
   const dispatch = useDispatch();
@@ -15,25 +16,28 @@ export default function ViewPurchase() {
   // Remove the colon (:) from the id
   const cleanedId = id?.replace(':', '');
 
+  //get the current distributor data 
+  const distributorData = useSelector((state: RootState) => state.purchaseDistributer.data);
 
+  // get the purchase data from redux 
   const purchaseData = useSelector((state: RootState) => state.purchase.data);
-  const purchaseLoading = useSelector((state: RootState) => state.purchase.loading);
-  const purchaseError = useSelector((state: RootState) => state.purchase.error);
-
-
-  console.log('purchase data-', purchaseData);
+  // const purchaseLoading = useSelector((state: RootState) => state.purchase.loading);
+  // const purchaseError = useSelector((state: RootState) => state.purchase.error);
 
   useEffect(() => {
     dispatch(fetchPurchaseItemsRequest());
     dispatch(fetchPurchaseDistributorRequest());
   }, [dispatch]);
 
-  if (purchaseLoading) return <p>Loading...</p>;
-  if (purchaseError) return <p>{purchaseError}</p>;
+  //+++ find the matching distributor data+++//
+  const filterDistributor = distributorData.find((distributor: { bill_id: string | number; }) => distributor.bill_id === Number(cleanedId));
 
+  // console.log(filterDistributor.bill_id);
+  //+++find the matching purchase data+++//
   const filteredPurchaseData = purchaseData.filter(
     (item: { bill_id: string | number }) => item.bill_id === Number(cleanedId));
 
+  //+++pass total data of each input+++//
   const totalitem = filteredPurchaseData.length;
   const totalamount = filteredPurchaseData.reduce((acc: any, item: { amount: number; }) => acc + (item.amount),
     0);
@@ -132,7 +136,30 @@ export default function ViewPurchase() {
       <Row className="mt-4">
         <Col>
           <Card>
-            <Card.Body>
+            <Card.Body className="pt-1">
+              <Row className="pb-1">
+                <Col>
+                  <FloatingLabel className='invlabel border-0' controlId="floatingDistBillNo" label="Distributor Bill No.">
+                    <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 bg-transparent' name='billId' value={filterDistributor?.bill_id || ''} readOnly/>
+                  </FloatingLabel>
+                </Col>
+                <Col>
+                  <FloatingLabel className='invlabel' controlId="floatingDistBillNo" label="Bill Date">
+                    <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 bg-transparent' name='billId' value={filterDistributor?.created_on || ''} readOnly/>
+                  </FloatingLabel>
+                </Col>
+                <Col>
+                  <FloatingLabel className='invlabel' controlId="floatingDistBillNo" label="Distributor Bill No.">
+                    <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 bg-transparent' name='billId' value={filterDistributor?.payment_mode || ''} readOnly/>
+                  </FloatingLabel>
+                </Col>
+                <Col>
+                <i className="fas fa-user ms-n2" style={{ position: 'absolute', marginTop: '8px',marginRight:'160px' }}></i>
+                  <FloatingLabel className='invlabel border-0' controlId="floatingDistBillNo" label="Distributor">
+                    <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 bg-transparent' name='billId' value={filterDistributor?.name || ''} readOnly/>
+                  </FloatingLabel>
+                </Col>
+              </Row>
               <Table
                 columns={columns}
                 data={filteredPurchaseData}
@@ -144,7 +171,7 @@ export default function ViewPurchase() {
                 // isSearchable={true}
                 theadClass="table-light"
                 // searchBoxClass="mt-2 mb-3"
-                isViewPage={true} // Pass this prop to modify the select dropdown
+                isPurchaseViewTable={true} // Pass this prop to modify the select dropdown
               />
             </Card.Body>
           </Card>

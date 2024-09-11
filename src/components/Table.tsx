@@ -18,10 +18,8 @@ import Craditicon from '../assets/icon/cradit.svg'
 import UpiIcon from '../assets/icon/bhimUpi.png'
 // components
 import Pagination from "./Pagination";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-// const currentPath = window.location.pathname;
-// console.log('current path is-',currentPath);
 
 interface GlobalFilterProps {
   preGlobalFilteredRows: any;
@@ -31,7 +29,7 @@ interface GlobalFilterProps {
   isSalePage?: boolean; // Add this prop
   isPurchasePage?: boolean;
   isPurchaseReturnPage?: boolean;
-  isViewPage?: boolean;
+  // isViewPage?: boolean;
 }
 
 // Define a default UI for filtering
@@ -43,16 +41,20 @@ const GlobalFilter = ({
   isSalePage, // Add this prop
   isPurchasePage,
   isPurchaseReturnPage,
-  isViewPage,
+  // isViewPage,
 }: GlobalFilterProps) => {
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = useState<any>(globalFilter);
   const [paymentMode, setPaymentMode] = useState<any>(globalFilter);
+  const [durationMode, setDurationMode] = useState<any>(globalFilter);
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
   }, 200);
 
-  // Custom Option component to render icons
+  console.log('globalFilter-',globalFilter);
+  
+
+  // Custom Option component to render payment icons
   const CustomOption = (props: any) => {
     return (
       <components.Option {...props}>
@@ -106,6 +108,70 @@ const GlobalFilter = ({
     }
   ]
 
+  ///++++++++++++++++ show the table data based on duration wise++++++++++++++ ///
+  const handleDurationChange = (selectedOption: any) => {
+    const today = new Date();
+    let filterValue;
+  
+    switch (selectedOption.value) {
+      case "today":
+        filterValue = today.toISOString().slice(0, 10); // Today's date in YYYY-MM-DD format
+        break;
+      case "yesterday":
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        filterValue = yesterday.toISOString().slice(0, 10);
+        break;
+      case "last7Days":
+        const last7Days = new Date(today);
+        last7Days.setDate(today.getDate() - 7);
+        filterValue = {
+          start: last7Days.toISOString().slice(0, 10),
+          end: today.toISOString().slice(0, 10),
+        };
+        break;
+      case "last30Days":
+        const last30Days = new Date(today);
+        last30Days.setDate(today.getDate() - 30);
+        filterValue = {
+          start: last30Days.toISOString().slice(0, 10),
+          end: today.toISOString().slice(0, 10),
+        };
+        break;
+      case "last90Days":
+        const last90Days = new Date(today);
+        last90Days.setDate(today.getDate() - 90);
+        filterValue = {
+          start: last90Days.toISOString().slice(0, 10),
+          end: today.toISOString().slice(0, 10),
+        };
+        break;
+      case "cuuresntFiscalYear": // Assuming fiscal year starts from April 1st
+        const currentYear = today.getFullYear();
+        const fiscalYearStart = new Date(currentYear, 3, 1);
+        filterValue = {
+          start: fiscalYearStart.toISOString().slice(0, 10),
+          end: today.toISOString().slice(0, 10),
+        };
+        break;
+      case "previousFiscalYear":
+        const previousFiscalYearStart = new Date(today.getFullYear() - 1, 3, 1);
+        const previousFiscalYearEnd = new Date(today.getFullYear(), 2, 31);
+        filterValue = {
+          start: previousFiscalYearStart.toISOString().slice(0, 10),
+          end: previousFiscalYearEnd.toISOString().slice(0, 10),
+        };
+        break;
+      case "customRange":
+        // Handle custom range selection logic here
+        break;
+      default:
+        filterValue = undefined;
+    }
+    setDurationMode(filterValue);
+    setGlobalFilter(filterValue); // Update the global filter with the calculated value
+  };///++++++++++++++++ end show table data based on duration wise++++++++++++++ ///
+  
   return (
     <div className={classNames('d-flex justify-content-between', searchBoxClass)}>
       <span className="d-flex align-items-center">
@@ -161,10 +227,7 @@ const GlobalFilter = ({
               className="react-select my-1 react-select-container"
               classNamePrefix="react-select"
               options={Duration}
-              // onChange={(selectedOption: any) => {
-              //   setPaymentMode(selectedOption.value);
-              //   onChange(selectedOption.value);
-              // }}
+              onChange={handleDurationChange}
               placeholder="Return Date Duration"
               id="return-duration"
             />
@@ -278,7 +341,8 @@ interface TableProps {
   isSalePage?: boolean; // Add this prop
   isPurchasePage?: boolean;
   isPurchaseReturnPage?: boolean;
-  isViewPage?: boolean;
+  isPurchaseViewTable?: boolean;
+  isPurchaseReturnViewTable?: boolean;
 }
 
 const Table = (props: TableProps) => {
@@ -291,9 +355,11 @@ const Table = (props: TableProps) => {
   const isSalePage = props["isSalePage"] || false;
   const isPurchasePage = props["isPurchasePage"] || false;
   const isPurchaseReturnPage = props["isPurchaseReturnPage"] || false;
-  const isViewPage = props["isViewPage"] || false;
+  const isPurchaseViewTable = props["isPurchaseViewTable"] || false;
+  const isPurchaseReturnViewTable = props["isPurchaseReturnViewTable"] || false;
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   let otherProps: any = {};
 
@@ -390,14 +456,23 @@ const Table = (props: TableProps) => {
 
   let rows = pagination ? dataTable.page : dataTable.rows;
 
+  //++++++++++ view table row data +++++++++++++//
   const ViewData = (row: any) => {
     const billId = row.original.bill_id;
+
+    let basePath='';
+    
+     if(location.pathname.includes("purchase-return")){
+      basePath= 'purchase-return'
+    }else if(location.pathname.includes("purchase")){
+      basePath= 'purchase'
+     }
   if (billId) {
-    navigate(`/View/:${billId}`);
+    navigate(`/${basePath}/View/:${billId}`);
   } else {
     console.error("billId is undefined for the row:", row);
   }
-  };
+  }; //++++++++++ end view table row data +++++++++++++//
 
   return (
     <>
@@ -447,7 +522,7 @@ const Table = (props: TableProps) => {
               // console.log(row);
               
               return (
-                <tr {...row.getRowProps()} className="CustomTableRow"   onClick={isViewPage ? undefined : () => ViewData(row)}>
+                <tr {...row.getRowProps()} className={isPurchaseViewTable || isPurchaseReturnViewTable ? " customViewTableRow" : 'CustomTableRow'}>
                   {(row.cells || []).map((cell: any) => {
                     return (
                       <td
@@ -456,6 +531,7 @@ const Table = (props: TableProps) => {
                             className: cell.column.className,
                           },
                         ])}
+                        onClick={isPurchaseViewTable || isPurchaseReturnViewTable || cell.column.Header === "Action" ? undefined : () => ViewData(row)}
                       >
                         {cell.render("Cell")}
                       </td>

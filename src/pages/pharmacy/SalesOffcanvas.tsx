@@ -37,11 +37,12 @@ interface SalesOffcanvasProps {
     toalPurchaseAddDetails?: PurchaseDetails;
     totalPurchaseReturnAdd?: PurchaseReturnDetails;
     isPurchaseView?: boolean;
+    isPurchaseViewReturn?: boolean;
     totalViewPurchase?: ViewDetails;
 }
 
 
-export default function SalesOffcanvas({ isNewSale, isPurchase, isPurchaseView, isPurchaseReturn, toalPurchaseAddDetails, totalPurchaseReturnAdd, totalViewPurchase }: SalesOffcanvasProps) {
+export default function SalesOffcanvas({ isNewSale, isPurchase, isPurchaseView,isPurchaseViewReturn, isPurchaseReturn, toalPurchaseAddDetails, totalPurchaseReturnAdd, totalViewPurchase }: SalesOffcanvasProps) {
 
     const [show, setShow] = useState(false);
     const [cashValu, setCashValue] = useState('');
@@ -62,7 +63,7 @@ export default function SalesOffcanvas({ isNewSale, isPurchase, isPurchaseView, 
 
     return (
         <>
-            <div className={`position-fixed ${isPurchase || isPurchaseReturn ||isPurchaseView ? 'purchaseOffCanBG' : 'bg-primary'} bottom-0 rounded-0 fs-5 offcanvasbar `}>
+            <div className={`position-fixed ${isPurchase || isPurchaseReturn ||isPurchaseView || isPurchaseViewReturn ? 'purchaseOffCanBG' : 'bg-primary'} bottom-0 rounded-0 fs-5 offcanvasbar `}>
                 {/* ${(isPurchaseReturnPage) ? 'bg-danger' : 'bg-primary'} */}
                 <div className='d-flex justify-content-between'>
                     <div></div>
@@ -85,7 +86,7 @@ export default function SalesOffcanvas({ isNewSale, isPurchase, isPurchaseView, 
                             </div>
                         )}
 
-                        {isPurchase || isPurchaseReturn || isPurchaseView && (
+                        {isPurchase || isPurchaseReturn || isPurchaseView || isPurchaseViewReturn&& (
                             <div style={{ height: '30px', marginTop: '9px' }} onClick={handleShow}>{TotalGst} <span className='offCanText'>GST</span></div>
                         )}
 
@@ -96,8 +97,8 @@ export default function SalesOffcanvas({ isNewSale, isPurchase, isPurchaseView, 
                                 </div>
                             </div>
                         )}
-                        {isPurchaseReturn && (
-                            <div className={`${isPurchaseReturn ? 'text-white' : 'bg-primary'} px-2`} style={{ maxWidth: '160px' }}>
+                        {isPurchaseReturn || isPurchaseViewReturn && (
+                            <div className={`${isPurchaseReturn || isPurchaseViewReturn ? 'text-white' : 'bg-primary'} px-2`} style={{ maxWidth: '160px' }}>
                                 <div className='d-flex justify-content-between align-items-center '>
                                     0.0<span className='offCanText'>% RoundOff </span>
                                 </div>
@@ -116,7 +117,7 @@ export default function SalesOffcanvas({ isNewSale, isPurchase, isPurchaseView, 
                 <Offcanvas.Header className='bg-primary d-flex justify-content-between py-1'>
                     <Offcanvas.Title className='fs-3 text-white'>Invoice Breakdown</Offcanvas.Title>
                     <div className="d-flex justify-content-end align-items-center">
-                        {!isPurchaseView && 
+                        {!isPurchaseView || !isPurchaseViewReturn && 
                         <Button className='btn-sm btn-info fs-5'>Submit</Button>
                         }
                         <Button onClick={handleClose} className="me-1 shadow-none">

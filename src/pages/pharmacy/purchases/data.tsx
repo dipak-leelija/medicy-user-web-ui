@@ -2639,7 +2639,7 @@ const stock: StockItemTypes[] = [
   {
     bill_id: 100003,
     name: 'Sourav',
-    created_on: '07/18/2019',
+    created_on: '09/11/2024',
     amount: 7000,
     payment_mode: 'UPI'
   },
@@ -2751,7 +2751,7 @@ const purchaseItem: PurchaseItem[] =
       "profit_margin": 30.00,
       "taxable": 170.00,
       "amount": '',
-      "created_on":'2024-08-29',
+      "created_on":'2024-09-11',
       "updated_by": "admin",
       "updated_on": "2024-08-19 12:30:00"
     },
