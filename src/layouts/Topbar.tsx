@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 // actions
 import { changeSidebarType } from "../redux/actions";
-
+// test line
 // store
 import { RootState, AppDispatch } from "../redux/store";
 
@@ -90,7 +90,7 @@ const ProfileMenus = [
   {
     label: "My Account",
     icon: "fe-user",
-    redirectTo: "#",
+    redirectTo: "/Myaccount",
   },
   {
     label: "Settings",
@@ -377,9 +377,9 @@ const Topbar = ({
             <li className="dropdown notification-list">
               <NotificationDropdown notifications={Notifications} />
             </li>
-            <li className="dropdown">
+            <li className="dropdown profiledata">
               <ProfileDropdown
-
+              
                 username={"Geneva"}
                 userTitle={"Founder"}
                 profilePic={profilePic}

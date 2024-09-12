@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Navigate, RouteProps } from "react-router-dom";
-
 import { APICore } from "../helpers/api/apiCore";
 
 /**
@@ -14,7 +13,7 @@ const PrivateRoute = ({ component: Component, roles, ...rest }: any) => {
   return (
     <Route
       {...rest}
-      render={(props: RouteProps) => {
+      render={(props: RouteProps ) => {
         if (api.isUserAuthenticated() === false) {
           // not logged in so redirect to login page with the return url
           return (
@@ -37,6 +36,7 @@ const PrivateRoute = ({ component: Component, roles, ...rest }: any) => {
         }
         // authorised so return component
         return <Component {...props} />;
+       
       }}
     />
   );
