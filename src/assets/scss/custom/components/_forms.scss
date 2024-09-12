@@ -320,10 +320,15 @@ input[type=number] {
     overflow: hidden;
 }
 
-.CustomTableRow{
+.CustomTableRow,
+.customViewTableRow{
     position: relative;
 }
 .CustomTableRow:hover{
    background-color: #f3f7f9;
    cursor: pointer;
+}
+
+.customViewTableRow:hover{
+    background-color: #f3f7f9;
 }

@@ -16,28 +16,26 @@ export default function ViewPurchase() {
   // Remove the colon (:) from the id
   const cleanedId = id?.replace(':', '');
 
-  //get the current distributor data 
+//get the current distributor data 
   const distributorData = useSelector((state: RootState) => state.purchaseDistributer.data);
-
-  // get the purchase data from redux 
+  //get purchase item data 
   const purchaseData = useSelector((state: RootState) => state.purchase.data);
-  // const purchaseLoading = useSelector((state: RootState) => state.purchase.loading);
-  // const purchaseError = useSelector((state: RootState) => state.purchase.error);
+
+
+  console.log('purchase data-', purchaseData);
 
   useEffect(() => {
     dispatch(fetchPurchaseItemsRequest());
     dispatch(fetchPurchaseDistributorRequest());
   }, [dispatch]);
 
-  //+++ find the matching distributor data+++//
-  const filterDistributor = distributorData.find((distributor: { bill_id: string | number; }) => distributor.bill_id === Number(cleanedId));
+//   find current distributor data 
+  const filterDistributor = distributorData.find((item: {bill_id: string | number}) => item.bill_id === Number(cleanedId));
 
-  // console.log(filterDistributor.bill_id);
-  //+++find the matching purchase data+++//
+//   match purchasedata_billId with cleanedId 
   const filteredPurchaseData = purchaseData.filter(
     (item: { bill_id: string | number }) => item.bill_id === Number(cleanedId));
 
-  //+++pass total data of each input+++//
   const totalitem = filteredPurchaseData.length;
   const totalamount = filteredPurchaseData.reduce((acc: any, item: { amount: number; }) => acc + (item.amount),
     0);
@@ -137,9 +135,9 @@ export default function ViewPurchase() {
         <Col>
           <Card>
             <Card.Body className="pt-1">
-              <Row className="pb-1">
+            <Row className="pb-1">
                 <Col>
-                  <FloatingLabel className='invlabel border-0' controlId="floatingDistBillNo" label="Distributor Bill No.">
+                  <FloatingLabel className='invlabel' controlId="floatingDistBillNo" label="Distributor Bill No.">
                     <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 fw-bold bg-transparent' name='billId' value={filterDistributor?.bill_id || ''} readOnly/>
                   </FloatingLabel>
                 </Col>
@@ -149,6 +147,7 @@ export default function ViewPurchase() {
                   </FloatingLabel>
                 </Col>
                 <Col>
+                {/* <i className="fas fa-user ms-n2" style={{ position: 'absolute', marginTop: '8px'}}></i> */}
                   <FloatingLabel className='invlabel' controlId="floatingDistBillNo" label="Distributor Bill No.">
                     <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 fw-bold bg-transparent' name='billId' value={filterDistributor?.payment_mode || ''} readOnly/>
                   </FloatingLabel>
@@ -163,7 +162,7 @@ export default function ViewPurchase() {
               <Table
                 columns={columns}
                 data={filteredPurchaseData}
-                pageSize={10}
+                // pageSize={10}
                 sizePerPageList={sizePerPageList}
                 isSortable={true}
                 pagination={true}
@@ -171,13 +170,13 @@ export default function ViewPurchase() {
                 // isSearchable={true}
                 theadClass="table-light"
                 // searchBoxClass="mt-2 mb-3"
-                isPurchaseViewTable={true} // Pass this prop to modify the select dropdown
+                isPurchaseReturnViewTable={true} // Pass this prop to modify the select dropdown
               />
             </Card.Body>
           </Card>
         </Col>
       </Row>
-      <SalesOffcanvas isPurchaseView={true} totalViewPurchase={totalViewPurchase} />
+      <SalesOffcanvas isPurchaseViewReturn={true} totalViewPurchase={totalViewPurchase} />
     </>
   );
 }

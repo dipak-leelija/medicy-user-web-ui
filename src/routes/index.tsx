@@ -54,6 +54,7 @@ const NewPurchase = React.lazy(() => import("../pages/pharmacy/purchases/purchas
 const PurchaseReturn = React.lazy(() => import("../pages/pharmacy/purchases/purchase-return/PurchaseReturn"));
 const NewPurchaseReturn = React.lazy(() => import("../pages/pharmacy/purchases/purchase-return/NewPurchaseReturn"));
 const ViewPurchase = React.lazy(() => import("../pages/pharmacy/purchases/purchase/ViewPurchase"));
+const ViewPurchaseReturn = React.lazy(() => import("../pages/pharmacy/purchases/purchase-return/viewPurchaseReturn"));
 
 const CurrentStock = React.lazy(() => import("../pages/pharmacy/stocks/current-stock"));
 const StockExpiring = React.lazy(() => import("../pages/pharmacy/stocks/stock-expiring"));
@@ -386,9 +387,15 @@ const pharmacyRoutes: RoutesProps = {
       route: PrivateRoute,
     },
     {
-      path: "/View/:id",
+      path: "/purchase/View/:id",
       name: "Purchase View",
       element: < ViewPurchase />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/purchase-return/View/:id",
+      name: "Purchase Return View",
+      element: < ViewPurchaseReturn />,
       route: PrivateRoute,
     },
     {
