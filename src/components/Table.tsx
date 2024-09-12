@@ -46,12 +46,12 @@ const GlobalFilter = ({
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = useState<any>(globalFilter);
   const [paymentMode, setPaymentMode] = useState<any>(globalFilter);
-  const [durationMode, setDurationMode] = useState<any>(globalFilter);
+  // const [durationMode, setDurationMode] = useState<any>(globalFilter);
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
   }, 200);
 
-  console.log('globalFilter-',globalFilter);
+  console.log('globalFilter-',value);
   
 
   // Custom Option component to render payment icons
@@ -109,68 +109,79 @@ const GlobalFilter = ({
   ]
 
   ///++++++++++++++++ show the table data based on duration wise++++++++++++++ ///
-  const handleDurationChange = (selectedOption: any) => {
-    const today = new Date();
-    let filterValue;
+  // const handleDurationChange = (selectedOption: any, data: any[]) => {
+  //   // console.log("Data Rows: ", data);
+  //   const today = new Date();
+  //   let filterValue;
   
-    switch (selectedOption.value) {
-      case "today":
-        filterValue = today.toISOString().slice(0, 10); // Today's date in YYYY-MM-DD format
-        break;
-      case "yesterday":
-        const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
-        filterValue = yesterday.toISOString().slice(0, 10);
-        break;
-      case "last7Days":
-        const last7Days = new Date(today);
-        last7Days.setDate(today.getDate() - 7);
-        filterValue = {
-          start: last7Days.toISOString().slice(0, 10),
-          end: today.toISOString().slice(0, 10),
-        };
-        break;
-      case "last30Days":
-        const last30Days = new Date(today);
-        last30Days.setDate(today.getDate() - 30);
-        filterValue = {
-          start: last30Days.toISOString().slice(0, 10),
-          end: today.toISOString().slice(0, 10),
-        };
-        break;
-      case "last90Days":
-        const last90Days = new Date(today);
-        last90Days.setDate(today.getDate() - 90);
-        filterValue = {
-          start: last90Days.toISOString().slice(0, 10),
-          end: today.toISOString().slice(0, 10),
-        };
-        break;
-      case "cuuresntFiscalYear": // Assuming fiscal year starts from April 1st
-        const currentYear = today.getFullYear();
-        const fiscalYearStart = new Date(currentYear, 3, 1);
-        filterValue = {
-          start: fiscalYearStart.toISOString().slice(0, 10),
-          end: today.toISOString().slice(0, 10),
-        };
-        break;
-      case "previousFiscalYear":
-        const previousFiscalYearStart = new Date(today.getFullYear() - 1, 3, 1);
-        const previousFiscalYearEnd = new Date(today.getFullYear(), 2, 31);
-        filterValue = {
-          start: previousFiscalYearStart.toISOString().slice(0, 10),
-          end: previousFiscalYearEnd.toISOString().slice(0, 10),
-        };
-        break;
-      case "customRange":
-        // Handle custom range selection logic here
-        break;
-      default:
-        filterValue = undefined;
-    }
-    setDurationMode(filterValue);
-    setGlobalFilter(filterValue); // Update the global filter with the calculated value
-  };///++++++++++++++++ end show table data based on duration wise++++++++++++++ ///
+  //   switch (selectedOption.value) {
+  //     case "today":
+  //       filterValue = today.toISOString().slice(0, 10); // Today's date in YYYY-MM-DD format
+  //       // filterValue = (row: any) =>
+  //       //   row.created_on.slice(0, 10) === today.toISOString().slice(0, 10);
+  //       // filterValue = (row: any) => {
+  //       //   console.log("Row: ", row);
+  //       //   if (!row || !row.original) return false;
+  //       //   return row.original.created_on.slice(0, 10) === today.toISOString().slice(0, 10);
+  //     // };
+  //       break;
+  //     case "yesterday":
+  //       const yesterday = new Date(today);
+  //       yesterday.setDate(today.getDate() - 1);
+  //       filterValue = (row: any) => {
+  //         // if (!row || !row.original) return false;
+  //         return row.original.created_on.slice(0, 10) === yesterday.toISOString().slice(0, 10);
+  //     };
+  //       break;
+  //     case "last7Days":
+  //       const last7Days = new Date(today);
+  //       last7Days.setDate(today.getDate() - 7);
+  //       filterValue = {
+  //         start: last7Days.toISOString().slice(0, 10),
+  //         end: today.toISOString().slice(0, 10),
+  //       };
+  //       break;
+  //     case "last30Days":
+  //       const last30Days = new Date(today);
+  //       last30Days.setDate(today.getDate() - 30);
+  //       filterValue = {
+  //         start: last30Days.toISOString().slice(0, 10),
+  //         end: today.toISOString().slice(0, 10),
+  //       };
+  //       break;
+  //     case "last90Days":
+  //       const last90Days = new Date(today);
+  //       last90Days.setDate(today.getDate() - 90);
+  //       filterValue = {
+  //         start: last90Days.toISOString().slice(0, 10),
+  //         end: today.toISOString().slice(0, 10),
+  //       };
+  //       break;
+  //     case "cuuresntFiscalYear": // Assuming fiscal year starts from April 1st
+  //       const currentYear = today.getFullYear();
+  //       const fiscalYearStart = new Date(currentYear, 3, 1);
+  //       filterValue = {
+  //         start: fiscalYearStart.toISOString().slice(0, 10),
+  //         end: today.toISOString().slice(0, 10),
+  //       };
+  //       break;
+  //     case "previousFiscalYear":
+  //       const previousFiscalYearStart = new Date(today.getFullYear() - 1, 3, 1);
+  //       const previousFiscalYearEnd = new Date(today.getFullYear(), 2, 31);
+  //       filterValue = {
+  //         start: previousFiscalYearStart.toISOString().slice(0, 10),
+  //         end: previousFiscalYearEnd.toISOString().slice(0, 10),
+  //       };
+  //       break;
+  //     case "customRange":
+  //       // Handle custom range selection logic here
+  //       break;
+  //     default:
+  //       filterValue = undefined;
+  //   }
+  //   // setDurationMode(filterValue);
+  //   setGlobalFilter(filterValue); // Update the global filter with the calculated value
+  // };///++++++++++++++++ end show table data based on duration wise++++++++++++++ ///
   
   return (
     <div className={classNames('d-flex justify-content-between', searchBoxClass)}>
@@ -227,7 +238,8 @@ const GlobalFilter = ({
               className="react-select my-1 react-select-container"
               classNamePrefix="react-select"
               options={Duration}
-              onChange={handleDurationChange}
+              // onChange={(selectedOption: any) => handleDurationChange(selectedOption, dataTable.rows)}
+              // onChange={handleDurationChange}
               placeholder="Return Date Duration"
               id="return-duration"
             />
@@ -361,6 +373,7 @@ const Table = (props: TableProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+
   let otherProps: any = {};
 
   if (isSearchable) {
@@ -456,6 +469,8 @@ const Table = (props: TableProps) => {
 
   let rows = pagination ? dataTable.page : dataTable.rows;
 
+  console.log('row data -',rows);
+  
   //++++++++++ view table row data +++++++++++++//
   const ViewData = (row: any) => {
     const billId = row.original.bill_id;
@@ -519,11 +534,12 @@ const Table = (props: TableProps) => {
           <tbody {...dataTable.getTableBodyProps()}>
             {(rows || []).map((row: any, i: number) => {
               dataTable.prepareRow(row);
-              // console.log(row);
+              console.log(row.original.created_on);
               
               return (
                 <tr {...row.getRowProps()} className={isPurchaseViewTable || isPurchaseReturnViewTable ? " customViewTableRow" : 'CustomTableRow'}>
                   {(row.cells || []).map((cell: any) => {
+                    
                     return (
                       <td
                         {...cell.getCellProps([

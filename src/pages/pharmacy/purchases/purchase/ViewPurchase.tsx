@@ -140,23 +140,23 @@ export default function ViewPurchase() {
               <Row className="pb-1">
                 <Col>
                   <FloatingLabel className='invlabel border-0' controlId="floatingDistBillNo" label="Distributor Bill No.">
-                    <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 bg-transparent' name='billId' value={filterDistributor?.bill_id || ''} readOnly/>
+                    <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 fw-bold bg-transparent' name='billId' value={filterDistributor?.bill_id || ''} readOnly/>
                   </FloatingLabel>
                 </Col>
                 <Col>
                   <FloatingLabel className='invlabel' controlId="floatingDistBillNo" label="Bill Date">
-                    <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 bg-transparent' name='billId' value={filterDistributor?.created_on || ''} readOnly/>
+                    <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 fw-bold bg-transparent' name='billId' value={filterDistributor?.created_on || ''} readOnly/>
                   </FloatingLabel>
                 </Col>
                 <Col>
                   <FloatingLabel className='invlabel' controlId="floatingDistBillNo" label="Distributor Bill No.">
-                    <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 bg-transparent' name='billId' value={filterDistributor?.payment_mode || ''} readOnly/>
+                    <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 fw-bold bg-transparent' name='billId' value={filterDistributor?.payment_mode || ''} readOnly/>
                   </FloatingLabel>
                 </Col>
                 <Col>
                 <i className="fas fa-user ms-n2" style={{ position: 'absolute', marginTop: '8px',marginRight:'160px' }}></i>
                   <FloatingLabel className='invlabel border-0' controlId="floatingDistBillNo" label="Distributor">
-                    <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 bg-transparent' name='billId' value={filterDistributor?.name || ''} readOnly/>
+                    <Form.Control type="text" placeholder="" className='border-0 px-0 ps-1 fs-5 fw-bold bg-transparent' name='billId' value={filterDistributor?.name || ''} readOnly/>
                   </FloatingLabel>
                 </Col>
               </Row>
