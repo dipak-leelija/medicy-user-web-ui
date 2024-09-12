@@ -53,6 +53,8 @@ import {
         return {...state, loading: false, data: action.payload};
       case FETCH_SALES_ITEM_FAILURE:
         return {...state, loading: false, error: action.payload};
+      default:
+        return state;
   }
 }
 

@@ -7,11 +7,10 @@ import classNames from "classnames";
 import Table from "../../../../components/Table";
 
 // dummy data
-import { sellers } from "../data";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store";
-import { fetchSalesRequest, fetchPurchaseItemsRequest, fetchPurchaseDistributorRequest } from "../../../../redux/DataFetch/actions";
+import { fetchSalesRequest } from "../../../../redux/DataFetch/actions";
 
 
 /* name column render */
@@ -100,7 +99,20 @@ const columns = [
   },
 ];
 
-// get pagelist to display
+
+
+// main component
+const Sellers = () => {
+  const dispatch = useDispatch();
+
+  const sallers = useSelector((state: RootState) => state.sales.data)
+  // console.log('sellers data-',sallers);
+  useEffect(()=>{
+    dispatch(fetchSalesRequest());
+  },[dispatch])
+
+  
+  // get pagelist to display
 const sizePerPageList = [
   {
     text: "10",
@@ -112,21 +124,9 @@ const sizePerPageList = [
   },
   {
     text: "All",
-    value: sellers.length,
+    value: sallers.length,
   },
 ];
-
-// main component
-const Sellers = () => {
-  const dispatch = useDispatch();
-
-  const sallers = useSelector((state: RootState) => state.sales.data)
-  console.log('sellers data-',sallers);
-  useEffect(()=>{
-    dispatch(fetchSalesRequest());
-  },[dispatch])
-
-  
   return (
     <>
       {/* <PageTitle
@@ -173,7 +173,7 @@ const Sellers = () => {
               
               <Table
                 columns={columns}
-                data={sellers}
+                data={sallers}
                 pageSize={10}
                 sizePerPageList={sizePerPageList}
                 isSortable={true}
