@@ -91,9 +91,18 @@ select.form-control-sm {
 }
 
 //....My account section from css......//
+.profilelable{
+    color: #4e73df;
+}
+ .nav-link{
+    margin-bottom: -1px;
+    
+}
 
 .main-container{
     display: flex;
+    align-items: center;
+    
     gap: 5%;
 }
 .sec1{
@@ -101,14 +110,22 @@ select.form-control-sm {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: 50%;
     height: 70%;
+    border-radius: 10px;
+    position: sticky;
+    top: 20;
 }
-.sec2{
+
+.navtbActive{
+    display: block;
     width: 100%;
 }
+
+
  .accountlogo{
+    position: relative;
     width: 200px;
     border-radius: 50%;
-    
+    box-shadow: 0 0 10px 5px rgba(193, 206, 248, 0.753);
    
 
     img{
@@ -116,9 +133,7 @@ select.form-control-sm {
         aspect-ratio: 1/1;
         border-radius: 50%;
         position: relative;
-       
-       
-       
+        filter: brightness(50%)
     }
     
  }
@@ -134,13 +149,19 @@ select.form-control-sm {
  }
 .camicon{
     position: absolute;
-      top: 40%;
+     top: 35%;
+     left: 50%;
   
     transform: translate(-50% ,50%);
-    border-radius: 50%;
+    border-radius: 40%;
+}
+.sec2 ,.sec3{
+    display: none;
 }
 
-
+.form2{
+    height: 71vh;
+}
 
 
 // ............custom form css..................//
