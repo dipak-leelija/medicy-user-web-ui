@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import classNames from "classnames";
 
 // components
-import PageTitle from "../../../../components/PageTitle";
 import Table from "../../../../components/Table";
 
 // dummy data
 import { sellers } from "../data";
+
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../redux/store";
+import { fetchSalesRequest, fetchPurchaseItemsRequest, fetchPurchaseDistributorRequest } from "../../../../redux/DataFetch/actions";
+
 
 /* name column render */
 const NameColumn = ({ row }: { row: any }) => {
@@ -114,6 +118,15 @@ const sizePerPageList = [
 
 // main component
 const Sellers = () => {
+  const dispatch = useDispatch();
+
+  const sallers = useSelector((state: RootState) => state.sales.data)
+  console.log('sellers data-',sallers);
+  useEffect(()=>{
+    dispatch(fetchSalesRequest());
+  },[dispatch])
+
+  
   return (
     <>
       {/* <PageTitle

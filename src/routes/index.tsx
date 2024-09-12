@@ -43,11 +43,12 @@ const Dashboard4 = React.lazy(() => import("../pages/dashboard/Dashboard4/"));
 // pharmacy
 const Product     = React.lazy(() => import("../pages/pharmacy/products/product/Products"));
 const AddProduct  = React.lazy(() => import("../pages/pharmacy/products/addProduct/ProductEdit")); 
-const ProductDetail = React.lazy(() => import("../pages/pharmacy/products/productDetails/ProductDetails")); 
-const Sales = React.lazy(() => import("../pages/pharmacy/sales/sale"));
-const SaleReturn = React.lazy(() => import("../pages/pharmacy/sales/sale-return"));
-const NewSale = React.lazy(() => import("../pages/pharmacy/sales/new-sale"));
-const NewSaleReturn = React.lazy(() => import("../pages/pharmacy/sales/new-sale-return"));
+const ProductDetail = React.lazy(() => import("../pages/pharmacy/products/productDetails/ProductDetails"));
+
+const Sales = React.lazy(() => import("../pages/pharmacy/sales/sale/Sale"));
+const SaleReturn = React.lazy(() => import("../pages/pharmacy/sales/sale-return/SaleReturn"));
+const NewSale = React.lazy(() => import("../pages/pharmacy/sales/sale/NewSale"));
+const NewSaleReturn = React.lazy(() => import("../pages/pharmacy/sales/sale-return/NewSaleReturn"));
 
 const Purchase = React.lazy(() => import("../pages/pharmacy/purchases/purchase/Purchase"));
 const NewPurchase = React.lazy(() => import("../pages/pharmacy/purchases/purchase/NewPurchase"));

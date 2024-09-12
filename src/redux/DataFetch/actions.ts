@@ -1,4 +1,8 @@
+import { error } from "console";
 import {
+    FETCH_SALES_ITEM_REQUEST,
+    FETCH_SALES_ITEM_SUCCESS,
+    FETCH_SALES_ITEM_FAILURE,
     FETCH_PURCHASE_ITEMS_REQUEST,
     FETCH_PURCHASE_ITEMS_SUCCESS,
     FETCH_PURCHASE_ITEMS_FAILURE,
@@ -7,11 +11,29 @@ import {
     FETCH_PURCHASE_DISTRIBUTER_FAILURE,
 } from "../../constants/dataFetch";
 
-import { PurchaseItem, StockItemTypes } from "../../pages/pharmacy/purchases/data";
+// SellersItemTypes
+import { PurchaseItem, StockItemTypes, SellersItemTypes } from "../../pages/pharmacy/purchases/data";
 
+// for sales 
+export const fetchSalesRequest = () => {
+    return {
+        type: FETCH_SALES_ITEM_REQUEST,
+    }
+}
+export const fetchSalesSuccess = (data: SellersItemTypes[]) =>{
+    return {
+        type: FETCH_SALES_ITEM_SUCCESS,
+        payload: data
+        }
+}
+export const fetchSalesFailure = (error: string) => {
+    return {
+        type: FETCH_SALES_ITEM_FAILURE,
+        payload: error
+        }
+}
 
 // for purchase distributor 
-
 export const fetchPurchaseDistributorRequest = () => {
     return {
         type: FETCH_PURCHASE_DISTRIBUTER_REQUEST

@@ -1,4 +1,8 @@
+import { actions } from "react-table";
 import {
+    FETCH_SALES_ITEM_REQUEST,
+    FETCH_SALES_ITEM_SUCCESS,
+    FETCH_SALES_ITEM_FAILURE,
     FETCH_PURCHASE_ITEMS_REQUEST,
     FETCH_PURCHASE_ITEMS_SUCCESS,
     FETCH_PURCHASE_ITEMS_FAILURE,
@@ -7,8 +11,13 @@ import {
     FETCH_PURCHASE_DISTRIBUTER_FAILURE,
   } from "../../constants/dataFetch";
 
-  import { PurchaseItem, StockItemTypes } from "../../pages/pharmacy/purchases/data";
+  import { PurchaseItem, StockItemTypes, SellersItemTypes } from "../../pages/pharmacy/purchases/data";
 
+  interface SaleState {
+    loading: boolean;
+    data: SellersItemTypes[];
+    error: string | null;
+  }
   interface PurchaseState {
     loading: boolean;
     data: PurchaseItem[];
@@ -20,6 +29,11 @@ import {
     error: string | null;
     }
   
+  const initialSaleState: SaleState = {
+    loading: false,
+    data: [],
+    error: null
+  }
   const initialState: PurchaseState = {
     loading: false,
     data: [],
@@ -31,7 +45,17 @@ import {
     error: null,
   }
 
-  
+  export const salesReducer = (state = initialSaleState, action: any) => {
+    switch (action.type) {
+      case FETCH_SALES_ITEM_REQUEST:
+        return {...state, loading: true};
+      case FETCH_SALES_ITEM_SUCCESS:
+        return {...state, loading: false, data: action.payload};
+      case FETCH_SALES_ITEM_FAILURE:
+        return {...state, loading: false, error: action.payload};
+  }
+}
+
   export const purchaseReducer = (state = initialState, action: any) => {
     switch (action.type) {
       case FETCH_PURCHASE_ITEMS_REQUEST:

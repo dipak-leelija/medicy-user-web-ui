@@ -2760,4 +2760,5 @@ const purchaseItem: PurchaseItem[] =
 
 // const invoiceOptions = ['INV001', 'INV002', 'INV003', 'INV004', 'INV005']; 
 
-export { products, orders, customers, sellers, cartItems, stock, purchaseItem };
+// const invoiceOptions = ['INV001', 'INV002', 'INV003', 'INV004', 'INV005']; 
+export { products, orders, customers, sellers, cartItems, stock, purchaseItem, type SellersItemTypes };
