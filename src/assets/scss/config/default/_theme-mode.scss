@@ -116,7 +116,7 @@ html[data-bs-theme="dark"] {
 // Background Light left-sidebar
 html[data-menu-color="light"] {
     --#{$prefix}menu-bg:                             #fff;
-    --#{$prefix}menu-item-color:                       #{$gray-700};
+    --#{$prefix}menu-item-color:                       #{$gray-900};
     --#{$prefix}menu-item-hover-color:                 #{$primary};
     --#{$prefix}menu-item-active-color:                #{$primary};
     --#{$prefix}menu-icon-twotone-fill:                #{rgba($primary, 0.2)};
