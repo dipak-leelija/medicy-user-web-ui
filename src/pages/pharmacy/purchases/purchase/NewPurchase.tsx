@@ -326,12 +326,12 @@ export default function NewPurchase() {
                                     </Col>
                                     <Col>
                                         <FloatingLabel className='invlabel' controlId="floatingBillDate" label="Bill Date">
-                                            <Form.Control type="date" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='BillDate' value={formValues.billDate} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
+                                            <Form.Control type="date" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='billDate' value={formValues.billDate} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
                                         </FloatingLabel>
                                     </Col>
                                     <Col>
                                         <FloatingLabel className='invlabel' controlId="floatingDueDate" label="Due Date">
-                                            <Form.Control type="date" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='dueDate' value={formValues.billDate} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
+                                            <Form.Control type="date" placeholder="" className='borderRemove px-0 ps-1 bg-transparent' name='dueDate' value={formValues.dueDate} onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} required />
                                         </FloatingLabel>
                                     </Col>
                                     <Col>
