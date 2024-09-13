@@ -8,3 +8,61 @@
     padding: 1rem;
     margin-top: 20px;
 }
+.account-logo{
+    position: relative;
+    width: 200px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 5px rgba(193, 206, 248, 0.753);
+   
+
+    img{
+        width: 100%;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        position: relative;
+        filter: brightness(50%)
+    }
+    
+ }
+ .main-container{
+    display: flex;
+    align-items: center;
+    gap: 5%;
+}
+
+.section1{
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 50%;
+    height: 70%;
+    border-radius: 10px;
+    position: sticky;
+    top: 20;
+}
+
+.Password-section-form{
+    height: 71vh;
+}
+
+
+
+.profile-items{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-data{ 
+    text-align: center;
+ }
+.iconBG-border {
+    position: absolute;
+     top: 35%;
+     left: 50%;
+     transform: translate(-50% ,50%);
+     border-radius: 40%;
+}
+.sec-hide , .sec-hide2  {
+    display: none;
+}
