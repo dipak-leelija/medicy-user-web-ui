@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import AddNewDistrbutor from '../../pages/pharmacy/purchases/purchase/AddNewDistrbutor';
+import AddNewCustomer from '../../pages/pharmacy/sales/sale/AddNewCustomer';
 
 
 interface Seller {
@@ -30,15 +31,16 @@ interface SearchDropdownProps {
     stocks?: stocks[];
     onSelect: (id: number) => void;
     onAdd?: () => void; // Optional callback for the "Add" button
+    onAddCustomer?: () => void;
     inputValue: string;
     setInputValue: (value: string) => void;
     searchType: 'id' | 'name';
     label: string;
     className: string;
-    defaultDropDown?:boolean,
+    defaultDropDown?: boolean,
 }
 
-const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems, stocks, onSelect, onAdd, inputValue, setInputValue, searchType, label, className,defaultDropDown }) => {
+const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems, stocks, onSelect, onAdd, onAddCustomer, inputValue, setInputValue, searchType, label, className, defaultDropDown }) => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const [filteredItems, setFilteredItems] = useState<(Seller | PurchaseItem | stocks)[]>([]);
     const [focusIndex, setFocusIndex] = useState<number>(-1);
@@ -125,7 +127,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems,
                     onKeyDown={handleKeyDown}
                 />
             </FloatingLabel>
-            {showDropdown &&  (
+            {showDropdown && (
                 <div className='invoiceDropdown mt-1'>
                     <div className='p-2 py-1 bg-secondary bg-opacity-25 text-dark'>
                         {searchType === 'id' ? 'Invoice Id' : (
@@ -205,8 +207,11 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems,
                         <div className='dropdown-item text-center text-danger'>{searchType === 'id' ? `No ${label} Id found` : `No ${label} found`}</div>
                     )}
 
-                    {filteredItems.length === 0 && stocks && (
-                       <AddNewDistrbutor/>
+                    {filteredItems.length === 0 && (
+                        <>
+                            {stocks && onAdd && <AddNewDistrbutor />}
+                            {stocks && onAddCustomer && <AddNewCustomer />}
+                        </>
                     )}
                 </div>
             )}
