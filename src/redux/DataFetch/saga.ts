@@ -1,23 +1,58 @@
 // datafetch/saga.ts
 import { call, put, takeLatest } from "redux-saga/effects";
 import {
+  fetchDoctorSuccess,
+  fetchDoctorFailure,
+  fetchCustomerSuccess,
+  fetchCustomerFailure,
   fetchSalesSuccess,
   fetchSalesFailure,
-  //   fetchPurchaseItemsRequest,
   fetchPurchaseItemsSuccess,
   fetchPurchaseItemsFailure,
   fetchPurchaseDistributorSuccess,
   fetchPurchaseDistributorFailure,
 } from "./actions";
-import { PurchaseItem, purchaseItem, StockItemTypes, stock, SellersItemTypes, sellers } from "../../pages/pharmacy/purchases/data";
-import { FETCH_PURCHASE_ITEMS_REQUEST, FETCH_PURCHASE_DISTRIBUTER_REQUEST, FETCH_SALES_ITEM_REQUEST } from "../../constants/dataFetch";
+import { PurchaseItem, purchaseItem, StockItemTypes, stock, SellersItemTypes, sellers, CustomersItemTypes, customers, DoctorsData, doctors } from "../../pages/pharmacy/purchases/data";
+import { FETCH_PURCHASE_ITEMS_REQUEST, FETCH_PURCHASE_DISTRIBUTER_REQUEST, FETCH_SALES_ITEM_REQUEST, FETCH_CUSTOMER_REQUEST, FETCH_DOCTOR_REQUEST } from "../../constants/dataFetch";
 
 // Type for the API call
+type doctorApiResponse = DoctorsData[];
+type customerApiResponse = CustomersItemTypes[];
 type saleApiResponse = SellersItemTypes[];
 type purChaseAPIResponse = PurchaseItem[];
 type PurchaseDistributorResponse = StockItemTypes[];
 
-// fetch sales data 
+//API call to fetch doctors
+function* fetchDoctor(): Generator<any, void, doctorApiResponse> {
+  try {
+    const data: doctorApiResponse = yield call(()=>
+      new Promise<doctorApiResponse>((res) => res(doctors))
+    );
+    // console.log('Doctor data fetched:', data);
+    yield put(fetchDoctorSuccess(data));
+}catch(error){
+  yield put(fetchDoctorFailure('Fail to fetch doctors'));
+}
+}
+export function* fetchDoctorDetails(){
+  yield takeLatest(FETCH_DOCTOR_REQUEST, fetchDoctor);
+}
+
+// API call to fetch customers
+function* fetchCustomer(): Generator<any, void, customerApiResponse> {
+  try{
+    const data: customerApiResponse = yield call(() =>
+      new Promise<customerApiResponse>((res) => res(customers))
+    );
+    yield put(fetchCustomerSuccess(data));
+  }catch(error){
+    yield put(fetchCustomerFailure('Fail to fetch customer'));
+  }
+} 
+export function* fetchCustomerDetail(){
+  yield takeLatest(FETCH_CUSTOMER_REQUEST, fetchCustomer);
+}
+// API call fetch sales data 
 function* fetchSales(): Generator<any, void, saleApiResponse> {
   try {
     const data: saleApiResponse = yield call(() =>
@@ -32,7 +67,7 @@ function* fetchSales(): Generator<any, void, saleApiResponse> {
 export function* fetchSalesitem(){
   yield takeLatest(FETCH_SALES_ITEM_REQUEST, fetchSales);
 }
-// fetch purchase data 
+// API call fetch purchase data 
 function* fetchPurchaseItems(): Generator<any, void, purChaseAPIResponse> {
   try {
     // Simulate an API call
@@ -49,7 +84,7 @@ export function* watchPurchaseItems() {
   yield takeLatest(FETCH_PURCHASE_ITEMS_REQUEST, fetchPurchaseItems);
 }
 
-// fetch purchase distributor 
+// API call fetch purchase distributor 
 function* fetchPurchaseDistributor(): Generator<any, void, PurchaseDistributorResponse> {
   try {
     const data: PurchaseDistributorResponse = yield call(() =>

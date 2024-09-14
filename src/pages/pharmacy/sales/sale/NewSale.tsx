@@ -5,9 +5,12 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import SalesOffcanvas from '../../SalesOffcanvas';
 import CusttomInvoiceDropdown from '../../../../components/CustomInvoiceDropdown';
-// import PageTitle from "../../../../components/PageTitle";
 import { Link, useParams } from 'react-router-dom';
-import { sellers } from "../data";
+// import { sellers } from "../data";
+
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../redux/store";
+import { fetchDoctorRequest, fetchSalesRequest, fetchCustomerRequest } from "../../../../redux/DataFetch/actions";
 
 // Utility function to convert MM/DD/YYYY to yyyy-MM-dd
 const formatDate = (dateStr: string): string => {
@@ -17,8 +20,22 @@ const formatDate = (dateStr: string): string => {
 
 export default function NewSale() {
     const [inputValue, setInputValue] = useState<string>('');
+    const [saleCustomer, setSaleCustomer] = useState<string>('');
     const { id } = useParams<{ id: string }>();
     const [saleData, setSaleData] = useState<any | null>(null);
+    const dispatch = useDispatch();
+
+    const doctors = useSelector((state: RootState) => state.doctors.data);
+    const sellers = useSelector((state: RootState) => state.sales.data);
+    const customers = useSelector((state: RootState) => state.customer.data);
+    console.log('customers data-', customers);
+    console.log('doctors data-', doctors);
+
+    useEffect(() => {
+        dispatch(fetchDoctorRequest());
+        dispatch(fetchSalesRequest());
+        dispatch(fetchCustomerRequest());
+    }, [dispatch])
 
     const [formValues, setFormValues] = useState({
         billDate: '',
@@ -41,7 +58,7 @@ export default function NewSale() {
     useEffect(() => {
         if (id) {
             // Find the sale by ID
-            const sale = sellers.find(seller => seller.id === parseInt(id));
+            const sale = sellers.find((seller: { id: number; }) => seller.id === parseInt(id));
             if (sale) {
                 setSaleData(sale);
                 setFormValues({
@@ -68,8 +85,15 @@ export default function NewSale() {
         }));
     };
 
+    const handleSelectSele = (selectedSale: number) => {
+        const selectedSales = customers.find((item: { id: any; }) => item.id === selectedSale);
+        if (selectedSales) {
+            setSaleCustomer(selectedSales ? selectedSales.name.toString() : '');
+        }
+    }
+
     const handleSelect = (selectedSellerId: number) => {
-        const selectedSeller = sellers.find(seller => seller.id === selectedSellerId);
+        const selectedSeller = customers.find((seller: { id: number; }) => seller.id === selectedSellerId);
         if (selectedSeller) {
             setInputValue(selectedSeller ? selectedSeller.name.toString() : '');
             setSellerDetails({
@@ -115,26 +139,33 @@ export default function NewSale() {
                                                     value={formValues.doctor}
                                                     onChange={handleChange as React.ChangeEventHandler<HTMLSelectElement>}
                                                 >
-                                                    <option>Select Doctor</option>
-                                                    <option value="1">Jaynata Barman</option>
+                                                     <option>Select Doctor</option>
+                                                    {doctors.map((doctor:any, index: any) => (
+                                                        <option value={doctor.doctor_id} key={doctor.doctor_id} >{doctor.doctor_name}</option>
+                                                    ))}
                                                 </Form.Select>
                                             </FloatingLabel>
                                         </Col>
                                         <Col md>
-                                            <FloatingLabel controlId="floatingCustomer" label="Customer" className="mb-3">
-                                                <Form.Control type="text" placeholder="" className='borderRemove'
-                                                    value={formValues.customer}
-                                                    name="customer"
-                                                    onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>}
-                                                />
-                                            </FloatingLabel>
+                                            <CusttomInvoiceDropdown
+                                                stocks={customers}
+                                                onSelect={handleSelectSele}
+                                                inputValue={formValues.customer || saleCustomer}
+                                                setInputValue={setSaleCustomer}
+                                                searchType="name"
+                                                label="customer"
+                                                className=' mb-3'
+                                                onAddCustomer={() => {
+                                                }}
+                                            />
 
                                             <FloatingLabel
                                                 controlId="floatingPayment"
                                                 label="Payment Mode"
                                             // className="w-75"
                                             >
-                                                <Form.Select aria-label="Floating label select example" className='borderRemove' value={saleData ? saleData.balance : ''}>
+                                                <Form.Select aria-label="Floating label select example" className='borderRemove' value={saleData ? saleData.balance : ''}
+                                                onChange={handleChange as React.ChangeEventHandler<HTMLSelectElement>}>
                                                     <option>Select Payment</option>
                                                     <option value="1">Cash</option>
                                                     <option value="2">Credit</option>
@@ -148,8 +179,8 @@ export default function NewSale() {
                             </Card>
                             <hr className='mb-2' />
                             <Row>
-                                <Col style={{width:'200px'}}>
-                                <CusttomInvoiceDropdown 
+                                <Col style={{ width: '200px' }}>
+                                    <CusttomInvoiceDropdown
                                         sellers={sellers}
                                         onSelect={handleSelect}
                                         inputValue={inputValue}
@@ -158,9 +189,6 @@ export default function NewSale() {
                                         label="Item Name"
                                         className='invlabel'
                                     />
-                                    {/* <FloatingLabel className='invlabel' controlId="floatingItemName" label="Item Name">
-                                        <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' />
-                                    </FloatingLabel> */}
                                 </Col>
                                 <Col md>
                                     <FloatingLabel className='invlabel' controlId="floatingBatch" label="Batch">

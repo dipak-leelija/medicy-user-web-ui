@@ -1,5 +1,11 @@
-import { error } from "console";
+
 import {
+    FETCH_DOCTOR_REQUEST,
+    FETCH_DOCTOR_SUCCESS,
+    FETCH_DOCTOR_FAILURE,
+    FETCH_CUSTOMER_REQUEST,
+    FETCH_CUSTOMER_SUCCESS,
+    FETCH_CUSTOMER_FAILURE,
     FETCH_SALES_ITEM_REQUEST,
     FETCH_SALES_ITEM_SUCCESS,
     FETCH_SALES_ITEM_FAILURE,
@@ -12,7 +18,45 @@ import {
 } from "../../constants/dataFetch";
 
 // SellersItemTypes
-import { PurchaseItem, StockItemTypes, SellersItemTypes } from "../../pages/pharmacy/purchases/data";
+import { PurchaseItem, StockItemTypes, SellersItemTypes, CustomersItemTypes, DoctorsData } from "../../pages/pharmacy/purchases/data";
+
+
+// for doctor 
+export const fetchDoctorRequest = () => {
+    return {
+        type: FETCH_DOCTOR_REQUEST
+        }
+}
+export const fetchDoctorSuccess = (data: DoctorsData[]) => {
+    return {
+        type: FETCH_DOCTOR_SUCCESS,
+        payload: data
+    }
+}
+export const fetchDoctorFailure = (error: string) => {
+    return {
+        type: FETCH_DOCTOR_FAILURE,
+        payload: error
+    }
+}
+// for customer 
+export const fetchCustomerRequest = () =>{
+    return{
+        type: FETCH_CUSTOMER_REQUEST
+        }
+}
+export const fetchCustomerSuccess = (data: CustomersItemTypes[]) =>{
+    return{
+        type: FETCH_CUSTOMER_SUCCESS,
+        payload: data
+        }
+}
+export const fetchCustomerFailure = (error: string) =>{
+    return{
+        type: FETCH_CUSTOMER_FAILURE,
+        payload: error
+        }
+}
 
 // for sales 
 export const fetchSalesRequest = () => {
