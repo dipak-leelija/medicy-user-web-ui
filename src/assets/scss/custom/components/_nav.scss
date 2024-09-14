@@ -29,11 +29,9 @@
 }
 
 //Navtab custom
-.navtab-bg {
-    .nav-link {
-        background-color: var(--#{$prefix}light);
-        margin: 0 5px;
-    }
+
+.nav-link{
+    color: black;
 }
 
 // Nav bordered
@@ -42,6 +40,7 @@
     border-bottom: 2px solid var(--#{$prefix}border-color) !important;
     .nav-item {
         margin-bottom: -1px;
+
     }
 
     li {
@@ -60,15 +59,40 @@
     padding: 20px 0 0 0;
 }
 // navlink profile section
-.nav-link{
-    margin-bottom: -1px;
+
+
+//  .nav-tabs .nav-link:focus{
+//     border-color: var(--ct-nav-tabs-link-hover-border-color);
+// }
+// .profile-navs, .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+//     isolation: isolate;
+//     border-color: var(--ct-nav-tabs-link-hover-border-color);
+// }
+// .profile-navs,.nav-tabs .nav-link {
+//     border: 0px;
+// }
+// .profile-navs, .nav-item{
+//     border: 0px;
+// }
+// .profile-navs, .nav-tabs {
+//     border: 0px;
+// }
+
+// .profile-navs, .nav-link{
+//     margin-bottom: -1px;
+    
+// }
+
+.profile-navs, .nav-tb-Active:focus{
+    display: block;
+    width: 100%;
+    border: 0px !important;  
     
 }
-.nav-tb-Active{
-    display: block;
-    width: 100%;
+.profile-navs,.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    color: #027ee3;
+   
 }
-.nav-tb-Active{
-    display: block;
-    width: 100%;
+.nav-tabs{
+  border-bottom: 1px;
 }
