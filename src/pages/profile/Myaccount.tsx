@@ -204,7 +204,7 @@ export default function Myaccount() {
 
                                         <div className="profile-items">
                                         <div className="account-logo">
-                                            <img  src={accountImg} alt="Profile" ref={imgPreviewRef} />
+                                            <img className="" src={accountImg} alt="Profile" ref={imgPreviewRef} />
                                             <div className="input-img">
                                                 <form>
                                                     <input 
@@ -218,7 +218,7 @@ export default function Myaccount() {
                                                     </Button>
                                                 </form>
                                             </div>
-                                            
+                                            <Button id="upload-btn" ref={uploadBtnRef} className='d-none'>Upload</Button>
                                             <div id="err-show" ref={errorRef} className="d-none">Invalid file type. Please select a JPG, JPEG, or PNG image.</div>
                                         </div>
 
