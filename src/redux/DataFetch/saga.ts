@@ -1,6 +1,8 @@
 // datafetch/saga.ts
 import { call, put, takeLatest } from "redux-saga/effects";
 import {
+  fetchPatientSuccess,
+  fetchPatientFailure,
   fetchDoctorSuccess,
   fetchDoctorFailure,
   fetchCustomerSuccess,
@@ -12,15 +14,31 @@ import {
   fetchPurchaseDistributorSuccess,
   fetchPurchaseDistributorFailure,
 } from "./actions";
-import { PurchaseItem, purchaseItem, StockItemTypes, stock, SellersItemTypes, sellers, CustomersItemTypes, customers, DoctorsData, doctors } from "../../pages/pharmacy/purchases/data";
-import { FETCH_PURCHASE_ITEMS_REQUEST, FETCH_PURCHASE_DISTRIBUTER_REQUEST, FETCH_SALES_ITEM_REQUEST, FETCH_CUSTOMER_REQUEST, FETCH_DOCTOR_REQUEST } from "../../constants/dataFetch";
+import {Patient, patients, PurchaseItem, purchaseItem, StockItemTypes, stock, SellersItemTypes, sellers, CustomersItemTypes, customers, DoctorsData, doctors } from "../../pages/pharmacy/purchases/data";
+import {FETCH_PATIENT_REQUEST, FETCH_PURCHASE_ITEMS_REQUEST, FETCH_PURCHASE_DISTRIBUTER_REQUEST, FETCH_SALES_ITEM_REQUEST, FETCH_CUSTOMER_REQUEST, FETCH_DOCTOR_REQUEST } from "../../constants/dataFetch";
 
 // Type for the API call
+type patientApiResponse = Patient[];
 type doctorApiResponse = DoctorsData[];
 type customerApiResponse = CustomersItemTypes[];
 type saleApiResponse = SellersItemTypes[];
 type purChaseAPIResponse = PurchaseItem[];
 type PurchaseDistributorResponse = StockItemTypes[];
+
+//API call to fetch patient 
+function* fetchPatient(): Generator<any, void, patientApiResponse> {
+  try {
+    const data: patientApiResponse = yield call(()=>
+    new Promise<patientApiResponse>((res)=> res(patients))
+  );
+  yield put(fetchPatientSuccess(data));
+}catch(error){
+  yield put(fetchPatientFailure(error))
+}
+}
+export function* fetchPatientDetails(){
+  yield takeLatest(FETCH_PATIENT_REQUEST, fetchPatient);
+}
 
 //API call to fetch doctors
 function* fetchDoctor(): Generator<any, void, doctorApiResponse> {
