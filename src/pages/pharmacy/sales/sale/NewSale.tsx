@@ -236,7 +236,7 @@ export default function NewSale() {
                                     </FloatingLabel>
                                 </Col>
                             </Row>
-                            <Button variant="primary" type="submit" className='btn btn-primary waves-effect waves-light float-end mt-2'><i className="mdi mdi-plus-circle me-1"></i>Submit
+                            <Button variant="primary" type="submit" className='btn btn-primary waves-effect waves-light float-end mt-2'><i className="mdi mdi-plus-circle me-1"></i>Add
                             </Button>
                         </Card.Body>
                     </Card>
