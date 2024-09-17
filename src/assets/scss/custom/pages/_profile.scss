@@ -24,7 +24,7 @@
     }
     
  }
- .main-container{
+ .Profile-main-container{
     display: flex;
     align-items: center;
     gap: 5%;
@@ -36,15 +36,16 @@
     width: 50%;
     height: 70%;
     border-radius: 10px;
-    position: sticky;
-    top: 20;
+   
 }
 
 .Password-section-form{
     height: 71vh;
 }
 
-
+.section-2{
+    width: 100%;
+}
 
 .profile-items{
     display: flex;
@@ -63,6 +64,39 @@
      transform: translate(-50% ,50%);
      border-radius: 40%;
 }
-.sec-hide , .sec-hide2  {
-    display: none;
+
+
+
+/* Adjust icon position if the field is invalid */
+.was-validated .form-control:invalid ~ .password-toggle-icon,
+.form-control.is-invalid ~ .password-toggle-icon {
+    margin-top: -10px;
+    color: #dc3545; /* Icon color for invalid state */
+}
+
+//settings page css
+
+.settings-img{
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    gap: 20px;
+   margin-bottom: 6%;
+    position: relative;
+    img{
+        height: 200px;
+        width: 50%;
+    border: 1px solid #4e73df;
+
+    }
+
+}
+.change-Img  {
+    width: 50%;
+}
+.table-card{
+    
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
 }

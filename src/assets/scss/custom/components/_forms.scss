@@ -105,6 +105,10 @@ select.form-control-sm {
     position: relative;
 }
 
+
+
+
+
 .floating-label input {
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -153,23 +157,19 @@ select.form-control-sm {
 }
 
 
-.was-validated .form-control:is-valid:focus{
-    border:  1px solid black;
+.Profile-form,.was-validated .form-control:valid:focus, .form-control.is-valid:focus, .was-validated .form-select:valid, .form-select.is-valid, .was-validated .form-control:valid:focus, .form-control.is-valid:focus{
+    border: 1px solid #007bff !important;
+}
+profile-form, .was-validated .form-select:valid, .form-select.is-valid, .was-validated .form-control:valid, .form-control.is-valid {
     
-    box-shadow: none;
+   border-bottom: 1px solid #007bff !important;
     background-image: none;
 }
-
-.was-validated .form-control:valid, .form-control.is-valid{
+.Profile-form, .was-validated .form-control:valid, .form-control.is-valid{
     border: 1px solid #007bff;
-    
 
 }
-.was-validated .form-select:valid, .form-select.is-valid, .was-validated .form-control:valid, .form-control.is-valid {
-    box-shadow: none !important;
-    border-bottom: 1px solid #1975d1;
-    background-image: none;
-}
+
 /* Valid (success) border color */
 
 .floating-label input:focus ~ label,
@@ -178,6 +178,13 @@ select.form-control-sm {
     left: 12px;
     color: #007bff;
     font-size: 12px;
+}
+
+.fixed-toast {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1055; /* Ensures it's above other content */
 }
 
 

@@ -95,7 +95,7 @@ const ProfileMenus = [
   {
     label: "Settings",
     icon: "fe-settings",
-    redirectTo: "#",
+    redirectTo: "/Settings",
   },
   {
     label: "Lock Screen",

@@ -29,11 +29,9 @@
 }
 
 //Navtab custom
-.navtab-bg {
-    .nav-link {
-        background-color: var(--#{$prefix}light);
-        margin: 0 5px;
-    }
+
+.nav-link{
+    color: black;
 }
 
 // Nav bordered
@@ -42,6 +40,7 @@
     border-bottom: 2px solid var(--#{$prefix}border-color) !important;
     .nav-item {
         margin-bottom: -1px;
+
     }
 
     li {
@@ -59,16 +58,23 @@
 .tab-content {
     padding: 20px 0 0 0;
 }
+
+
 // navlink profile section
-.nav-link{
-    margin-bottom: -1px;
-    
+
+.nav-tabs{
+    border-bottom: 1px solid #dddfeb;
 }
-.nav-tb-Active{
-    display: block;
-    width: 100%;
-}
-.nav-tb-Active{
-    display: block;
-    width: 100%;
-}
+.nav-tabs .nav-link {
+     // Add borders around all tab links
+     margin-bottom: -1px;
+     border: 1px solid transparent;
+     border-top-left-radius: 0.35rem;
+     border-top-right-radius: 0.35rem; // Add padding for visual spacing
+  }
+  
+.nav-tabs .nav-link.active  {
+    color: #6e707e;
+    background-color: #fff;
+    border-color: #dddfeb #dddfeb #fff;
+  }

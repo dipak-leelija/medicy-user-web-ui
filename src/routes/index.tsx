@@ -33,7 +33,8 @@ const Landing = React.lazy(() => import("../pages/landing/"));
 //profile
 const MyAccount= React.lazy(() => import("../pages/profile/Myaccount"));
 
-
+//settings
+const Settings= React.lazy(() => import("../pages/settings/Settings"));
 // dashboard
 const Dashboard1 = React.lazy(() => import("../pages/dashboard/Dashboard1/"));
 const Dashboard2 = React.lazy(() => import("../pages/dashboard/Dashboard2/"));
@@ -290,6 +291,23 @@ const dashboardRoutes: RoutesProps = {
         element: <MyAccount/>,
         // header: "Apps",
       };
+
+
+       // settings Routes
+      const settingsRoutes: RoutesProps = {
+        path: "/Settings",
+        name: "Settings",
+        route: PrivateRoute,
+        element: <Settings/>,
+        // header: "Apps",
+      };
+
+
+
+
+
+
+  
 
 // Pharmacy Routes
 const pharmacyRoutes: RoutesProps = {
@@ -1295,6 +1313,7 @@ const flattenRoutes = (routes: RoutesProps[]) => {
 const authProtectedRoutes = [
   dashboardRoutes,
   profileRoutes,
+  settingsRoutes,
   pharmacyRoutes,
   ...appRoutes,
   extrapagesRoutes,
