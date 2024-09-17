@@ -1,13 +1,55 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import img from '../../assets/images/companies/airbnb.png';
 import Swal from 'sweetalert2';
 import { Button, Card, Col, Form, FormControl, Row, Tab, Tabs, Toast, ToastContainer, ToastHeader, ToastBody } from 'react-bootstrap';
 
 export default function Settings() {
-    
-        
-           
-        
+
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const imgPreviewRef = useRef<HTMLImageElement>(null);
+    const errorRef = useRef<HTMLDivElement>(null);
+    const uploadBtnRef = useRef<HTMLButtonElement>(null);
+    const validateFileType = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Change Profile Photo?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#0047AB",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Change!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const fileName = file.name;
+                    const extFile = fileName.split('.').pop()?.toLowerCase();
+                    if (extFile === "jpg" || extFile === "jpeg" || extFile === "png") {
+                        readURL(file);
+                    } else {
+                        if (errorRef.current) errorRef.current.classList.remove("d-none");
+                    }
+                }
+            });
+        }
+    };
+
+    // Function to read file and update preview
+    const readURL = (file: File) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            if (imgPreviewRef.current) imgPreviewRef.current.src = e.target?.result as string;
+            if (uploadBtnRef.current) uploadBtnRef.current.classList.remove("d-none");
+        };
+        reader.readAsDataURL(file);
+    };
+
+
+
+
+
+
 
     const [HealthData, setHealthData] = useState({
         OrganizationName: '',
@@ -30,7 +72,7 @@ export default function Settings() {
     const contactRegex = /^\d{10}$/;
     const pinRegex = /^\d{6}$/;
 
-    const handleFromChange = (e) => {
+    const handleFromChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setHealthData({
             ...HealthData,
@@ -38,18 +80,18 @@ export default function Settings() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const form = e.currentTarget;
-      
+
         const { OrganizationName, HelpLineNumber, AppointmentHelpLine, HelthCareEmail, Address1, Address2, City, Dist, SelectState, PIN, Country } = HealthData;
-    
+
         // Define mandatory fields
         const mandatoryFields = [OrganizationName, AppointmentHelpLine, Address1, City, Dist, SelectState, PIN, Country];
-        
+
         // Check if any mandatory field is empty
         const emptyMandatoryFields = mandatoryFields.some((field) => !field);
-    
+
         // Check if only OrganizationName and HelpLineNumber are filled, and others are empty
         if (emptyMandatoryFields) {
             setShowToast(true);
@@ -58,16 +100,14 @@ export default function Settings() {
 
         if (form.checkValidity() === false) {
             e.stopPropagation();
+        } else {
+            console.log(HealthData);
+            setValidated(true); // Handle form submission
         }
-        else {
-            console.log(HealthData); 
-            setValidated(true);// Handle form submission
-        }
-        setShowToast(false)
-        
-         // Trigger validation feedback
-    };
+        setShowToast(false);
 
+        // Trigger validation feedback
+    };
     return (
         <div className="Settings-section">
             <Row className='mt-4'>
@@ -79,7 +119,7 @@ export default function Settings() {
                                     defaultActiveKey="home"
                                     id="fill-tab-example"
                                     className="mb-3"
-                                    fill
+
                                 >
                                     <Tab eventKey="home" title="Health Care Details">
                                         <div className="Health-details">
@@ -88,8 +128,17 @@ export default function Settings() {
                                                     <Card>
                                                         <Card.Body>
                                                             <div className="settings-img">
-                                                                <img src={img} alt="" />
-                                                                <Button className='change-Img'>Change Image</Button>
+                                                                <img src={img} alt="" ref={imgPreviewRef} />
+                                                                <form action="">
+                                                                <input
+                                                                    type="file"
+                                                                    ref={fileInputRef}
+                                                                    onChange={validateFileType}
+                                                                    style={{ display: 'none' }}
+                                                                />
+                                                                </form>
+                                                               
+                                                                <Button onClick={() => fileInputRef.current?.click()} className='change-Img'>Change Image</Button>
                                                             </div>
 
 
@@ -270,7 +319,7 @@ export default function Settings() {
                                                                     </div>
                                                                 </Col>
                                                                 <Col md>
-                                                                <div className="form-group">
+                                                                    <div className="form-group">
                                                                         <div className="floating-label select-wrapper">
                                                                             <select
                                                                                 id="SelectState"
@@ -280,7 +329,7 @@ export default function Settings() {
                                                                                 required
                                                                                 className="form-select"
                                                                             >
-                                                                                
+
                                                                                 <option value="" disabled>Select state</option>
                                                                                 <option value="Option1">West Bengal</option>
                                                                                 <option value="Option2">Others</option>
@@ -327,7 +376,7 @@ export default function Settings() {
                                                                                 required
                                                                                 className="form-select"
                                                                             >
-                                                                                
+
                                                                                 <option value="" disabled>Select Country</option>
                                                                                 <option value="India">India</option>
                                                                                 <option value="Others">Others</option>
@@ -358,7 +407,7 @@ export default function Settings() {
                                                 <Col>
                                                     <Card >
                                                         <Card.Body className='table-card'>
-                                                            <table class="table table-sm">
+                                                            <table className="table table-sm">
                                                                 <thead>
                                                                     <tr>
                                                                         <th scope="col">Plan</th>

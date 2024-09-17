@@ -134,6 +134,7 @@ select.form-control-sm {
 .Profile-form,.floating-label textarea:focus {
     border-color: #007bff; /* Active color for the border */
 }
+
 .Profile-form,.floating-label label {
     position: absolute;
     top: 12px;
@@ -146,30 +147,28 @@ select.form-control-sm {
     font-size: 14px;
 }
 
-.Profile-form,.floating-label input:focus {
-    border-color: #007bff; /* Customize the color here */
-    outline: none;
-    
-}
 
-
-.Profile-form,.was-validated .form-control:valid:focus, .form-control.is-valid:focus, .was-validated .form-select:valid, .form-select.is-valid, .was-validated .form-control:valid:focus, .form-control.is-valid:focus{
+.Profile-main-container {
+    .was-validated .form-control:valid:focus, .form-control.is-valid:focus, .was-validated .form-select:valid, .form-select.is-valid, .was-validated .form-control:valid:focus, .form-control.is-valid:focus{
     border: 1px solid #007bff !important;
 }
-profile-form, .was-validated .form-select:valid, .form-select.is-valid, .was-validated .form-control:valid, .form-control.is-valid {
+}
+
+.Profile-main-container{ .was-validated .form-select:valid, .form-select.is-valid, .was-validated .form-control:valid, .form-control.is-valid {
     
    border-bottom: 1px solid #007bff !important;
     background-image: none;
 }
-.Profile-form, .was-validated .form-control:valid, .form-control.is-valid{
+}
+.Profile-main-container { .was-validated .form-control:valid, .form-control.is-valid{
     border: 1px solid #007bff;
 
-}
+}}
 
 /* Valid (success) border color */
 
-.Profile-form,.floating-label input:focus ~ label,
-.Profile-form,.floating-label input:not(:placeholder-shown) ~ label {
+.floating-label input:focus ~ label,
+.floating-label input:not(:placeholder-shown) ~ label {
     top: -8px;
     left: 12px;
     color: #007bff;
