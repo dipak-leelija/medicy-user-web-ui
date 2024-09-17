@@ -252,7 +252,7 @@ export default function Myaccount() {
                                                     <Col>
                                                         <Card>
                                                             <Card.Body>
-                                                                <Form noValidate validated={validated} onSubmit={handleFromSubmit}>
+                                                                <Form noValidate validated={validated} onSubmit={handleFromSubmit} className='My-Floating-Form'>
                                                                     <Col md>
 
                                                                         <div className="form-group">

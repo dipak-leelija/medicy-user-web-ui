@@ -68,8 +68,8 @@
 
 
 /* Adjust icon position if the field is invalid */
-.Pass-data .was-validated .form-control:invalid ~ .password-toggle-icon,
-.Pass-data .is-invalid ~ .password-toggle-icon {
+ .was-validated .form-control:invalid ~ .password-toggle-icon,
+ .is-invalid ~ .password-toggle-icon {
     margin-top: -10px;
     color: #dc3545; /* Icon color for invalid state */
 }
@@ -100,6 +100,7 @@
     border: 1px solid #e3e6f0;
     border-radius: 0.35rem;
 }
+
 .floating-label.select-wrapper {
     position: relative;
     margin-top: 1.5rem;
