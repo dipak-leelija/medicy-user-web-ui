@@ -1,5 +1,8 @@
 import { actions } from "react-table";
 import {
+  FETCH_PATIENT_FAILURE,
+  FETCH_PATIENT_REQUEST,
+  FETCH_PATIENT_SUCCESS,
   FETCH_DOCTOR_FAILURE,
   FETCH_DOCTOR_REQUEST,
   FETCH_DOCTOR_SUCCESS,
@@ -17,8 +20,14 @@ import {
   FETCH_PURCHASE_DISTRIBUTER_FAILURE,
 } from "../../constants/dataFetch";
 
-import { PurchaseItem, StockItemTypes, SellersItemTypes, CustomersItemTypes, DoctorsData } from "../../pages/pharmacy/purchases/data";
+import { PurchaseItem, StockItemTypes, SellersItemTypes, CustomersItemTypes, DoctorsData, Patient } from "../../pages/pharmacy/purchases/data";
 
+
+interface patientState {
+  loading: boolean;
+  data: Patient[];
+  error: string | null;
+}
 interface DoctorState {
   loading: boolean;
   data: DoctorsData[];
@@ -45,6 +54,11 @@ interface PurchaseDistributorState {
   error: string | null;
 }
 
+const initialPatientState: patientState = {
+  loading: false,
+  data: [],
+  error: null
+}
 const initialDoctorState: DoctorState = {
   loading: false,
   data: [],
@@ -69,6 +83,19 @@ const initialStateDistributor: PurchaseDistributorState = {
   loading: false,
   data: [],
   error: null,
+}
+
+export const patientReducer = (state = initialPatientState, action: any) => {
+  switch (action.type) {
+    case FETCH_DOCTOR_REQUEST:
+      return { ...state, loading: true }
+    case FETCH_PATIENT_SUCCESS:
+      return { ...state, loading: false, data: action.payload }
+    case FETCH_PATIENT_FAILURE:
+      return { ...state, loading: false, error: action.payload }
+    default:
+      return state;
+  }
 }
 
 export const doctorReducer = (state = initialDoctorState, action: any) => {
