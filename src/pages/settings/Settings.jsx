@@ -4,6 +4,10 @@ import Swal from 'sweetalert2';
 import { Button, Card, Col, Form, FormControl, Row, Tab, Tabs, Toast, ToastContainer, ToastHeader, ToastBody } from 'react-bootstrap';
 
 export default function Settings() {
+    
+        
+           
+        
 
     const [HealthData, setHealthData] = useState({
         OrganizationName: '',
@@ -37,27 +41,31 @@ export default function Settings() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = e.currentTarget;
+      
         const { OrganizationName, HelpLineNumber, AppointmentHelpLine, HelthCareEmail, Address1, Address2, City, Dist, SelectState, PIN, Country } = HealthData;
-
-        // Check if all fields except OrganizationName and HelpLineNumber are empty
-        const OnLYMandetoryFields = !HelpLineNumber && !OrganizationName && !AppointmentHelpLine && !Address1 && !City && !Dist && !SelectState && !PIN && !Country;
-
-        // Show toast if only OrganizationName and HelpLineNumber are filled
-        if (OnLYMandetoryFields) {
-
+    
+        // Define mandatory fields
+        const mandatoryFields = [OrganizationName, AppointmentHelpLine, Address1, City, Dist, SelectState, PIN, Country];
+        
+        // Check if any mandatory field is empty
+        const emptyMandatoryFields = mandatoryFields.some((field) => !field);
+    
+        // Check if only OrganizationName and HelpLineNumber are filled, and others are empty
+        if (emptyMandatoryFields) {
             setShowToast(true);
             return;
         }
-
 
         if (form.checkValidity() === false) {
             e.stopPropagation();
         }
         else {
-            console.log(HealthData); // Handle form submission
+            console.log(HealthData); 
+            setValidated(true);// Handle form submission
         }
-
-        setValidated(true); // Trigger validation feedback
+        setShowToast(false)
+        
+         // Trigger validation feedback
     };
 
     return (
@@ -262,25 +270,24 @@ export default function Settings() {
                                                                     </div>
                                                                 </Col>
                                                                 <Col md>
-                                                                    <div className="form-group">
-                                                                        <div className="floating-label">
-                                                                            <Form.Control
-                                                                                as="select"
+                                                                <div className="form-group">
+                                                                        <div className="floating-label select-wrapper">
+                                                                            <select
                                                                                 id="SelectState"
                                                                                 name="SelectState"
                                                                                 value={HealthData.SelectState}
                                                                                 onChange={handleFromChange}
                                                                                 required
-                                                                                className="form-control"
+                                                                                className="form-select"
                                                                             >
-
+                                                                                
+                                                                                <option value="" disabled>Select state</option>
                                                                                 <option value="Option1">West Bengal</option>
                                                                                 <option value="Option2">Others</option>
-
-                                                                            </Form.Control>
-
-
-
+                                                                            </select>
+                                                                            <label htmlFor="SelectState" className={HealthData.Country ? 'active' : ''}>
+                                                                                Select State <span style={{ color: 'red' }}>*</span>
+                                                                            </label>
                                                                         </div>
                                                                     </div>
                                                                 </Col>
@@ -312,20 +319,22 @@ export default function Settings() {
                                                                 <Col>
                                                                     <div className="form-group">
                                                                         <div className="floating-label select-wrapper">
-                                                                            <Form.Control
-                                                                                as="select"
+                                                                            <select
                                                                                 id="SelectState"
                                                                                 name="Country"
                                                                                 value={HealthData.Country}
                                                                                 onChange={handleFromChange}
                                                                                 required
-                                                                                className="form-control"
+                                                                                className="form-select"
                                                                             >
-                                                                                <option value="">Select State</option>
-                                                                                <option value="Option1">India</option>
-                                                                                <option value="Option2">Others</option>
-                                                                            </Form.Control>
-                                                                           
+                                                                                
+                                                                                <option value="" disabled>Select Country</option>
+                                                                                <option value="India">India</option>
+                                                                                <option value="Others">Others</option>
+                                                                            </select>
+                                                                            <label htmlFor="SelectState" className={HealthData.Country ? 'active' : ''}>
+                                                                                Country <span style={{ color: 'red' }}>*</span>
+                                                                            </label>
                                                                         </div>
                                                                     </div>
                                                                 </Col>

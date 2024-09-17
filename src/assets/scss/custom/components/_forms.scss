@@ -96,49 +96,45 @@ select.form-control-sm {
 }
  
 
-.form-group {
+.Profile-form,.form-group {
     margin-bottom: 1.5rem;
     position: relative;
 }
 
-.floating-label {
+.Profile-form,.floating-label {
     position: relative;
 }
 
-
-
-
-
-.floating-label input {
+.Profile-form,.floating-label input {
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 12px 12px 12px 12px;
     width: 100%;
     background: transparent;
 }
-.floating-label textarea:focus ~ label,
-.floating-label textarea:not(:placeholder-shown) ~ label {
+.Profile-form,.floating-label textarea:focus ~ label,
+.Profile-form,.floating-label textarea:not(:placeholder-shown) ~ label {
     top: -8px;
     left: 12px;
     color: #007bff;
     font-size: 12px;
 }
 
-.floating-label textarea:focus {
+.Profile-form,.floating-label textarea:focus {
     border-color: #007bff; /* Active color for the border */
 }
-.floating-label textarea:focus ~ label,
-.floating-label textarea:not(:placeholder-shown) ~ label {
+.Profile-form,.floating-label textarea:focus ~ label,
+.Profile-form,.floating-label textarea:not(:placeholder-shown) ~ label {
     top: -8px;
     left: 12px;
     color: #007bff;
     font-size: 12px;
 }
 
-.floating-label textarea:focus {
+.Profile-form,.floating-label textarea:focus {
     border-color: #007bff; /* Active color for the border */
 }
-.floating-label label {
+.Profile-form,.floating-label label {
     position: absolute;
     top: 12px;
     left: 12px;
@@ -150,7 +146,7 @@ select.form-control-sm {
     font-size: 14px;
 }
 
-.floating-label input:focus {
+.Profile-form,.floating-label input:focus {
     border-color: #007bff; /* Customize the color here */
     outline: none;
     
@@ -172,8 +168,8 @@ profile-form, .was-validated .form-select:valid, .form-select.is-valid, .was-val
 
 /* Valid (success) border color */
 
-.floating-label input:focus ~ label,
-.floating-label input:not(:placeholder-shown) ~ label {
+.Profile-form,.floating-label input:focus ~ label,
+.Profile-form,.floating-label input:not(:placeholder-shown) ~ label {
     top: -8px;
     left: 12px;
     color: #007bff;
