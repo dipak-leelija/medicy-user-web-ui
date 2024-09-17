@@ -383,10 +383,10 @@ export default function Myaccount() {
                                                     <Col>
                                                         <Card>
                                                             <Card.Body>
-                                                                <Form noValidate validated={validated} onSubmit={handleFrom2Submit}>
+                                                                <Form noValidate validated={validated} onSubmit={handleFrom2Submit} className='Pass-data'>
                                                                     <Col md>
-                                                                        <div className="form-group">
-                                                                            <div className="floating-label">
+                                                                        <div className="form-group Pass-data ">
+                                                                            <div className="floating-label Pass-data">
                                                                                 <FormControl
                                                                                     type={showPassword.Currrentpassword ? "text" : "password"}
                                                                                     className="form-control"
@@ -398,7 +398,7 @@ export default function Myaccount() {
                                                                                     placeholder=""
                                                                                     required />
 
-                                                                                <label htmlFor="name">Current Password</label>
+                                                                                <label htmlFor="name" >Current Password</label>
                                                                                 <i
                                                                                     className={`fas ${showPassword.Currrentpassword ? 'fa-eye-slash' : 'fa-eye'} password-toggle-icon`}
                                                                                     onClick={() => toggleShowPassword('Currrentpassword')}

@@ -68,11 +68,11 @@
 
 
 /* Adjust icon position if the field is invalid */
-// .was-validated .form-control:invalid ~ .password-toggle-icon,
-// .form-control.is-invalid ~ .password-toggle-icon {
-//     margin-top: -10px;
-//     color: #dc3545; /* Icon color for invalid state */
-// }
+.Pass-data .was-validated .form-control:invalid ~ .password-toggle-icon,
+.Pass-data .is-invalid ~ .password-toggle-icon {
+    margin-top: -10px;
+    color: #dc3545; /* Icon color for invalid state */
+}
 
 //settings page css
 
@@ -99,4 +99,43 @@
     
     border: 1px solid #e3e6f0;
     border-radius: 0.35rem;
+}
+.floating-label.select-wrapper {
+    position: relative;
+    margin-top: 1.5rem;
+}
+
+.floating-label.select-wrapper .form-select {
+     padding-top: 0.75rem;/* Adjust based on label height */
+    padding-bottom: 0.75rem; /* Space for the select options */
+    height: auto; /* Ensure height accommodates options */
+    appearance: none; /* Remove default styling */
+    background: white; /* Ensure background color */
+    border: 1px solid #ced4da; /* Add border */
+}
+
+.floating-label.select-wrapper label {
+    position: absolute;
+    top: 0.75rem; /* Adjust based on label height */
+    left: 0.75rem;
+    font-size: 1rem;
+    color: #6c757d;
+    pointer-events: none;
+    transition: all 0.2s ease-in-out;
+    background: white; /* Prevents label from overlaying options */
+    padding: 0 0.15rem; /* Padding to prevent overlap with field */
+    z-index: 999; /* Ensure label is above field */
+}
+
+.floating-label.select-wrapper .form-select:focus ~ label,
+.floating-label.select-wrapper .form-select:not(:empty) ~ label {
+    top: -0.50rem; /* Adjust based on label height */
+    left: 0.75rem;
+    font-size: 0.75rem;
+    color: #007bff;
+}
+.floating-label.select-wrapper .form-select:focus {
+    border-color: #007bff; /* Border color on focus */
+    
+    outline: none; /* Remove default outline */
 }
