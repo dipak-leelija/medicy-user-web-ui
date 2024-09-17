@@ -68,11 +68,11 @@
 
 
 /* Adjust icon position if the field is invalid */
-.was-validated .form-control:invalid ~ .password-toggle-icon,
-.form-control.is-invalid ~ .password-toggle-icon {
-    margin-top: -10px;
-    color: #dc3545; /* Icon color for invalid state */
-}
+// .was-validated .form-control:invalid ~ .password-toggle-icon,
+// .form-control.is-invalid ~ .password-toggle-icon {
+//     margin-top: -10px;
+//     color: #dc3545; /* Icon color for invalid state */
+// }
 
 //settings page css
 
