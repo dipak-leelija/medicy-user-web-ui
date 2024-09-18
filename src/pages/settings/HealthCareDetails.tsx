@@ -91,7 +91,7 @@ export default function HealthCareDetails() {
         const { OrganizationName, HelpLineNumber, AppointmentHelpLine, HelthCareEmail, Address1, Address2, City, Dist, SelectState, PIN, Country } = HealthData;
 
         // Define mandatory fields
-        const mandatoryFields = [OrganizationName, AppointmentHelpLine, Address1, City, Dist, SelectState, PIN, Country];
+        const mandatoryFields = [OrganizationName, HelpLineNumber,HelthCareEmail, Address1, City, Dist, SelectState, PIN, Country];
 
         // Check if any mandatory field is empty
         const emptyMandatoryFields = mandatoryFields.some((field) => !field);
@@ -252,7 +252,7 @@ export default function HealthCareDetails() {
                                                 <FormControl
                                                     as='textarea'
                                                     className="form-control"
-                                                    id="Address"
+                                                    id="Address1"
                                                     name="Address1"
                                                     value={HealthData.Address1}
                                                     onChange={handleFromChange}
@@ -268,7 +268,7 @@ export default function HealthCareDetails() {
                                                 <FormControl
                                                     as='textarea'
                                                     className="form-control"
-                                                    id="Address"
+                                                    id="Address2"
                                                     name="Address2"
                                                     value={HealthData.Address2}
                                                     onChange={handleFromChange}
@@ -367,7 +367,7 @@ export default function HealthCareDetails() {
                                         <div className="form-group">
                                             <div className="floating-label select-wrapper">
                                                 <select
-                                                    id="SelectState"
+                                                    id="Country"
                                                     name="Country"
                                                     value={HealthData.Country}
                                                     onChange={handleFromChange}
