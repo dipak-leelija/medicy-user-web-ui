@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import Swal from 'sweetalert2';
-import img from '../../assets/images/companies/airbnb.png';
+import img from '../../assets/icon/logo-placeholder.png';
 import { Button, Card, Col, Form, FormControl, Row, Tab, Tabs, Toast, ToastContainer, ToastHeader, ToastBody } from 'react-bootstrap';
 export default function HealthCareDetails() {
 
