@@ -105,13 +105,20 @@ select.form-control-sm {
     position: relative;
 }
 
-.Profile-form,.floating-label input {
+.Profile-main-container ,.custom-form {
+    .Profile-form,.floating-label input:focus{
+        border-color: #007bff;
+    }
+}
+
+.Profile-main-container ,.custom-form {
+   .Profile-form,.floating-label input {
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 12px 12px 12px 12px;
     width: 100%;
     background: transparent;
-}
+}}
 .Profile-form,.floating-label textarea:focus ~ label,
 .Profile-form,.floating-label textarea:not(:placeholder-shown) ~ label {
     top: -8px;
@@ -148,19 +155,19 @@ select.form-control-sm {
 }
 
 
-.Profile-main-container {
+.Profile-main-container , .custom-form{
     .was-validated .form-control:valid:focus, .form-control.is-valid:focus, .was-validated .form-select:valid, .form-select.is-valid, .was-validated .form-control:valid:focus, .form-control.is-valid:focus{
     border: 1px solid #007bff !important;
 }
 }
 
-.Profile-main-container{ .was-validated .form-select:valid, .form-select.is-valid, .was-validated .form-control:valid, .form-control.is-valid {
+.Profile-main-container , .custom-form{ .was-validated .form-select:valid, .form-select.is-valid, .was-validated .form-control:valid, .form-control.is-valid {
     
    border-bottom: 1px solid #007bff !important;
     background-image: none;
 }
 }
-.Profile-main-container { .was-validated .form-control:valid, .form-control.is-valid{
+.Profile-main-container ,.custom-form { .was-validated .form-control:valid, .form-control.is-valid{
     border: 1px solid #007bff;
 
 }}

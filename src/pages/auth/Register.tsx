@@ -1,20 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate, Link } from "react-router-dom";
-import { Button, Alert, Row, Col } from "react-bootstrap";
+import { Button, Alert, Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 
 //actions
 import { resetAuth, signupUser } from "../../redux/actions";
-
 import { RootState, AppDispatch } from "../../redux/store";
 
 // components
-import { VerticalForm, FormInput } from "../../components/";
-
 import AuthLayout from "./AuthLayout";
 
 interface UserData {
@@ -30,58 +25,14 @@ const BottomLink = () => {
   return (
     <Row className="mt-3">
       <Col className="text-center">
-        <p className="text-white-50">
+        <p className="text-black-50">
           {t("Already have account?")}{" "}
-          <Link to={"/auth/login"} className="text-white ms-1">
+          <Link to={"/auth/login"} className="text-black ms-1">
             <b>{t("Sign In")}</b>
           </Link>
         </p>
       </Col>
     </Row>
-  );
-};
-
-/* social links */
-const SocialLinks = () => {
-  const socialLinks = [
-    {
-      variant: "primary",
-      icon: "facebook",
-    },
-    {
-      variant: "danger",
-      icon: "google",
-    },
-    {
-      variant: "info",
-      icon: "twitter",
-    },
-    {
-      variant: "secondary",
-      icon: "github",
-    },
-  ];
-  return (
-    <>
-      <ul className="social-list list-inline mt-3 mb-0">
-        {(socialLinks || []).map((item, index) => {
-          return (
-            <li key={index} className="list-inline-item">
-              <Link
-                to="#"
-                className={classNames(
-                  "social-list-item",
-                  "border-" + item.variant,
-                  "text-" + item.variant
-                )}
-              >
-                <i className={classNames("mdi", "mdi-" + item.icon)}></i>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </>
   );
 };
 
@@ -99,90 +50,238 @@ const Register = () => {
     dispatch(resetAuth());
   }, [dispatch]);
 
-  /*
-   * form validation schema
-   */
-  const schemaResolver = yupResolver(
-    yup.object().shape({
-      fullname: yup.string().required(t("Please enter Fullname")),
-      email: yup
-        .string()
-        .required("Please enter Email")
-        .email("Please enter valid Email"),
-      password: yup.string().required(t("Please enter Password")),
-    })
-  );
+  const [validated, setValidated] = useState(false);
 
-  /*
-   * handle form submission
-   */
-  const onSubmit = (formData: UserData) => {
-    dispatch(
-      signupUser(formData["fullname"], formData["email"], formData["password"])
-    );
+  const [formData, setFormData] = useState({
+    fname: '',
+    lname: '',
+    username: '',
+    email: '',
+    mobileNumber: '',
+    password: '',
+    cpassword: '',
+  });
+
+  const [errors, setErrors] = useState({
+    mobileNumber: '',
+    password: '',
+    cpassword: '',
+  });
+
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    cpassword: false,
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    } else {
+      const { fname, lname, email, password, cpassword } = formData;
+
+      if (password !== cpassword) {
+        setErrors((prev) => ({
+          ...prev,
+          cpassword: t("Passwords do not match"),
+        }));
+        return;
+      }
+
+      const userData: UserData = {
+        fullname: `${fname} ${lname}`,
+        email,
+        password,
+      };
+
+      dispatch(signupUser(userData.fullname, userData.email, userData.password));
+    }
+    setValidated(true);
+  };
+
+  const togglePasswordVisibility = (field: keyof typeof showPassword) => {
+    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
   return (
     <>
-      {userSignUp ? <Navigate to={"/auth/confirm"}></Navigate> : null}
 
-      <AuthLayout
-        helpText={t(
-          "Don't have an account? Create your account, it takes less than a minute"
-        )}
-        bottomLinks={<BottomLink />}
-      >
-        {error && (
-          <Alert variant="danger" className="my-2">
-            {error}
-          </Alert>
-        )}
+      
+        {userSignUp ? <Navigate to={"/auth/confirm"} /> : null}
 
-        <VerticalForm<UserData>
-          onSubmit={onSubmit}
-          resolver={schemaResolver}
-          defaultValues={{}}
-        >
-          <FormInput
-            label={t("Full Name")}
-            type="text"
-            name="fullname"
-            placeholder={t("Enter your name")}
-            containerClass={"mb-3"}
-          />
-          <FormInput
-            label={t("Email address")}
-            type="email"
-            name="email"
-            placeholder={t("Enter your email")}
-            containerClass={"mb-3"}
-          />
-          <FormInput
-            label={t("Password")}
-            type="password"
-            name="password"
-            placeholder={t("Enter your password")}
-            containerClass={"mb-3"}
-          />
-          <FormInput
-            label={t("I accept Terms and Conditions")}
-            type="checkbox"
-            name="checkboxsignup"
-            containerClass={"mb-3"}
-          />
+        <AuthLayout  customWidth="35vw">
+          {error && (
+            <Alert variant="danger" className="my-2">
+              {error}
+            </Alert>
+          )}
+          <div className=" register-box custom-form">
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Row className="form-group mb-0">
+              <Col  className=" floating-label">
+              <Form.Group className="floating-label mb-3">
+                <Form.Control
+                  type="text"
+                  name="fname"
+                  id="fname"
+                  className="med-input"
+                  placeholder=""
+                  value={formData.fname}
+                  onChange={handleChange}
+                  required
+                />
+                <Form.Label htmlFor="fname">
+                  First Name <span className="form-asterisk">*</span>
+                </Form.Label>
+                <Form.Control.Feedback type="invalid">
+                  {t("First name is required")}
+                </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
 
-          <div className="text-center d-grid">
-            <Button variant="success" type="submit" disabled={loading}>
-              {t("Sign Up")}
+              <Col sm={6} className="floating-label  mb-3">
+              <Form.Group className="floating-label ">
+                <Form.Control
+                  type="text"
+                  name="lname"
+                  id="lname"
+                  className="med-input"
+                  placeholder=""
+                  value={formData.lname}
+                  onChange={handleChange}
+                  required
+                />
+                <Form.Label htmlFor="lname">
+                  Last Name <span className="form-asterisk">*</span>
+                </Form.Label>
+                <Form.Control.Feedback type="invalid">
+                  {t("Last name is required")}
+                </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Form.Group className="floating-label mb-3">
+              <Form.Control
+                type="text"
+                name="username"
+                id="user-name"
+                className="med-input"
+                placeholder=""
+                value={formData.username}
+                onChange={handleChange}
+                required
+              />
+              <Form.Label htmlFor="user-name">
+                Username <span className="form-asterisk">*</span>
+              </Form.Label>
+              <Form.Control.Feedback type="invalid">
+                {t("Username is required")}
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group className="floating-label mb-3">
+              <Form.Control
+                type="email"
+                name="email"
+                id="email"
+                className="med-input"
+                placeholder=""
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+              <Form.Label htmlFor="email">
+                Email Address <span className="form-asterisk">*</span>
+              </Form.Label>
+              <Form.Control.Feedback type="invalid">
+                {t("A valid email is required")}
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group className="floating-label mb-3">
+              <Form.Control
+                type="tel"
+                name="mobileNumber"
+                id="mobile-number"
+                className="med-input"
+                placeholder=""
+                pattern="[0-9]{10}"
+                value={formData.mobileNumber}
+                onChange={handleChange}
+                required
+              />
+              <Form.Label htmlFor="mobile-number">
+                Mobile Number <span className="form-asterisk">*</span>
+              </Form.Label>
+              <Form.Control.Feedback type="invalid">
+                {t("A valid mobile number is required")}
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Row className="form-group mb-0">
+              <Col  className=" floating-label">
+              <Form.Group className="floating-label mb-3">
+                <Form.Control
+                  type="password"
+                  name="password"
+                  id="  password"
+                  className="med-input"
+                  placeholder=""
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                <Form.Label htmlFor="password">
+                  Password <span className="form-asterisk">*</span>
+                </Form.Label>
+                <Form.Control.Feedback type="invalid">
+                  {t("Invalid Password")}
+                </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+
+              <Col sm={6} className="floating-label mb-2 ">
+              <Form.Group className="floating-label ">
+                <Form.Control
+                  type="password"
+                  name="cpassword"
+                  id="cpassword"
+                  className="med-input"
+                  placeholder=""
+                  value={formData.cpassword}
+                  onChange={handleChange}
+                  required
+                />
+                <Form.Label htmlFor="cpassword">
+                  Forgot password <span className="form-asterisk">*</span>
+                </Form.Label>
+                <Form.Control.Feedback type="invalid">
+                  {t("Invalid password")}
+                </Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+            </Row>
+
+
+            <Button className="btn btn-primary btn-block  w-100" type="submit" name="register">
+              Register Account
             </Button>
-          </div>
-        </VerticalForm>
+          </Form>
+         
 
-        <div className="text-center">
-          <h5 className="mt-3 text-muted">{t("Sign up using")}</h5>
-          <SocialLinks />
-        </div>
-      </AuthLayout>
+
+      </div>
+      <BottomLink />
+      </AuthLayout >
+
+
     </>
   );
 };

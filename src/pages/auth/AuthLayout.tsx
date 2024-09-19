@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import LogoDark from "../../assets/images/logo-dark.png";
-import LogoLight from "../../assets/images/logo-light.png";
+import LogoLight from "../../assets/images/m-logo.png";
 
 interface AccountLayoutProps {
   helpText?: string;
   bottomLinks?: any;
   isCombineForm?: boolean;
   children?: any;
+  customWidth?: string; // new prop to control width
 }
 
 const AuthLayout = ({
@@ -17,6 +17,7 @@ const AuthLayout = ({
   bottomLinks,
   children,
   isCombineForm,
+  customWidth, // add customWidth prop
 }: AccountLayoutProps) => {
   useEffect(() => {
     if (document.body)
@@ -36,23 +37,22 @@ const AuthLayout = ({
 
   return (
     <>
-      <div className="account-pages mt-5 mb-5">
+      <div className="account-pages mt-3 mb-5">
         <Container>
           <Row className="justify-content-center">
-            <Col md={8} lg={6} xl={isCombineForm ? 9 : 4}>
-              <Card className="bg-pattern">
+            <Col
+              md={8}
+              lg={6}
+              xl={isCombineForm ? 5 :5}
+              
+            >
+              <Card>
                 <Card.Body className="p-4">
                   <div className="text-center w-75 m-auto">
                     <div className="auth-brand">
                       <Link to="/" className="logo logo-dark text-center">
                         <span className="logo-lg">
-                          <img src={LogoDark} alt="" height="22" />
-                        </span>
-                      </Link>
-
-                      <Link to="/" className="logo logo-light text-center">
-                        <span className="logo-lg">
-                          <img src={LogoLight} alt="" height="22" />
+                          <img src={LogoLight} alt="" height="25" />
                         </span>
                       </Link>
                     </div>
@@ -68,13 +68,6 @@ const AuthLayout = ({
           </Row>
         </Container>
       </div>
-
-      {/* <footer className="footer footer-alt">
-        2015 - {new Date().getFullYear()} &copy; UBold theme by{" "}
-        <Link to="#" className="text-white-50">
-          Coderthemes
-        </Link>
-      </footer> */}
     </>
   );
 };

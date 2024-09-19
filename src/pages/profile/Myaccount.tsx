@@ -197,7 +197,7 @@ export default function Myaccount() {
                 <Col>
                     <Card>
                         <Card.Body>
-                            <div className="Profile-main-container">
+                            <div className="Profile-main-container custom-form">
 
                                 <div className="section1">
                                     <div className="coll">
@@ -218,8 +218,7 @@ export default function Myaccount() {
                                                     </Button>
                                                 </form>
                                             </div>
-                                            <Button id="upload-btn" ref={uploadBtnRef} className='d-none'>Upload</Button>
-                                            <div id="err-show" ref={errorRef} className="d-none">Invalid file type. Please select a JPG, JPEG, or PNG image.</div>
+                                           
                                         </div>
 
                                             <div className="profile-data">
