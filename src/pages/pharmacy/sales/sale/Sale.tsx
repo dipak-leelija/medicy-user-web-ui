@@ -75,11 +75,6 @@ const Sellers = () => {
   useEffect(()=>{
    const updateSales = sallers.map((saller: {customer_id: string})=>{
       const patient = patients.find((item: { patient_id: any; })=> item.patient_id === saller.customer_id);
-      // if(patient){
-      //   const PatientName = patient.name;
-      //   console.log(PatientName);
-        
-      // }
       return {
         ...saller,
         patientName: patient ? patient.name : 'N/A'
