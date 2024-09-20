@@ -12,7 +12,7 @@
 // authentication pages background
 body {
     &.authentication-bg {
-        background-color: #00acc1;
+        background-color:#4e73df;
         background-size: cover;
         background-position: center;
 
@@ -43,7 +43,7 @@ body {
     background-size: cover;
 
     .auth-fluid-form-box {
-        max-width: 480px;
+        max-width: auto;
         border-radius: 0;
         z-index: 2;
         padding: 3rem;
@@ -86,7 +86,7 @@ body {
         display: block;
 
         .auth-fluid-form-box {
-            max-width: 100%;
+          
             min-height: 100vh
         }
 
@@ -119,4 +119,16 @@ html[data-bs-theme="dark"] {
             display: none;
         }
     }
+}
+//login 
+.p-margin{
+    margin-top: -15px;
+
+}
+//register
+
+.account-pages{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

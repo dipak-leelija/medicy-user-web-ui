@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 
 const MaximizeScreen = () => {
+  const [isFullscreen, setIsFullscreen] = useState(false); // Track fullscreen state
+
   useEffect(() => {
     let elem = document.querySelector(".maximize-icon");
 
@@ -21,10 +23,10 @@ const MaximizeScreen = () => {
 
     if (
       !document.fullscreenElement &&
-      /* alternative standard method */ !document.mozFullScreenElement &&
+      !document.mozFullScreenElement &&
       !document.webkitFullscreenElement
     ) {
-      // current working methods
+      // Enter fullscreen
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
       } else if (document.documentElement.mozRequestFullScreen) {
@@ -32,7 +34,10 @@ const MaximizeScreen = () => {
       } else if (document.documentElement.webkitRequestFullscreen) {
         document.documentElement.webkitRequestFullscreen();
       }
+
+      setIsFullscreen(true); // Update state to fullscreen
     } else {
+      // Exit fullscreen
       if (document.cancelFullScreen) {
         document.cancelFullScreen();
       } else if (document.mozCancelFullScreen) {
@@ -40,6 +45,8 @@ const MaximizeScreen = () => {
       } else if (document.webkitCancelFullScreen) {
         document.webkitCancelFullScreen();
       }
+
+      setIsFullscreen(false); // Update state to non-fullscreen
     }
 
     // handle fullscreen exit
@@ -48,25 +55,36 @@ const MaximizeScreen = () => {
         !document.webkitIsFullScreen &&
         !document.mozFullScreen &&
         !document.msFullscreenElement
-      )
+      ) {
         document.body.classList.remove("fullscreen-enable");
+        setIsFullscreen(false); // Ensure state is updated when exiting fullscreen
+      }
     };
+
     document.addEventListener("fullscreenchange", exitHandler);
     document.addEventListener("webkitfullscreenchange", exitHandler);
     document.addEventListener("mozfullscreenchange", exitHandler);
   };
 
   return (
-    <Dropdown>
-      <Dropdown.Toggle
-        id="dropdown-languages"
-        as="a"
-        onClick={toggleFullscreen}
-        className="nav-link waves-effect waves-light maximize-icon"
-      >
-        <i className="fe-maximize noti-icon font-22"></i>
-      </Dropdown.Toggle>
-    </Dropdown>
+    <>
+      <h6 className="fw-medium font-14 mt-4 mb-2 pb-1">Screen size </h6>
+      <Dropdown>
+        <Dropdown.Toggle
+          id="dropdown-languages"
+          as="a"
+          onClick={toggleFullscreen}
+          className="nav-link waves-effect waves-light maximize-icon"
+        >
+          <span style={{ display: 'flex', gap: '5px', color: '#6c757d' }}>
+            <i
+              className={`fe-${isFullscreen ? "minimize" : "maximize"} noti-icon font-22`}
+            ></i>
+            <p>{isFullscreen ? "Minimize Screen" : "Maximize Screen"}</p>
+          </span>
+        </Dropdown.Toggle>
+      </Dropdown>
+    </>
   );
 };
 

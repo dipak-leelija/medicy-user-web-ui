@@ -5,59 +5,99 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import SalesOffcanvas from '../../SalesOffcanvas';
 import CusttomInvoiceDropdown from '../../../../components/CustomInvoiceDropdown';
-// import PageTitle from "../../../../components/PageTitle";
 import { Link, useParams } from 'react-router-dom';
-import { sellers } from "../data";
+// import { sellers } from "../data";
+
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../redux/store";
+import { fetchPatientRequest, fetchDoctorRequest, fetchSalesRequest, fetchPurchaseItemsRequest} from "../../../../redux/DataFetch/actions";
 
 // Utility function to convert MM/DD/YYYY to yyyy-MM-dd
-const formatDate = (dateStr: string): string => {
+// const formatDate = (dateStr: string): string => {
+//     const [month, day, year] = dateStr.split('/');
+//     return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+// };
+
+// Utility function to convert MM/DD/YYYY to yyyy-MM-dd
+const formatDate = (dateStr: string | undefined): string => {
+    if (!dateStr) {
+        console.error('Invalid date string:', dateStr);
+        return ''; // or handle as needed, e.g., return a default date or empty string
+    }
+
     const [month, day, year] = dateStr.split('/');
+    if (!month || !day || !year) {
+        console.error('Date string is not in the expected MM/DD/YYYY format:', dateStr);
+        return ''; // or handle this case as well
+    }
+
     return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 };
 
+
 export default function NewSale() {
     const [inputValue, setInputValue] = useState<string>('');
+    const [saleCustomer, setSaleCustomer] = useState<string>('');
     const { id } = useParams<{ id: string }>();
+    
+    
     const [saleData, setSaleData] = useState<any | null>(null);
+    const dispatch = useDispatch();
+
+    const patients = useSelector((state: RootState) => state.patient.data)
+    const doctors = useSelector((state: RootState) => state.doctors.data);
+    const sellers = useSelector((state: RootState) => state.sales.data);
+    const purchaseItem = useSelector((state: RootState) => state.purchase.data)
+    console.log('purchaseItem data-', purchaseItem);
+    console.log('input value-', inputValue);
+    
+
+    useEffect(() => {
+        dispatch(fetchPatientRequest());
+        dispatch(fetchDoctorRequest());
+        dispatch(fetchSalesRequest());
+        dispatch(fetchPurchaseItemsRequest());
+    }, [dispatch])
 
     const [formValues, setFormValues] = useState({
         billDate: '',
         doctor: '',
         customer: '',
-        paymentMode: '',
-        quantity: '',
-        discount: '',
+        paymentMode: ''
     });
 
     const [sellerDetails, setSellerDetails] = useState({
-        patientName: '',
+        batch_no: '',
+        unit: '',
+        mrp: '',
         storeName: '',
+        qty: '',
         // ratings: '',
         balance: '',
         createdOn: '',
         revenue: '',
     });
 
-    useEffect(() => {
-        if (id) {
-            // Find the sale by ID
-            const sale = sellers.find(seller => seller.id === parseInt(id));
-            if (sale) {
-                setSaleData(sale);
-                setFormValues({
-                    billDate: formatDate(sale.created_on),
-                    doctor: sale.name, // Adjust based on your data
-                    customer: sale.store, // Adjust based on your data
-                    paymentMode: sale.balance, // Adjust based on your data
-                    quantity: '', // Set default or adjust as needed
-                    discount: '', // Set default or adjust as needed
-                });
-            } else {
-                // Handle case where the sale is not found
-                console.error(`Sale with ID ${id} not found`);
-            }
-        }
-    }, [id]);
+    // useEffect(() => {
+    //     if (id && sellers.length > 0) {
+    //         // Find the sale by ID
+    //         const sale = sellers.find((seller: { invoice_id: string; }) => seller.invoice_id === id);
+    //         // console.log('find sale data in newsale page-',sale);
+            
+    //         if (sale) {
+    //             setSaleData(sale);
+    //             // setFormValues({
+    //             //     billDate: formatDate(sale.bill_date) || '',
+    //             //     doctor: sale.reff_by || '', // Adjust based on your data
+    //             //     customer:  '', // Adjust based on your data
+    //             //     paymentMode: sale.payment_mod || '', // Adjust based on your data
+    //             // });
+    //         } else {
+    //             // Handle case where the sale is not found
+    //             console.error(`Sale with ID ${id} not found`);
+    //         }
+    //     }
+    // }, [id, sellers]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target as HTMLInputElement | HTMLSelectElement;
@@ -68,22 +108,33 @@ export default function NewSale() {
         }));
     };
 
-    const handleSelect = (selectedSellerId: number) => {
-        const selectedSeller = sellers.find(seller => seller.id === selectedSellerId);
-        if (selectedSeller) {
-            setInputValue(selectedSeller ? selectedSeller.name.toString() : '');
-            setSellerDetails({
-                patientName: selectedSeller.name,
-                storeName: selectedSeller.store,
-                // ratings: selectedSeller.ratings,
-                balance: selectedSeller.balance,
-                createdOn: selectedSeller.created_on,
-                revenue: selectedSeller.revenue,
+    const handleSelectSele = (selectedSale: number) => {
+        const selectedSales = patients.find((item: { id: any; }) => item.id === selectedSale);
+        console.log('selected sale-',selectedSales);
+        
+        if (selectedSales) {
+            setSaleCustomer(selectedSales ? selectedSales.name.toString() : '');
+        }
+    }
 
+    const handleSelect = (selectedItemId: number) => {
+        const selectedItem = purchaseItem.find((item: { id: number }) => item.id === selectedItemId);
+        console.log('search item is-',selectedItem);
+        if (selectedItem) {
+            setInputValue(selectedItem ? selectedItem.item_name.toString() : '');
+            setSellerDetails({
+                batch_no: selectedItem.batch_no,
+                unit: selectedItem.unit,
+                mrp: selectedItem.mrp,
+                qty: selectedItem.qty,
+                storeName: selectedItem.store,
+                balance: selectedItem.balance,
+                createdOn: selectedItem.created_on,
+                revenue: selectedItem.revenue,
             });
         }
-        // setShowDropdown(false);
     };
+    
     return (
         <>
             {/* <PageTitle breadCrumbItems={[]} title={"New Seles"} /> */}
@@ -100,7 +151,7 @@ export default function NewSale() {
                                                 label="Bill Date"
                                                 className="mb-3"
                                             >
-                                                <Form.Control type="date" placeholder="" className='borderRemove' value={formValues.billDate}
+                                                <Form.Control type="date" placeholder="" className='borderRemove' value={formValues.billDate }
                                                     name="billDate"
                                                     onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>}
                                                 />
@@ -115,26 +166,33 @@ export default function NewSale() {
                                                     value={formValues.doctor}
                                                     onChange={handleChange as React.ChangeEventHandler<HTMLSelectElement>}
                                                 >
-                                                    <option>Select Doctor</option>
-                                                    <option value="1">Jaynata Barman</option>
+                                                     <option>Select Doctor</option>
+                                                    {doctors.map((doctor:any, index: any) => (
+                                                        <option value={doctor.doctor_id} key={doctor.doctor_id} >{doctor.doctor_name}</option>
+                                                    ))}
                                                 </Form.Select>
                                             </FloatingLabel>
                                         </Col>
                                         <Col md>
-                                            <FloatingLabel controlId="floatingCustomer" label="Customer" className="mb-3">
-                                                <Form.Control type="text" placeholder="" className='borderRemove'
-                                                    value={formValues.customer}
-                                                    name="customer"
-                                                    onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>}
-                                                />
-                                            </FloatingLabel>
+                                            <CusttomInvoiceDropdown
+                                                stocks={patients}
+                                                onSelect={handleSelectSele}
+                                                inputValue={formValues.customer || saleCustomer}
+                                                setInputValue={setSaleCustomer}
+                                                searchType="name"
+                                                label="customer"
+                                                className=' mb-3'
+                                                onAddCustomer={() => {
+                                                }}
+                                            />
 
                                             <FloatingLabel
                                                 controlId="floatingPayment"
                                                 label="Payment Mode"
                                             // className="w-75"
                                             >
-                                                <Form.Select aria-label="Floating label select example" className='borderRemove' value={saleData ? saleData.balance : ''}>
+                                                <Form.Select aria-label="Floating label select example" className='borderRemove' name="paymentMode" value={formValues.paymentMode}
+                                                onChange={handleChange as React.ChangeEventHandler<HTMLSelectElement>}>
                                                     <option>Select Payment</option>
                                                     <option value="1">Cash</option>
                                                     <option value="2">Credit</option>
@@ -148,67 +206,65 @@ export default function NewSale() {
                             </Card>
                             <hr className='mb-2' />
                             <Row>
-                                <Col style={{width:'200px'}}>
-                                <CusttomInvoiceDropdown 
-                                        sellers={sellers}
+                                <Col style={{ width: '200px' }}>
+                                    <CusttomInvoiceDropdown
+                                        sellers={purchaseItem}
                                         onSelect={handleSelect}
                                         inputValue={inputValue}
                                         setInputValue={setInputValue}
                                         searchType="name"
                                         label="Item Name"
                                         className='invlabel'
+                                        sellerItemInput={true}
                                     />
-                                    {/* <FloatingLabel className='invlabel' controlId="floatingItemName" label="Item Name">
-                                        <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' />
-                                    </FloatingLabel> */}
                                 </Col>
-                                <Col md>
+                                <Col md className='px-1'>
                                     <FloatingLabel className='invlabel' controlId="floatingBatch" label="Batch">
-                                        <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' readOnly />
+                                        <Form.Control type="text" value={sellerDetails.batch_no} placeholder="" className='borderRemove px-0 ps-1' readOnly />
                                     </FloatingLabel>
                                 </Col>
-                                <Col md>
+                                <Col md className='px-1'>
                                     <FloatingLabel className='invlabel' controlId="floatingInputGrid" label="Unit/Pack">
-                                        <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' readOnly />
+                                        <Form.Control type="text" value={sellerDetails.unit} placeholder="" className='borderRemove px-0 ps-1' readOnly />
                                     </FloatingLabel>
                                 </Col>
-                                <Col md>
+                                <Col md className='px-1'>
                                     <FloatingLabel className='invlabel' controlId="floatingInputGrid" label="Expiry">
                                         <Form.Control type="text" value={sellerDetails.createdOn} placeholder="" className='borderRemove px-0 ps-1' readOnly />
                                     </FloatingLabel>
                                 </Col>
-                                <Col md>
+                                <Col md className='px-1'>
                                     <FloatingLabel className='invlabel' controlId="floatingInputGrid" label="MRP">
-                                        <Form.Control type="text" value={sellerDetails.balance} placeholder="" className='borderRemove px-0 ps-1' readOnly />
+                                        <Form.Control type="text" value={sellerDetails.mrp} placeholder="" className='borderRemove px-0 ps-1' readOnly />
                                     </FloatingLabel>
                                 </Col>
-                                <Col md>
+                                <Col md className='px-1'>
                                     <FloatingLabel className='invlabel' controlId="floatingInputGrid" label="Qty.">
-                                        <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' />
+                                        <Form.Control type="text"  placeholder="" className='borderRemove px-0 ps-1' />
                                     </FloatingLabel>
                                 </Col>
-                                <Col md>
+                                <Col md className='px-1'>
                                     <FloatingLabel className='invlabel' controlId="floatingInputGrid" label="Disc%">
                                         <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' />
                                     </FloatingLabel>
                                 </Col>
-                                <Col md>
+                                <Col md className='px-1'>
                                     <FloatingLabel className='invlabel' controlId="floatingInputGrid" label="Taxable">
                                         <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' readOnly />
                                     </FloatingLabel>
                                 </Col>
-                                <Col md>
+                                <Col md className='px-1'>
                                     <FloatingLabel className='invlabel' controlId="floatingInputGrid" label="GST%">
                                         <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' readOnly />
                                     </FloatingLabel>
                                 </Col>
-                                <Col md>
+                                <Col md className='px-1'>
                                     <FloatingLabel className='invlabel' controlId="floatingInputGrid" label="Net Amount">
                                         <Form.Control type="text" placeholder="" className='borderRemove px-0 ps-1' readOnly />
                                     </FloatingLabel>
                                 </Col>
                             </Row>
-                            <Button variant="primary" type="submit" className='btn btn-primary waves-effect waves-light float-end mt-2'><i className="mdi mdi-plus-circle me-1"></i>Submit
+                            <Button variant="primary" type="submit" className='btn btn-primary waves-effect waves-light float-end mt-2'><i className="mdi mdi-plus-circle me-1"></i>Add
                             </Button>
                         </Card.Body>
                     </Card>

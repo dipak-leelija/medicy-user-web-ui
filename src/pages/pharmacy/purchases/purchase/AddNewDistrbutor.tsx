@@ -33,6 +33,9 @@ export default function AddNewDistrbutor() {
         address: yup.string().required(),
         descrption: yup.string().required(),
     });
+
+    
+
     return (
         <>
             <div className="m-1 p-1 bg-secondary fs-5 bg-opacity-25 text-primary text-center add-new-item" onClick={handleShow} style={{ cursor: 'pointer' }}>

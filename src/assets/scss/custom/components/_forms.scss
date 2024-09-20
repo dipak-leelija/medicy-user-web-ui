@@ -90,6 +90,106 @@ select.form-control-sm {
     }
 }
 
+//....My account section from css......//
+.profile-lable{
+    color: #4e73df;
+}
+ 
+
+.Profile-form,.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.Profile-form,.floating-label {
+    position: relative;
+}
+
+.Profile-main-container ,.custom-form {
+    .Profile-form,.floating-label input:focus{
+        border-color: #007bff;
+    }
+}
+
+.Profile-main-container ,.custom-form {
+   .Profile-form,.floating-label input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 12px 12px 12px 12px;
+    width: 100%;
+    background: transparent;
+}}
+.Profile-form,.floating-label textarea:focus ~ label,
+.Profile-form,.floating-label textarea:not(:placeholder-shown) ~ label {
+    top: -8px;
+    left: 12px;
+    color: #007bff;
+    font-size: 12px;
+}
+
+.Profile-form,.floating-label textarea:focus {
+    border-color: #007bff; /* Active color for the border */
+}
+.Profile-form,.floating-label textarea:focus ~ label,
+.Profile-form,.floating-label textarea:not(:placeholder-shown) ~ label {
+    top: -8px;
+    left: 12px;
+    color: #007bff;
+    font-size: 12px;
+}
+
+.Profile-form,.floating-label textarea:focus {
+    border-color: #007bff; /* Active color for the border */
+}
+
+.Profile-form,.floating-label label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: white;
+    color: #999;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    padding: 0 4px;
+    font-size: 14px;
+}
+
+
+.Profile-main-container , .custom-form{
+    .was-validated .form-control:valid:focus, .form-control.is-valid:focus, .was-validated .form-select:valid, .form-select.is-valid, .was-validated .form-control:valid:focus, .form-control.is-valid:focus{
+    border: 1px solid #007bff !important;
+}
+}
+
+.Profile-main-container , .custom-form{ .was-validated .form-select:valid, .form-select.is-valid, .was-validated .form-control:valid, .form-control.is-valid {
+    
+   border-bottom: 1px solid #007bff !important;
+    background-image: none;
+}
+}
+.Profile-main-container ,.custom-form { .was-validated .form-control:valid, .form-control.is-valid{
+    border: 1px solid #007bff;
+
+}}
+
+/* Valid (success) border color */
+
+.floating-label input:focus ~ label,
+.floating-label input:not(:placeholder-shown) ~ label {
+    top: -8px;
+    left: 12px;
+    color: #007bff;
+    font-size: 12px;
+}
+
+.fixed-toast {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1055; /* Ensures it's above other content */
+}
+
+
 // ............custom form css..................//
 
 // input tag custom border 
@@ -246,10 +346,15 @@ input[type=number] {
     overflow: hidden;
 }
 
-.CustomTableRow{
+.CustomTableRow,
+.customViewTableRow{
     position: relative;
 }
 .CustomTableRow:hover{
    background-color: #f3f7f9;
    cursor: pointer;
+}
+
+.customViewTableRow:hover{
+    background-color: #f3f7f9;
 }

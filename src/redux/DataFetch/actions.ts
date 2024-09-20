@@ -1,4 +1,17 @@
+
 import {
+    FETCH_PATIENT_REQUEST,
+    FETCH_PATIENT_SUCCESS,
+    FETCH_PATIENT_FAILURE,
+    FETCH_DOCTOR_REQUEST,
+    FETCH_DOCTOR_SUCCESS,
+    FETCH_DOCTOR_FAILURE,
+    FETCH_CUSTOMER_REQUEST,
+    FETCH_CUSTOMER_SUCCESS,
+    FETCH_CUSTOMER_FAILURE,
+    FETCH_SALES_ITEM_REQUEST,
+    FETCH_SALES_ITEM_SUCCESS,
+    FETCH_SALES_ITEM_FAILURE,
     FETCH_PURCHASE_ITEMS_REQUEST,
     FETCH_PURCHASE_ITEMS_SUCCESS,
     FETCH_PURCHASE_ITEMS_FAILURE,
@@ -7,11 +20,85 @@ import {
     FETCH_PURCHASE_DISTRIBUTER_FAILURE,
 } from "../../constants/dataFetch";
 
-import { PurchaseItem, StockItemTypes } from "../../pages/pharmacy/purchases/data";
+// SellersItemTypes
+import { PurchaseItem, StockItemTypes, SellersItemTypes, CustomersItemTypes, DoctorsData, Patient } from "../../pages/pharmacy/purchases/data";
 
+// for  patient 
+export const fetchPatientRequest = () => {
+    return {
+        type: FETCH_PATIENT_REQUEST
+    }
+}
+export const fetchPatientSuccess = (data: Patient[]) => {
+    return {
+        type: FETCH_PATIENT_SUCCESS,
+        payload: data
+    }
+}
+export const fetchPatientFailure = (error: any) => {
+    return {
+        type: FETCH_PATIENT_FAILURE,
+        payload: error
+    }
+}
+
+// for doctor 
+export const fetchDoctorRequest = () => {
+    return {
+        type: FETCH_DOCTOR_REQUEST
+    }
+}
+export const fetchDoctorSuccess = (data: DoctorsData[]) => {
+    return {
+        type: FETCH_DOCTOR_SUCCESS,
+        payload: data
+    }
+}
+export const fetchDoctorFailure = (error: string) => {
+    return {
+        type: FETCH_DOCTOR_FAILURE,
+        payload: error
+    }
+}
+// for customer 
+export const fetchCustomerRequest = () => {
+    return {
+        type: FETCH_CUSTOMER_REQUEST
+    }
+}
+export const fetchCustomerSuccess = (data: CustomersItemTypes[]) => {
+    return {
+        type: FETCH_CUSTOMER_SUCCESS,
+        payload: data
+    }
+}
+export const fetchCustomerFailure = (error: string) => {
+    return {
+        type: FETCH_CUSTOMER_FAILURE,
+        payload: error
+    }
+}
+
+// for sales 
+export const fetchSalesRequest = () => {
+    return {
+        type: FETCH_SALES_ITEM_REQUEST,
+    }
+}
+export const fetchSalesSuccess = (data: SellersItemTypes[]) => {
+    return {
+        type: FETCH_SALES_ITEM_SUCCESS,
+        payload: data
+    }
+}
+export const fetchSalesFailure = (error: string) => {
+    return {
+        type: FETCH_SALES_ITEM_FAILURE,
+        payload: error
+    }
+}
 
 // for purchase distributor 
-
 export const fetchPurchaseDistributorRequest = () => {
     return {
         type: FETCH_PURCHASE_DISTRIBUTER_REQUEST

@@ -30,6 +30,11 @@ const SignInSignUp2 = React.lazy(() => import("../pages/auth2/SignInSignUp2"));
 // landing
 const Landing = React.lazy(() => import("../pages/landing/"));
 
+//profile
+const MyAccount= React.lazy(() => import("../pages/profile/Myaccount"));
+
+//settings
+const Settings= React.lazy(() => import("../pages/settings/Settings"));
 // dashboard
 const Dashboard1 = React.lazy(() => import("../pages/dashboard/Dashboard1/"));
 const Dashboard2 = React.lazy(() => import("../pages/dashboard/Dashboard2/"));
@@ -39,17 +44,19 @@ const Dashboard4 = React.lazy(() => import("../pages/dashboard/Dashboard4/"));
 // pharmacy
 const Product     = React.lazy(() => import("../pages/pharmacy/products/product/Products"));
 const AddProduct  = React.lazy(() => import("../pages/pharmacy/products/addProduct/ProductEdit")); 
-const ProductDetail = React.lazy(() => import("../pages/pharmacy/products/productDetails/ProductDetails")); 
-const Sales = React.lazy(() => import("../pages/pharmacy/sales/sale"));
-const SaleReturn = React.lazy(() => import("../pages/pharmacy/sales/sale-return"));
-const NewSale = React.lazy(() => import("../pages/pharmacy/sales/new-sale"));
-const NewSaleReturn = React.lazy(() => import("../pages/pharmacy/sales/new-sale-return"));
+const ProductDetail = React.lazy(() => import("../pages/pharmacy/products/productDetails/ProductDetails"));
+
+const Sales = React.lazy(() => import("../pages/pharmacy/sales/sale/Sale"));
+const SaleReturn = React.lazy(() => import("../pages/pharmacy/sales/sale-return/SaleReturn"));
+const NewSale = React.lazy(() => import("../pages/pharmacy/sales/sale/NewSale"));
+const NewSaleReturn = React.lazy(() => import("../pages/pharmacy/sales/sale-return/NewSaleReturn"));
 
 const Purchase = React.lazy(() => import("../pages/pharmacy/purchases/purchase/Purchase"));
 const NewPurchase = React.lazy(() => import("../pages/pharmacy/purchases/purchase/NewPurchase"));
 const PurchaseReturn = React.lazy(() => import("../pages/pharmacy/purchases/purchase-return/PurchaseReturn"));
 const NewPurchaseReturn = React.lazy(() => import("../pages/pharmacy/purchases/purchase-return/NewPurchaseReturn"));
 const ViewPurchase = React.lazy(() => import("../pages/pharmacy/purchases/purchase/ViewPurchase"));
+const ViewPurchaseReturn = React.lazy(() => import("../pages/pharmacy/purchases/purchase-return/viewPurchaseReturn"));
 
 const CurrentStock = React.lazy(() => import("../pages/pharmacy/stocks/current-stock"));
 const StockExpiring = React.lazy(() => import("../pages/pharmacy/stocks/stock-expiring"));
@@ -274,6 +281,34 @@ const dashboardRoutes: RoutesProps = {
   ],
 };
 
+
+
+
+      const profileRoutes: RoutesProps = {
+        path: "/Myaccount",
+        name: "Myaccount",
+        route: PrivateRoute,
+        element: <MyAccount/>,
+        // header: "Apps",
+      };
+
+
+       // settings Routes
+      const settingsRoutes: RoutesProps = {
+        path: "/Settings",
+        name: "Settings",
+        route: PrivateRoute,
+        element: <Settings/>,
+        // header: "Apps",
+      };
+
+
+
+
+
+
+  
+
 // Pharmacy Routes
 const pharmacyRoutes: RoutesProps = {
   path: "/pharmacy",
@@ -371,9 +406,15 @@ const pharmacyRoutes: RoutesProps = {
       route: PrivateRoute,
     },
     {
-      path: "/View/:id",
+      path: "/purchase/View/:id",
       name: "Purchase View",
       element: < ViewPurchase />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/purchase-return/View/:id",
+      name: "Purchase Return View",
+      element: < ViewPurchaseReturn />,
       route: PrivateRoute,
     },
     {
@@ -1271,6 +1312,8 @@ const flattenRoutes = (routes: RoutesProps[]) => {
 // All routes
 const authProtectedRoutes = [
   dashboardRoutes,
+  profileRoutes,
+  settingsRoutes,
   pharmacyRoutes,
   ...appRoutes,
   extrapagesRoutes,

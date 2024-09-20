@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import { useState } from "react";
 import Avatar2 from "../assets/images/users/user-2.jpg";
 import Avatar5 from "../assets/images/users/user-5.jpg";
 
@@ -15,6 +15,23 @@ interface TopbarSearchProps {
 }
 
 const TopbarSearch = (props: TopbarSearchProps) => {
+  const [isExpanded, setIsExpanded] = useState(false); // State for the search field expansion
+  const [isTransitioning, setIsTransitioning] = useState(false); // State for handling transition
+
+  const toggleSearchField = () => {
+    if (isExpanded) {
+      // Start collapsing
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setIsExpanded(false);
+        setIsTransitioning(false);
+      }, 300); // Match this duration with the transition duration
+    } else {
+      // Expand the search field
+      setIsExpanded(true);
+    }
+  };
+
   const showSearchOptions = () => {
     document.getElementById("search-dropdown")!.classList.add("d-block");
   };
@@ -26,15 +43,28 @@ const TopbarSearch = (props: TopbarSearchProps) => {
   return (
     <>
       <form>
-        <input
-          type="search"
-          className="form-control rounded-pill"
-          placeholder="Search..."
-          id="top-search"
-          onFocus={showSearchOptions}
-          onBlur={hideSearchOptions}
-        />
-        <span className="mdi mdi-magnify search-icon font-22"></span>
+        <div className="search-container">
+          <span
+            className="mdi mdi-magnify search-icon font-22"
+            onClick={toggleSearchField}
+          ></span>
+          <input
+            type="search"
+            className={`form-control rounded-pill ${
+              isExpanded ? "expanded" : "collapsed"
+            } ${isTransitioning ? "transitioning" : ""}`}
+            placeholder="Search..."
+            onFocus={showSearchOptions}
+            onBlur={hideSearchOptions}
+            id="top-search"
+            style={{
+              width: isExpanded ? "200px" : "0",
+              transition: "width 0.3s ease, opacity 0.3s ease",
+              opacity: isExpanded ? "1" : "0",
+              visibility: isExpanded ? "visible" : "hidden",
+            }}
+          />
+        </div>
       </form>
 
       <div
@@ -96,22 +126,6 @@ const TopbarSearch = (props: TopbarSearchProps) => {
           </Link>
         </div>
       </div>
-
-      {/* <Select
-        {...props}
-        components={{ IndicatorsContainer, MenuList }}
-        placeholder={'Search...'}
-        options={formateOptions(options)}
-        formatOptionLabel={handleFormatOptionLabel}
-        isOptionDisabled={(option) => option.type === 'title'}
-        maxMenuHeight={350}
-        handleClick={onClick}
-        isSearchable
-        isClearable
-        name="search-app"
-        className="app-search dropdown"
-        classNamePrefix="react-select"
-      /> */}
     </>
   );
 };

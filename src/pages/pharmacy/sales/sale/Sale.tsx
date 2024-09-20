@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import classNames from "classnames";
 
 // components
-import PageTitle from "../../../../components/PageTitle";
 import Table from "../../../../components/Table";
 
 // dummy data
-import { sellers } from "../data";
+
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../redux/store";
+import { fetchPatientRequest, fetchSalesRequest } from "../../../../redux/DataFetch/actions";
+
 
 /* name column render */
 const NameColumn = ({ row }: { row: any }) => {
@@ -42,7 +45,7 @@ const NameColumn = ({ row }: { row: any }) => {
 const ActionColumn = ({ row }: { row: any }) => {
   return (
     <>
-      <Link to={`/sales-edit/${row.original.id}`} className="action-icon">
+      <Link to={`/sales-edit/${row.original.invoice_id}`} className="action-icon">
         {" "}
         <i className="mdi mdi-square-edit-outline"></i>
       </Link>
@@ -54,38 +57,65 @@ const ActionColumn = ({ row }: { row: any }) => {
   );
 };
 
+
+// main component
+const Sellers = () => {
+  const dispatch = useDispatch();
+  const [salesWithPatientNames, setSalesWithPatientNames] = useState<any[]>([]);
+
+  const patients = useSelector((state: RootState) => state.patient.data);
+  const sallers = useSelector((state: RootState) => state.sales.data);
+  console.log('patients data-',patients);
+  console.log('sallers data-',sallers);
+  useEffect(()=>{
+    dispatch(fetchPatientRequest())
+    dispatch(fetchSalesRequest());
+  },[dispatch])
+
+  useEffect(()=>{
+   const updateSales = sallers.map((saller: {customer_id: string})=>{
+      const patient = patients.find((item: { patient_id: any; })=> item.patient_id === saller.customer_id);
+      return {
+        ...saller,
+        patientName: patient ? patient.name : 'N/A'
+      }
+    })
+    setSalesWithPatientNames(updateSales);
+  },[sallers, patients])
+
+  
 // get all columns
 const columns = [
   {
     Header: "Invoice",
-    accessor: "id",
+    accessor: "invoice_id",
     sort: true,
     // Cell: NameColumn,
   },
   {
     Header: "Patient",
-    accessor: "name",
+    accessor: "patientName",
     sort: true,
   },
   {
     Header: "Bill Date",
-    accessor: "created_on",
+    accessor: "bill_date",
     sort: true,
     // Cell: RatingsColumn,
   },
   {
     Header: "Item",
-    accessor: "products",
+    accessor: "items",
     sort: true,
   },
   {
     Header: "Amount",
-    accessor: "revenue",
+    accessor: "amount",
     sort: true,
   },
   {
     Header: "Payment",
-    accessor: "balance",
+    accessor: "payment_mode",
     sort: true,
   },
   {
@@ -96,7 +126,8 @@ const columns = [
   },
 ];
 
-// get pagelist to display
+  
+  // get pagelist to display
 const sizePerPageList = [
   {
     text: "10",
@@ -108,12 +139,9 @@ const sizePerPageList = [
   },
   {
     text: "All",
-    value: sellers.length,
+    value: salesWithPatientNames.length,
   },
 ];
-
-// main component
-const Sellers = () => {
   return (
     <>
       {/* <PageTitle
@@ -160,7 +188,7 @@ const Sellers = () => {
               
               <Table
                 columns={columns}
-                data={sellers}
+                data={salesWithPatientNames}
                 pageSize={10}
                 sizePerPageList={sizePerPageList}
                 isSortable={true}

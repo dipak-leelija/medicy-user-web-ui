@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import AddNewDistrbutor from '../../pages/pharmacy/purchases/purchase/AddNewDistrbutor';
+import AddNewCustomer from '../../pages/pharmacy/sales/sale/AddNewCustomer';
 
 
 interface Seller {
     id: number;
     name: string;
+    item_name?: string;
     store?: string;
     unit?: string;
 }
@@ -26,19 +28,21 @@ interface stocks {
 }
 interface SearchDropdownProps {
     sellers?: Seller[];
+    sellerItemInput?: boolean,
     purchaseItems?: PurchaseItem[];
     stocks?: stocks[];
     onSelect: (id: number) => void;
     onAdd?: () => void; // Optional callback for the "Add" button
+    onAddCustomer?: () => void;
     inputValue: string;
     setInputValue: (value: string) => void;
     searchType: 'id' | 'name';
     label: string;
     className: string;
-    defaultDropDown?:boolean,
+    defaultDropDown?: boolean,
 }
 
-const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems, stocks, onSelect, onAdd, inputValue, setInputValue, searchType, label, className,defaultDropDown }) => {
+const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers,sellerItemInput, purchaseItems, stocks, onSelect, onAdd, onAddCustomer, inputValue, setInputValue, searchType, label, className, defaultDropDown }) => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const [filteredItems, setFilteredItems] = useState<(Seller | PurchaseItem | stocks)[]>([]);
     const [focusIndex, setFocusIndex] = useState<number>(-1);
@@ -64,19 +68,20 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems,
                 filtered = sellers.filter(seller =>
                     searchType === 'id'
                         ? seller.id.toString().includes(value)
-                        : seller.name.toLowerCase().includes(value.toLowerCase())
+                        : seller.name || seller.item_name?.toLowerCase().includes(value.toLowerCase())
                 );
+                console.log('Filtered Sellers:', filtered);
             } else if (purchaseItems) {
                 filtered = purchaseItems.filter(item =>
                     searchType === 'id'
                         ? item.id.toString().includes(value)
-                        : item.item_name.toLowerCase().includes(value.toLowerCase())
+                        : item.item_name?.toLowerCase().includes(value.toLowerCase())
                 );
             } else if (stocks) {
                 filtered = stocks.filter(stock =>
                     searchType === 'id'
                         ? stock.bill_id.toString().includes(value)
-                        : stock.name.toLowerCase().includes(value.toLowerCase())
+                        : stock.name?.toLowerCase().includes(value.toLowerCase())
                 );
             }
 
@@ -123,18 +128,19 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems,
                     value={inputValue}
                     onChange={searchItems}
                     onKeyDown={handleKeyDown}
+                    // style={sellerItemInput ? {width:'150px'} : {width:'auto'}}
                 />
             </FloatingLabel>
-            {showDropdown &&  (
-                <div className='invoiceDropdown mt-1'>
+            {showDropdown && (
+                <div className={stocks ? 'invoiceDropdown mt-1' : 'invoiceDropdown mt-1  w-75'}>
                     <div className='p-2 py-1 bg-secondary bg-opacity-25 text-dark'>
                         {searchType === 'id' ? 'Invoice Id' : (
                             <div className='row'>
-                                {!stocks && <div className='col-md-3'>Name</div>}
-                                {purchaseItems && <div className='col-md-3'>composition</div>}
-                                {sellers && <div className='col-md-3'>Store</div>}
-                                {!stocks && <div className='col-md-3'>Unit</div>}
-                                {purchaseItems && <div className='col-md-3'>Stock</div>}
+                                {!stocks && <div className={purchaseItems ? "col-md-3" : "col-md-4"}>Searched For</div>}
+                                {purchaseItems && <div className={purchaseItems ? "col-md-3" : "col-md-4"}>composition</div>}
+                                {/* {sellers && <div className='col-md-6'>Stock</div>} */}
+                                {!stocks && <div className={purchaseItems ? "col-md-3" : "col-md-4"}>Unit</div>}
+                                {!stocks && <div className={purchaseItems ? "col-md-3" : "col-md-4"}>Stock</div>}
 
                             </div>
                         )}
@@ -161,10 +167,10 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems,
                                     </>
                                 ) : (
                                     <div className='row'>
-                                        {sellers && <div className='item-detail'>{'store' in item ? item.store || 'N/A' : 'N/A'}
-                                        </div>}
+                                        {/* {sellers && <div className='item-detail'>{'store' in item ? item.store || 'N/A' : 'N/A'}
+                                        </div>} */}
 
-                                        <div className='col-md-3 item-detail'>
+                                        <div className={sellers ? "col-md-4 item-detail" : "col-md-3"}>
                                             {'name' in item ? item.name : (item as PurchaseItem).item_name}
                                         </div>
                                         {purchaseItems &&
@@ -205,8 +211,11 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, purchaseItems,
                         <div className='dropdown-item text-center text-danger'>{searchType === 'id' ? `No ${label} Id found` : `No ${label} found`}</div>
                     )}
 
-                    {filteredItems.length === 0 && stocks && (
-                       <AddNewDistrbutor/>
+                    {filteredItems.length === 0 && (
+                        <>
+                            {stocks && onAdd && <AddNewDistrbutor />}
+                            {stocks && onAddCustomer && <AddNewCustomer />}
+                        </>
                     )}
                 </div>
             )}
