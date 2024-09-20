@@ -10,8 +10,7 @@ import { hideRightSidebar } from "../../redux/actions";
 import { AppDispatch, RootState } from "../../redux/store";
 
 // components
-import Chats from "../../components/Chats";
-import Tasks from "../../components/Tasks";
+
 import ThemeCustomizer from "../../components/ThemeCustomizer/";
 
 import { chats, tasks } from "./data";
@@ -78,33 +77,26 @@ const RightSideBar = (props: RightSideBarProps) => {
               defaultActiveKey="themecustomizer"
             >
               <Nav variant="tabs" className="nav-bordered nav-justified">
-                <Nav.Item as="li">
-                  <Nav.Link eventKey="chats" className="py-2 cursor-pointer">
-                    <i className="mdi mdi-message-text d-block font-22 my-1"></i>
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item as="li">
-                  <Nav.Link eventKey="tasks" className="py-2 cursor-pointer">
-                    <i className="mdi mdi-format-list-checkbox d-block font-22 my-1"></i>
-                  </Nav.Link>
-                </Nav.Item>
+                
                 <Nav.Item as="li">
                   <Nav.Link
                     eventKey="themecustomizer"
                     className="py-2 cursor-pointer"
-                  >
+                   >
                     <i className="mdi mdi-cog-outline d-block font-22 my-1"></i>
                   </Nav.Link>
                 </Nav.Item>
               </Nav>
 
-              <Tab.Content className="p-0">
-                <Tab.Pane eventKey="chats">
-                  <Chats chats={chats} />
+           <Tab.Content className="p-0">
+
+                {/* <Tab.Pane eventKey="chats">
+                 
                 </Tab.Pane>
                 <Tab.Pane eventKey="tasks">
-                  <Tasks tasks={tasks} />
-                </Tab.Pane>
+                 
+                </Tab.Pane>  */}
+                
                 <Tab.Pane eventKey="themecustomizer">
                   <ThemeCustomizer />
                 </Tab.Pane>

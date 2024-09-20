@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
-import { Button, Alert, Row, Col } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Button, Alert, Row, Col, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -11,12 +9,10 @@ import { resetAuth, forgotPassword } from "../../redux/actions";
 import { RootState, AppDispatch } from "../../redux/store";
 
 // components
-import { VerticalForm, FormInput } from "../../components/";
-
 import AuthLayout from "./AuthLayout";
 
 interface UserData {
-  username: string;
+  identifier: string;
 }
 
 /* bottom link */
@@ -48,66 +44,79 @@ const ForgetPassword = () => {
   const { loading, passwordReset, resetPasswordSuccess, error } = useSelector(
     (state: RootState) => ({
       loading: state.Auth.loading,
-      user: state.Auth.user,
       error: state.Auth.error,
       passwordReset: state.Auth.passwordReset,
       resetPasswordSuccess: state.Auth.resetPasswordSuccess,
     })
   );
 
-  /*
-   * form validation schema
-   */
-  const schemaResolver = yupResolver(
-    yup.object().shape({
-      username: yup.string().required(t("Please enter Username")),
-    })
-  );
+  const [validated, setValidated] = useState(false);
+  const [formData, setFormData] = useState<UserData>({
+    identifier: "",
+  });
 
-  /*
-   * handle form submission
-   */
-  const onSubmit = (formData: UserData) => {
-    dispatch(forgotPassword(formData["username"]));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, identifier: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    } else {
+      dispatch(forgotPassword(formData.identifier));
+    }
+    setValidated(true);
   };
 
   return (
-    <>
-      <AuthLayout
-        helpText={t(
-          "Enter your email address and we'll send you an email with instructions to reset your password."
-        )}
-        bottomLinks={<BottomLink />}
-      >
-        {resetPasswordSuccess && (
-          <Alert variant="success">{resetPasswordSuccess.message}</Alert>
-        )}
+    <AuthLayout bottomLinks={<BottomLink />}>
+      {resetPasswordSuccess && (
+        <Alert variant="success">{resetPasswordSuccess.message}</Alert>
+      )}
 
-        {error && (
-          <Alert variant="danger" className="my-2">
-            {error}
-          </Alert>
-        )}
+      {error && (
+        <Alert variant="danger" className="my-2">
+          {error}
+        </Alert>
+      )}
 
-        {!passwordReset && (
-          <VerticalForm onSubmit={onSubmit} resolver={schemaResolver}>
-            <FormInput
-              label={t("Username")}
-              type="text"
-              name="username"
-              placeholder={t("Enter your username")}
-              containerClass={"mb-3"}
-            />
+      {!passwordReset && (
+        <div className="custom-form">
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Row className="form-group mb-0">
+        <Col className="floating-label">
+        </Col>
+        </Row>
 
-            <div className="d-grid text-center">
-              <Button variant="primary" type="submit" disabled={loading}>
-                {t("Reset Password")}
-              </Button>
-            </div>
-          </VerticalForm>
-        )}
-      </AuthLayout>
-    </>
+        <Form.Group className="floating-label mb-3">
+                  <Form.Control
+                    type="text"
+                    name="identifier"
+                    id="user"
+                    className="med-input"
+                    placeholder=""
+                    value={formData.identifier}
+                    onChange={handleChange}
+                    required
+                  />
+                  <Form.Label htmlFor="fname">
+                    User name / Email<span className="form-asterisk">*</span>
+                  </Form.Label>
+                  <Form.Control.Feedback type="invalid">
+                    {t("User name / Email is required")}
+                  </Form.Control.Feedback>
+                </Form.Group>
+        <div className="d-grid text-center">
+          <Button variant="primary" type="submit" disabled={loading}>
+            {t("Reset Password")}
+          </Button>
+        </div>
+      </Form></div>
+        
+      )}
+    </AuthLayout>
   );
 };
 

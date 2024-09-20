@@ -365,9 +365,7 @@ const Topbar = ({
             {/* <li className="dropdown d-inline-block d-lg-none">
               <SearchDropdown />
             </li> */}
-            <li className="dropdown d-none d-lg-inline-block">
-              <MaximizeScreen />
-            </li>
+            
             <li className="dropdown d-none d-lg-inline-block topbar-dropdown">
               <AppsDropdown />
             </li>

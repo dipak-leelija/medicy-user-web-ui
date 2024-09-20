@@ -37,6 +37,7 @@ import TwoToneIcons from "./TwoToneIcons";
 import SidebarUserInfo from "./SidebarUserInfo";
 import TopbarTheme from "./TopbarTheme";
 import TwoColumnTheme from "./TwoColumnTheme";
+import MaximizeScreen from "../MaximizeScreen";
 
 const ThemeCustomizer = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -105,14 +106,13 @@ const ThemeCustomizer = () => {
       layoutType === layoutConstants.LayoutTypes.LAYOUT_TWO_COLUMN
     );
   }, [layoutType, width, layoutMode]);
-
   useEffect(() => {
     _loadStateFromProps();
   }, [_loadStateFromProps]);
-
   /**
    * On layout change
    */
+  
   const changeLayoutType = (value: any) => {
     var layout = value;
     //
@@ -271,7 +271,6 @@ const ThemeCustomizer = () => {
         break;
     }
   };
-
   /**
    * Change the leftsiderbar type
    */
@@ -385,6 +384,8 @@ const ThemeCustomizer = () => {
           <strong>Customize </strong> the overall color scheme, sidebar menu,
           etc.
         </div>
+
+        <MaximizeScreen />
 
         {/* Layouts */}
         <LayoutTypes
