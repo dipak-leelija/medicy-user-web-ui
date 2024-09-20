@@ -1,20 +1,12 @@
-import React from "react";
-import { Button, Row, Col } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Row, Col, Form, FormControl } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 // components
-import { VerticalForm, FormInput } from "../../components/";
-
 import AuthLayout from "./AuthLayout";
 
 import userImg from "../../assets/images/users/user-1.jpg";
-
-interface UserData {
-  password: string;
-}
 
 /* bottom link */
 const BottomLink = () => {
@@ -22,9 +14,9 @@ const BottomLink = () => {
   return (
     <Row className="mt-3">
       <Col className="text-center">
-        <p className="text-white-50">
+        <p className="text-black-50">
           {t("Not you? return")}{" "}
-          <Link to={"/auth/login"} className="text-white ms-1">
+          <Link to={"/auth/login"} className="text-black ms-1">
             <b>{t("Sign In")}</b>
           </Link>
         </p>
@@ -35,26 +27,31 @@ const BottomLink = () => {
 
 const LockScreen = () => {
   const { t } = useTranslation();
+  const [showPassword, setShowPassword] = useState({ password: false });
+  const [validated, setValidated] = useState(false);
 
-  /*
-   * form validation schema
-   */
-  const schemaResolver = yupResolver(
-    yup.object().shape({
-      password: yup.string().required(t("Please enter Password")),
-    })
-  );
+  // Toggle password visibility
+  const toggleShowPassword = (field: keyof typeof showPassword) => {
+    setShowPassword({ ...showPassword, [field]: !showPassword[field] });
+  };
 
-  /*
-   * handle form submission
-   */
-  const onSubmit = (formData: UserData) => {
-    console.log(formData["password"]);
+  // Handle form submission
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    } else {
+      // Handle successful form submission logic here
+      console.log("Password submitted:", form["password"].value);
+    }
+
+    setValidated(true);
   };
 
   return (
     <>
-      <AuthLayout bottomLinks={<BottomLink />}>
+      <AuthLayout>
         <div className="text-center w-75 m-auto">
           <img
             src={userImg}
@@ -62,26 +59,50 @@ const LockScreen = () => {
             height="88"
             className="rounded-circle shadow"
           />
-          <h4 className="text-dark-50 text-center mt-3">{t("Hi ! Geneva ")}</h4>
+          <h4 className="text-dark-50 text-center mt-3">
+            {t("Hi ! Geneva ")}
+          </h4>
           <p className="text-muted mb-4">
             {t("Enter your password to access the admin.")}
           </p>
         </div>
-        <VerticalForm onSubmit={onSubmit} resolver={schemaResolver}>
-          <FormInput
-            label={t("Password")}
-            type="password"
-            name="password"
-            placeholder={t("Enter your password")}
-            containerClass={"mb-3"}
-          />
-
-          <div className="d-grid text-center">
-            <Button variant="primary" type="submit">
-              {t("Log In")}
-            </Button>
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <div className="form-group">
+            <div className="floating-label">
+              <Form.Group controlId="password">
+                <FormControl
+                  type={showPassword.password ? "text" : "password"}
+                  name="password"
+                  placeholder=""
+                  minLength={6}
+                  maxLength={20} // Adjusted maxLength
+                  required
+                />
+                <Form.Label>Password</Form.Label>
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid password.
+                </Form.Control.Feedback>
+                <i
+                  className={`fas ${
+                    showPassword.password ? "fa-eye-slash" : "fa-eye"
+                  } password-toggle-icon`}
+                  onClick={() => toggleShowPassword("password")}
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                  }}
+                ></i>
+              </Form.Group>
+            </div>
           </div>
-        </VerticalForm>
+          <Button type="submit" className="w-100 mt-2">
+            {t("Unlock")}
+          </Button>
+        </Form>
+        <BottomLink/>
       </AuthLayout>
     </>
   );

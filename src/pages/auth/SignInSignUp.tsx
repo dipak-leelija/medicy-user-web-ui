@@ -97,7 +97,7 @@ const SignInSignUp = () => {
               <VerticalForm<UserData>
                 onSubmit={onSubmit}
                 resolver={loginSchema}
-                defaultValues={{ username: "test", loginpassword: "test" }}
+              
               >
                 <FormInput
                   label="Username"
