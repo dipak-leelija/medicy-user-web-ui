@@ -32,7 +32,7 @@ export function configureFakeBackend() {
       setTimeout(function () {
         // get parameters from post request
         let params = JSON.parse(config.data);
-
+        
         // find if any user matches login credentials
         let filteredUsers = users.filter((user) => {
           return (
