@@ -7,6 +7,7 @@ import AddNewCustomer from '../../pages/pharmacy/sales/sale/AddNewCustomer';
 
 interface Seller {
     id: number;
+    product_id?: string;
     name: string;
     item_name?: string;
     store?: string;
@@ -31,7 +32,7 @@ interface SearchDropdownProps {
     sellerItemInput?: boolean,
     purchaseItems?: PurchaseItem[];
     stocks?: stocks[];
-    onSelect: (id: number) => void;
+    onSelect: (id: number | string) => void;
     onAdd?: () => void; // Optional callback for the "Add" button
     onAddCustomer?: () => void;
     inputValue: string;
@@ -42,7 +43,7 @@ interface SearchDropdownProps {
     defaultDropDown?: boolean,
 }
 
-const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers,sellerItemInput, purchaseItems, stocks, onSelect, onAdd, onAddCustomer, inputValue, setInputValue, searchType, label, className, defaultDropDown }) => {
+const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, sellerItemInput, purchaseItems, stocks, onSelect, onAdd, onAddCustomer, inputValue, setInputValue, searchType, label, className, defaultDropDown }) => {
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const [filteredItems, setFilteredItems] = useState<(Seller | PurchaseItem | stocks)[]>([]);
     const [focusIndex, setFocusIndex] = useState<number>(-1);
@@ -93,7 +94,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers,sellerItemInput
         }
     };
 
-    const handleSelect = (selectedId: number) => {
+    const handleSelect = (selectedId: number | string) => {
         onSelect(selectedId);
         setShowDropdown(false);
     };
@@ -128,7 +129,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers,sellerItemInput
                     value={inputValue}
                     onChange={searchItems}
                     onKeyDown={handleKeyDown}
-                    // style={sellerItemInput ? {width:'150px'} : {width:'auto'}}
+                    style={sellerItemInput ? { width: '150px', paddingLeft: '5px' } : { width: '100%' }}
                 />
             </FloatingLabel>
             {showDropdown && (
@@ -149,7 +150,8 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers,sellerItemInput
                     {filteredItems.length > 0 ? (
                         filteredItems.map((item, index) => (
                             <div
-                                key={('id' in item ? item.id : (item as stocks).bill_id)}
+                                key={'product_id' in item ? item.product_id // Check if product_id exists
+                                    : ('id' in item ? item.id : (item as stocks).bill_id)}
                                 className={`dropdown-item ${index === focusIndex ? 'focused' : ''}`}
                                 onClick={() => {
                                     if ('id' in item) {
@@ -157,6 +159,9 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers,sellerItemInput
                                     } else if ('bill_id' in item) {
                                         handleSelect(item.bill_id);
                                     }
+                                    // else if(sellers(item)){
+                                    //     handleSelect(item.product_id);
+                                    // }
                                 }}
                             >
                                 {searchType === 'id' ? (

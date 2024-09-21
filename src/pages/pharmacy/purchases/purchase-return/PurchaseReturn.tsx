@@ -8,7 +8,7 @@ import PageTitle from "../../../../components/PageTitle";
 import Table from "../../../../components/Table";
 
 // dummy data
-import { stock } from "../data";
+import { stock } from "../../data";
 
 /* name column render */
 const NameColumn = ({ row }: { row: any }) => {
