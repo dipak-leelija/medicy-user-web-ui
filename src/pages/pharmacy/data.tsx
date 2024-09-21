@@ -1,11 +1,11 @@
-import product1 from "../../../assets/images/products/product-1.png";
-import product2 from "../../../assets/images/products/product-2.png";
-import product3 from "../../../assets/images/products/product-3.png";
-import product4 from "../../../assets/images/products/product-4.png";
-import product5 from "../../../assets/images/products/product-5.png";
-import product6 from "../../../assets/images/products/product-6.png";
-import product7 from "../../../assets/images/products/product-7.png";
-import product8 from "../../../assets/images/products/product-8.png";
+import product1 from "../../assets/images/products/product-1.png";
+import product2 from "../../assets/images/products/product-2.png";
+import product3 from "../../assets/images/products/product-3.png";
+import product4 from "../../assets/images/products/product-4.png";
+import product5 from "../../assets/images/products/product-5.png";
+import product6 from "../../assets/images/products/product-6.png";
+import product7 from "../../assets/images/products/product-7.png";
+import product8 from "../../assets/images/products/product-8.png";
 
 
 export interface Patient {
@@ -32,13 +32,28 @@ export interface Patient {
 
 
 export interface ProductItemTypes {
-  id: number;
+  product_id: string;
   name: string;
-  image: string;
-  rating: number;
-  price: number;
-  quantity: number;
-  status: boolean;
+  comp_1: string;
+  comp_2: string | null;
+  hsno_number: number;
+  type: string;
+  packaging_type: string;
+  power: number;
+  unit_quantity: number;
+  unit_id: number;
+  unit: string;
+  manufacturer_id: number;
+  mrp: number;
+  gst: number | null;
+  dsc: string;
+  added_by: string;
+  added_on: string;
+  verified: number;
+  updated_by: string;
+  updated_on: string;
+  admin_id: string;
+  edit_request_flag: number;
 }
 
 export interface OrdersItemTypes {
@@ -118,6 +133,29 @@ export interface StockItemTypes {
   amount: number;
   payment_mode: string;
 }
+
+export interface CurrentStockTypes {
+  id: number;
+  stock_in_details_id: number;
+  product_id: string;
+  batch_no: string;
+  exp_date: string;
+  distributor_id: number;
+  weightage: number;
+  unit: string;
+  qty: number;
+  loosely_count: number;
+  mrp: number;
+  loosely_price: number;
+  ptr: number;
+  gst: number;
+  added_by: string;
+  added_on: string;
+  updated_by: string;
+  updated_on: string;
+  admin_id?: string; // Assuming admin_id could be optional as it's not explicitly mentioned in all records
+}
+
 export interface PurchaseItem {
   id: number;
   bill_id: number;
@@ -486,76 +524,76 @@ const patients: Patient[] = [
 ];
 const products: ProductItemTypes[] = [
   {
-    id: 1,
-    name: "Men's sport T-shirt",
-    image: product1,
-    rating: 3,
-    price: 39,
-    quantity: 98,
-    status: true,
+    product_id: "PR100000578618",
+    name: "Deriphyllin BM  Expectorant",
+    comp_1: "Ambroxol (30mg/5ml), Guaifenesin (50mg/5ml)",
+    comp_2: "Terbutaline (1.25mg/5ml)",
+    hsno_number: 0,
+    type: "Allopathy",
+    packaging_type: "Strip",
+    power: 2,
+    unit_quantity: 1950,
+    unit_id: 2,
+    unit: "Tablets",
+    manufacturer_id: 21,
+    mrp: 104.85,
+    gst: 12,
+    dsc: "Deriphyllin BM Expectorant gives relief from cough...",
+    added_by: "ADM240104174714300",
+    added_on: "2023-11-21 13:05:15",
+    verified: 0,
+    updated_by: "ADM240104174714300",
+    updated_on: "2024-08-06 16:05",
+    admin_id: "ADM240104174714300",
+    edit_request_flag: 0
   },
   {
-    id: 2,
-    name: "Jack & Jones Men's T-shirt (Red)",
-    image: product2,
-    rating: 2,
-    price: 98,
-    quantity: 23,
-    status: true,
+    product_id: "PR100003131298",
+    name: "Fimanta 120 Tablet",
+    comp_1: "Fimasartan (120mg)",
+    comp_2: "NULL",
+    hsno_number: 0,
+    type: "Allopathy",
+    packaging_type: "Strip",
+    power: 1,
+    unit_quantity: 10,
+    unit_id: 1,
+    unit: "Tablets",
+    manufacturer_id: 49,
+    mrp: 190,
+    gst: 2,
+    dsc: "",
+    added_by: "ADM240104174714300",
+    added_on: "2023-11-21 13:08:55",
+    verified: 0,
+    updated_by: "ADM240104174714300",
+    updated_on: "2024-03-04 13:10:54",
+    admin_id: "ADM240104174714300",
+    edit_request_flag: 0
   },
   {
-    id: 3,
-    name: "Women's Marron Tshirt",
-    image: product3,
-    rating: 5,
-    price: 49,
-    quantity: 235,
-    status: true,
-  },
-  {
-    id: 4,
-    name: "Jack & Jones Men's T-shirt (Sky Blue)",
-    image: product4,
-    rating: 3,
-    price: 29,
-    quantity: 385,
-    status: false,
-  },
-  {
-    id: 5,
-    name: "Soft Green Tshirt",
-    image: product5,
-    rating: 4,
-    price: 49,
-    quantity: 25,
-    status: false,
-  },
-  {
-    id: 6,
-    name: "Jack & Jones Men's Jacket",
-    image: product6,
-    rating: 5,
-    price: 19,
-    quantity: 19,
-    status: true,
-  },
-  {
-    id: 7,
-    name: "Women's Soft Green Tshirt",
-    image: product7,
-    rating: 5,
-    price: 99,
-    quantity: 36,
-    status: false,
-  },
-  {
-    id: 8,
-    name: "Roadster Long Sleeves T-shirt",
-    image: product8,
-    rating: 1,
-    price: 29,
-    quantity: 128,
-    status: true,
+    product_id: "PR100005357908",
+    name: "Depranil 75mg Tablet",
+    comp_1: "Imipramine (75mg)",
+    comp_2: "NULL",
+    hsno_number: 0,
+    type: "Allopathy",
+    packaging_type: "Strip",
+    power: 1,
+    unit_quantity: 10,
+    unit_id: 1,
+    unit: "Tablets",
+    manufacturer_id: 385,
+    mrp: 23.21,
+    gst: null,
+    dsc: "",
+    added_by: "0",
+    added_on: "2023-11-21 13:05:23",
+    verified: 0,
+    updated_by: "0",
+    updated_on: "0000-00-00 00:00:00",
+    admin_id: "0",
+    edit_request_flag: 0
   },
 ];
 
@@ -1662,6 +1700,48 @@ const orders: OrdersItemTypes[] = [
   },
 ];
 
+const cartItems: CartItemTypes[] = [
+  {
+    id: 1,
+    image: product1,
+    name: "Polo Navy blue T-shirt",
+    size: "Large",
+    color: "Light Green",
+    price: 148.66,
+    qty: 5,
+    total: 743.3,
+  },
+  {
+    id: 2,
+    image: product2,
+    name: "Brown Hoodie for men",
+    size: "Small",
+    color: "Brown",
+    price: 99,
+    qty: 2,
+    total: 198.0,
+  },
+  {
+    id: 3,
+    image: product3,
+    name: "Designer Awesome T-Shirt",
+    size: "Medium",
+    color: "Light pink",
+    price: 49.99,
+    qty: 3,
+    total: 499.9,
+  },
+  {
+    id: 4,
+    image: product5,
+    name: "Half Sleeves Tshirt",
+    size: "Large",
+    color: "Green",
+    price: 129.99,
+    qty: 1,
+    total: 129.99,
+  },
+];
 const customers: CustomersItemTypes[] = [
   {
     id: 1,
@@ -2046,48 +2126,6 @@ const sellers: SellersItemTypes[] = [
   }
 ];
 
-const cartItems: CartItemTypes[] = [
-  {
-    id: 1,
-    image: product1,
-    name: "Polo Navy blue T-shirt",
-    size: "Large",
-    color: "Light Green",
-    price: 148.66,
-    qty: 5,
-    total: 743.3,
-  },
-  {
-    id: 2,
-    image: product2,
-    name: "Brown Hoodie for men",
-    size: "Small",
-    color: "Brown",
-    price: 99,
-    qty: 2,
-    total: 198.0,
-  },
-  {
-    id: 3,
-    image: product3,
-    name: "Designer Awesome T-Shirt",
-    size: "Medium",
-    color: "Light pink",
-    price: 49.99,
-    qty: 3,
-    total: 499.9,
-  },
-  {
-    id: 4,
-    image: product5,
-    name: "Half Sleeves Tshirt",
-    size: "Large",
-    color: "Green",
-    price: 129.99,
-    qty: 1,
-    total: 129.99,
-  },
-];
 
 const stock: StockItemTypes[] = [
   {
@@ -2110,6 +2148,209 @@ const stock: StockItemTypes[] = [
     created_on: '09/11/2024',
     amount: 7000,
     payment_mode: 'UPI'
+  },
+];
+
+const currentStock: CurrentStockTypes[] = [
+  {
+    id: 370,
+    stock_in_details_id: 370,
+    product_id: "PR147532812610",
+    batch_no: "SR1TLMC40S1",
+    exp_date: "01/2090",
+    distributor_id: 3,
+    weightage: 10,
+    unit: "Tablets",
+    qty: 18,
+    loosely_count: 180,
+    mrp: 79.90,
+    loosely_price: 7.99,
+    ptr: 52.30,
+    gst: 12,
+    added_by: "ADM240819122342",
+    added_on: "2024-08-19 15:00:06",
+    updated_by: "0000-00-00 00:00:00",
+    updated_on: "ADM240819122342464",
+  },
+  {
+    id: 371,
+    stock_in_details_id: 371,
+    product_id: "PR777016086241",
+    batch_no: "SR1STML5S1",
+    exp_date: "01/2090",
+    distributor_id: 3,
+    weightage: 30,
+    unit: "Tablets",
+    qty: 58,
+    loosely_count: 1740,
+    mrp: 96.98,
+    loosely_price: 3.23,
+    ptr: 49.99,
+    gst: 12,
+    added_by: "ADM240819122342",
+    added_on: "2024-08-19 15:00:06",
+    updated_by: "0000-00-00 00:00:00",
+    updated_on: "ADM240819122342464",
+  },
+  {
+    id: 372,
+    stock_in_details_id: 372,
+    product_id: "PR103777220125",
+    batch_no: "SR1PMPS1",
+    exp_date: "01/2090",
+    distributor_id: 3,
+    weightage: 10,
+    unit: "Powder",
+    qty: 30,
+    loosely_count: 0,
+    mrp: 40.00,
+    loosely_price: 0.00,
+    ptr: 22.30,
+    gst: 18,
+    added_by: "ADM240819122342",
+    added_on: "2024-08-19 15:00:06",
+    updated_by: "0000-00-00 00:00:00",
+    updated_on: "ADM240819122342464",
+  },
+  {
+    id: 373,
+    stock_in_details_id: 373,
+    product_id: "PR100049016383",
+    batch_no: "SR1KPBDC1S1",
+    exp_date: "01/2090",
+    distributor_id: 3,
+    weightage: 10,
+    unit: "Capsules",
+    qty: 30,
+    loosely_count: 300,
+    mrp: 59.00,
+    loosely_price: 5.90,
+    ptr: 33.33,
+    gst: 12,
+    added_by: "ADM240819122342",
+    added_on: "2024-08-19 15:00:06",
+    updated_by: "0000-00-00 00:00:00",
+    updated_on: "ADM240819122342464",
+  },
+  {
+    id: 374,
+    stock_in_details_id: 374,
+    product_id: "PR100041229610",
+    batch_no: "SR1DCDMS1S1",
+    exp_date: "01/2090",
+    distributor_id: 3,
+    weightage: 170,
+    unit: "Syrup",
+    qty: 28,
+    loosely_count: 0,
+    mrp: 39.18,
+    loosely_price: 0.00,
+    ptr: 18.90,
+    gst: 12,
+    added_by: "ADM240819122342",
+    added_on: "2024-08-19 15:00:06",
+    updated_by: "0000-00-00 00:00:00",
+    updated_on: "ADM240819122342464",
+  },
+  {
+    id: 375,
+    stock_in_details_id: 375,
+    product_id: "PR100026629174",
+    batch_no: "RKE1DI1S1",
+    exp_date: "01/2090",
+    distributor_id: 6,
+    weightage: 1,
+    unit: "Injection",
+    qty: 20,
+    loosely_count: 0,
+    mrp: 79.00,
+    loosely_price: 0.00,
+    ptr: 54.25,
+    gst: 12,
+    added_by: "ADM240819122342",
+    added_on: "2024-08-19 15:17:15",
+    updated_by: "0000-00-00 00:00:00",
+    updated_on: "ADM240819122342464",
+  },
+  {
+    id: 376,
+    stock_in_details_id: 376,
+    product_id: "PR169753183960",
+    batch_no: "RKE1MKVL1S1",
+    exp_date: "01/2090",
+    distributor_id: 6,
+    weightage: 1,
+    unit: "Injection",
+    qty: 50,
+    loosely_count: 0,
+    mrp: 59.40,
+    loosely_price: 0.00,
+    ptr: 37.23,
+    gst: 12,
+    added_by: "ADM240819122342",
+    added_on: "2024-08-19 15:17:15",
+    updated_by: "0000-00-00 00:00:00",
+    updated_on: "ADM240819122342464",
+  },
+  {
+    id: 377,
+    stock_in_details_id: 377,
+    product_id: "PR100011916965",
+    batch_no: "RKE1HSO1S1",
+    exp_date: "01/2090",
+    distributor_id: 6,
+    weightage: 25,
+    unit: "Ointment",
+    qty: 30,
+    loosely_count: 0,
+    mrp: 48.11,
+    loosely_price: 0.00,
+    ptr: 30.99,
+    gst: 0,
+    added_by: "ADM240819122342",
+    added_on: "2024-08-19 15:17:15",
+    updated_by: "0000-00-00 00:00:00",
+    updated_on: "ADM240819122342464",
+  },
+  {
+    id: 378,
+    stock_in_details_id: 378,
+    product_id: "PR110344350592",
+    batch_no: "SP1N4T1S1",
+    exp_date: "01/2090",
+    distributor_id: 7,
+    weightage: 6,
+    unit: "Tablets",
+    qty: 30,
+    loosely_count: 180,
+    mrp: 53.12,
+    loosely_price: 8.85,
+    ptr: 35.20,
+    gst: 12,
+    added_by: "ADM240819122342",
+    added_on: "2024-08-19 15:32:20",
+    updated_by: "0000-00-00 00:00:00",
+    updated_on: "ADM240819122342464",
+  },
+  {
+    id: 379,
+    stock_in_details_id: 379,
+    product_id: "PR101945579746",
+    batch_no: "SP1KR2T1S1",
+    exp_date: "01/2090",
+    distributor_id: 7,
+    weightage: 10,
+    unit: "Tablets",
+    qty: 20,
+    loosely_count: 200,
+    mrp: 160.00,
+    loosely_price: 16.00,
+    ptr: 100.90,
+    gst: 12,
+    added_by: "ADM240819122342",
+    added_on: "2024-08-19 15:32:20",
+    updated_by: "0000-00-00 00:00:00",
+    updated_on: "ADM240819122342464",
   },
 ];
 
@@ -2226,4 +2467,4 @@ const purchaseItem: PurchaseItem[] =
   ];
 
 
-export {patients, products, orders, customers, sellers, cartItems, stock, purchaseItem, type SellersItemTypes, doctors };
+export {patients, products, orders, customers, sellers, cartItems, stock, purchaseItem, type SellersItemTypes, doctors, currentStock };

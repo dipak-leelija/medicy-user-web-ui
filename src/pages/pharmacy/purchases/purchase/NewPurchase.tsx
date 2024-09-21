@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import SalesOffcanvas from '../../SalesOffcanvas';
 import CusttomInvoiceDropdown from '../../../../components/CustomInvoiceDropdown';
 import {useParams } from 'react-router-dom';
-import { stock, purchaseItem } from "../data";
+import { stock, purchaseItem } from "../../data";
 // import { number } from 'yup';
 import { Toast, ToastContainer } from 'react-bootstrap';
 
@@ -141,7 +141,7 @@ export default function NewPurchase() {
     const eachItemGstAmnt = ((purchaseItemDetails.d_price * parseInt(purchaseItemDetails.qty)) * purchaseItemDetails.gst / 100).toFixed(2);
     // console.log('totalGst=========',totalGst); // end find gst of each item 
 
-    const handleSelectStock = (selectedStockItem: number) => {
+    const handleSelectStock = (selectedStockItem: number | string) => {
         const selectedItem = stock.find(item => item.bill_id === selectedStockItem);
         if (selectedItem) {
             console.log(selectedItem);
@@ -149,7 +149,7 @@ export default function NewPurchase() {
         }
     };
 
-    const handleSelectItem = (selectedPurchaseItem: number) => {
+    const handleSelectItem = (selectedPurchaseItem: number | string) => {
         const selectedItem = purchaseItem.find(item => item.id === selectedPurchaseItem);
         if (selectedItem) {
             // console.log(selectedItem);

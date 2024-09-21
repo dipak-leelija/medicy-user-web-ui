@@ -10,27 +10,11 @@ import { Link, useParams } from 'react-router-dom';
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store";
-import { fetchPatientRequest, fetchDoctorRequest, fetchSalesRequest, fetchPurchaseItemsRequest} from "../../../../redux/DataFetch/actions";
+import { fetchPatientRequest, fetchDoctorRequest, fetchCurrentStockRequest, fetchSalesRequest, fetchPurchaseItemsRequest, fetchProductRequest} from "../../../../redux/DataFetch/actions";
 
 // Utility function to convert MM/DD/YYYY to yyyy-MM-dd
-// const formatDate = (dateStr: string): string => {
-//     const [month, day, year] = dateStr.split('/');
-//     return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-// };
-
-// Utility function to convert MM/DD/YYYY to yyyy-MM-dd
-const formatDate = (dateStr: string | undefined): string => {
-    if (!dateStr) {
-        console.error('Invalid date string:', dateStr);
-        return ''; // or handle as needed, e.g., return a default date or empty string
-    }
-
+const formatDate = (dateStr: string): string => {
     const [month, day, year] = dateStr.split('/');
-    if (!month || !day || !year) {
-        console.error('Date string is not in the expected MM/DD/YYYY format:', dateStr);
-        return ''; // or handle this case as well
-    }
-
     return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 };
 
@@ -40,23 +24,25 @@ export default function NewSale() {
     const [saleCustomer, setSaleCustomer] = useState<string>('');
     const { id } = useParams<{ id: string }>();
     
-    
     const [saleData, setSaleData] = useState<any | null>(null);
     const dispatch = useDispatch();
 
     const patients = useSelector((state: RootState) => state.patient.data)
     const doctors = useSelector((state: RootState) => state.doctors.data);
+    const currentStock = useSelector((state: RootState) => state.currentStock.data);
     const sellers = useSelector((state: RootState) => state.sales.data);
     const purchaseItem = useSelector((state: RootState) => state.purchase.data)
-    console.log('purchaseItem data-', purchaseItem);
-    console.log('input value-', inputValue);
+    const productItem = useSelector((state: RootState) => state.product.data);
+    console.log('productItem data-', productItem);
     
 
     useEffect(() => {
         dispatch(fetchPatientRequest());
         dispatch(fetchDoctorRequest());
+        dispatch(fetchCurrentStockRequest());
         dispatch(fetchSalesRequest());
         dispatch(fetchPurchaseItemsRequest());
+        dispatch(fetchProductRequest())
     }, [dispatch])
 
     const [formValues, setFormValues] = useState({
@@ -71,7 +57,7 @@ export default function NewSale() {
         unit: '',
         mrp: '',
         storeName: '',
-        qty: '',
+        Qty: '',
         // ratings: '',
         balance: '',
         createdOn: '',
@@ -108,7 +94,7 @@ export default function NewSale() {
         }));
     };
 
-    const handleSelectSele = (selectedSale: number) => {
+    const handleSelectSele = (selectedSale: number | string) => {
         const selectedSales = patients.find((item: { id: any; }) => item.id === selectedSale);
         console.log('selected sale-',selectedSales);
         
@@ -117,16 +103,18 @@ export default function NewSale() {
         }
     }
 
-    const handleSelect = (selectedItemId: number) => {
-        const selectedItem = purchaseItem.find((item: { id: number }) => item.id === selectedItemId);
+    const handleSelect = (selectedItemId: number | string) => {
+        console.log('selectedItemId', selectedItemId);
+        
+        const selectedItem = productItem.find((item: { product_id: any }) => item.product_id === selectedItemId);
         console.log('search item is-',selectedItem);
         if (selectedItem) {
-            setInputValue(selectedItem ? selectedItem.item_name.toString() : '');
+            setInputValue(selectedItem ? selectedItem.name.toString() : '');
             setSellerDetails({
                 batch_no: selectedItem.batch_no,
                 unit: selectedItem.unit,
                 mrp: selectedItem.mrp,
-                qty: selectedItem.qty,
+                Qty: selectedItem.qty,
                 storeName: selectedItem.store,
                 balance: selectedItem.balance,
                 createdOn: selectedItem.created_on,
@@ -208,7 +196,7 @@ export default function NewSale() {
                             <Row>
                                 <Col style={{ width: '200px' }}>
                                     <CusttomInvoiceDropdown
-                                        sellers={purchaseItem}
+                                        sellers={productItem}
                                         onSelect={handleSelect}
                                         inputValue={inputValue}
                                         setInputValue={setInputValue}
@@ -240,7 +228,8 @@ export default function NewSale() {
                                 </Col>
                                 <Col md className='px-1'>
                                     <FloatingLabel className='invlabel' controlId="floatingInputGrid" label="Qty.">
-                                        <Form.Control type="text"  placeholder="" className='borderRemove px-0 ps-1' />
+                                        <Form.Control type="text" name='Qty' value={sellerDetails.Qty} placeholder="" className='borderRemove px-0 ps-1'
+                                        onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} />
                                     </FloatingLabel>
                                 </Col>
                                 <Col md className='px-1'>

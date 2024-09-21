@@ -9,19 +9,30 @@ import {
     FETCH_CUSTOMER_REQUEST,
     FETCH_CUSTOMER_SUCCESS,
     FETCH_CUSTOMER_FAILURE,
+    // ...........saleItem or saller........
     FETCH_SALES_ITEM_REQUEST,
     FETCH_SALES_ITEM_SUCCESS,
     FETCH_SALES_ITEM_FAILURE,
+    // ...........currentStock............ 
+    FETCH_CURRENT_STOCKS_REQUEST,
+    FETCH_CURRENT_STOCKS_SUCCESS,
+    FETCH_CURRENT_STOCKS_FAILURE,
+    //...........purchaseItem.............
     FETCH_PURCHASE_ITEMS_REQUEST,
     FETCH_PURCHASE_ITEMS_SUCCESS,
     FETCH_PURCHASE_ITEMS_FAILURE,
+    // ...........purchaseDistributo............
     FETCH_PURCHASE_DISTRIBUTER_REQUEST,
     FETCH_PURCHASE_DISTRIBUTER_SUCCESS,
     FETCH_PURCHASE_DISTRIBUTER_FAILURE,
+    // ...........product............
+    FETCH_PRODUCT_REQUEST,
+    FETCH_PRODUCT_SUCCESS,
+    FETCH_PRODUCT_FAILURE,
 } from "../../constants/dataFetch";
 
 // SellersItemTypes
-import { PurchaseItem, StockItemTypes, SellersItemTypes, CustomersItemTypes, DoctorsData, Patient } from "../../pages/pharmacy/purchases/data";
+import { PurchaseItem, StockItemTypes, SellersItemTypes, CustomersItemTypes, DoctorsData, Patient, CurrentStockTypes, ProductItemTypes } from "../../pages/pharmacy/data";
 
 // for  patient 
 export const fetchPatientRequest = () => {
@@ -79,6 +90,25 @@ export const fetchCustomerFailure = (error: string) => {
     }
 }
 
+// for current stock
+export const fetchCurrentStockRequest = () => {
+    return {
+        type: FETCH_CURRENT_STOCKS_REQUEST,
+    }
+}
+export const fetchCurrentStockSuccess = (data: CurrentStockTypes[]) => {
+    return {
+        type: FETCH_CURRENT_STOCKS_SUCCESS,
+        payload: data
+    }
+}
+export const fetchCurrentStockFailure = (error: string) => {
+    return {
+        type: FETCH_CURRENT_STOCKS_FAILURE,
+        payload: error
+    }
+} //..................
+
 // for sales 
 export const fetchSalesRequest = () => {
     return {
@@ -132,3 +162,15 @@ export const fetchPurchaseItemsFailure = (error: string) => ({
     payload: error,
 });
 
+// for product
+export const fetchProductRequest = () => ({
+    type: FETCH_PRODUCT_REQUEST,
+});
+export const fetchProductSuccess = (data: ProductItemTypes[]) => ({
+    type: FETCH_PRODUCT_SUCCESS,
+    payload: data,
+});
+export const fetchProductFailure = (error: string) => ({
+    type: FETCH_PRODUCT_FAILURE,
+    payload: error,
+});

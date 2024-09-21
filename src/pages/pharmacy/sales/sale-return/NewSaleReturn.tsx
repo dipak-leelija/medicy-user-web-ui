@@ -4,7 +4,7 @@ import classNames from "classnames";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { sellers } from "../data";
+import { sellers } from "../../data";
 import SalesOffcanvas from '../../SalesOffcanvas';
 import { useParams } from 'react-router-dom';
 import CusttomInvoiceDropdown from '../../../../components/CustomInvoiceDropdown';
@@ -28,36 +28,36 @@ export default function NewSaleReturn() {
         revenue: '',
     });
 
-    useEffect(() => {
-        if (id) {
-            const selectedSeller = sellers.find(seller => seller.id.toString() === id);
-            if (selectedSeller) {
-                setSellerDetails({
-                    patientName: selectedSeller.name,
-                    storeName: selectedSeller.store,
-                    balance: selectedSeller.balance,
-                    createdOn: selectedSeller.created_on,
-                    revenue: selectedSeller.revenue,
-                });
-                setInputValue(selectedSeller.id.toString());
-            }
-        }
-    }, [id]);
+    // useEffect(() => {
+    //     if (id) {
+    //         const selectedSeller = sellers.find(seller => seller.id.toString() === id);
+    //         if (selectedSeller) {
+    //             setSellerDetails({
+    //                 patientName: selectedSeller.name,
+    //                 storeName: selectedSeller.store,
+    //                 balance: selectedSeller.balance,
+    //                 createdOn: selectedSeller.created_on,
+    //                 revenue: selectedSeller.revenue,
+    //             });
+    //             setInputValue(selectedSeller.id.toString());
+    //         }
+    //     }
+    // }, [id]);
 
 
-    const handleSelect = (selectedSellerId: number) => {
-        const selectedSeller = sellers.find(seller => seller.id === selectedSellerId);
-        if (selectedSeller) {
-          setInputValue(selectedSeller.id.toString());
-          setSellerDetails({
-            patientName: selectedSeller.name,
-            storeName: selectedSeller.store,
-            balance: selectedSeller.balance,
-            createdOn: selectedSeller.created_on,
-            revenue: selectedSeller.revenue,
-          });
-        }
-      };
+    // const handleSelect = (selectedSellerId: number) => {
+    //     const selectedSeller = sellers.find(seller => seller.id === selectedSellerId);
+    //     if (selectedSeller) {
+    //       setInputValue(selectedSeller.id.toString());
+    //       setSellerDetails({
+    //         patientName: selectedSeller.name,
+    //         storeName: selectedSeller.store,
+    //         balance: selectedSeller.balance,
+    //         createdOn: selectedSeller.created_on,
+    //         revenue: selectedSeller.revenue,
+    //       });
+    //     }
+    //   };
 
     return (
         <>
@@ -68,7 +68,7 @@ export default function NewSaleReturn() {
                         <Card.Body>
                             <Row>
                                 <Col md>
-                                    <CusttomInvoiceDropdown
+                                    {/* <CusttomInvoiceDropdown
                                         sellers={sellers}
                                         onSelect={handleSelect}
                                         inputValue={inputValue}
@@ -76,7 +76,7 @@ export default function NewSaleReturn() {
                                         searchType="id"
                                         label="Invoice No."
                                         className='mb-3'
-                                    />
+                                    /> */}
                                 </Col>
                                 <Col md>
                                     <FloatingLabel controlId="floatingDoctor" label="Patient Name" className="">

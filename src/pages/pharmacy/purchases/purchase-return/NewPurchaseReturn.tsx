@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import SalesOffcanvas from '../../SalesOffcanvas';
 import CusttomInvoiceDropdown from '../../../../components/CustomInvoiceDropdown';
 import { Link, useParams } from 'react-router-dom';
-import { stock, purchaseItem } from "../data";
+import { stock, purchaseItem } from "../../data";
 import { number } from 'yup';
 import { Toast, ToastContainer } from 'react-bootstrap';
 
@@ -96,7 +96,7 @@ export default function NewPurchaseReturn() {
     };
 
 
-    const handleSelectDist = (selectedStockItem: number) => {
+    const handleSelectDist = (selectedStockItem: number | string) => {
         const selectedItem = stock.find(item => item.bill_id === selectedStockItem);
         if (selectedItem) {
             // console.log(selectedItem.bill_id);
@@ -116,7 +116,7 @@ export default function NewPurchaseReturn() {
     };
 
 
-    const handleSelectItem = (selectedItemId: number) => {
+    const handleSelectItem = (selectedItemId: number | string) => {
         const selectedItem = distPurchaseItem.find((item: { id: number; }) => item.id === selectedItemId);
         if (selectedItem) {
             // setInputValue(selectedItem.item_name); // Set the selected item's name in the input field

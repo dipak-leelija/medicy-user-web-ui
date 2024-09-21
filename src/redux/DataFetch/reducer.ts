@@ -9,6 +9,10 @@ import {
   FETCH_CUSTOMER_REQUEST,
   FETCH_CUSTOMER_SUCCESS,
   FETCH_CUSTOMER_FAILURE,
+  // ...........currentStock............ 
+  FETCH_CURRENT_STOCKS_REQUEST,
+  FETCH_CURRENT_STOCKS_SUCCESS,
+  FETCH_CURRENT_STOCKS_FAILURE,
   FETCH_SALES_ITEM_REQUEST,
   FETCH_SALES_ITEM_SUCCESS,
   FETCH_SALES_ITEM_FAILURE,
@@ -18,9 +22,13 @@ import {
   FETCH_PURCHASE_DISTRIBUTER_REQUEST,
   FETCH_PURCHASE_DISTRIBUTER_SUCCESS,
   FETCH_PURCHASE_DISTRIBUTER_FAILURE,
+  // ...........product............
+  FETCH_PRODUCT_REQUEST,
+  FETCH_PRODUCT_SUCCESS,
+  FETCH_PRODUCT_FAILURE,
 } from "../../constants/dataFetch";
 
-import { PurchaseItem, StockItemTypes, SellersItemTypes, CustomersItemTypes, DoctorsData, Patient } from "../../pages/pharmacy/purchases/data";
+import { PurchaseItem, StockItemTypes, SellersItemTypes, CustomersItemTypes, DoctorsData, Patient, CurrentStockTypes, ProductItemTypes } from "../../pages/pharmacy/data";
 
 
 interface patientState {
@@ -38,6 +46,12 @@ interface CustomeState {
   data: CustomersItemTypes[];
   error: string | null;
 }
+interface CurrentStockState {
+  loading: boolean;
+  data: CurrentStockTypes[];
+  error: string | null;
+
+}
 interface SaleState {
   loading: boolean;
   data: SellersItemTypes[];
@@ -54,6 +68,11 @@ interface PurchaseDistributorState {
   error: string | null;
 }
 
+interface productState {
+  loading: false;
+  data: ProductItemTypes[];
+  error:null;
+}
 const initialPatientState: patientState = {
   loading: false,
   data: [],
@@ -68,6 +87,11 @@ const initialCustomerState: CustomeState = {
   loading: false,
   data: [],
   error: null,
+}
+const initialCurrentStock: CurrentStockState = {
+  loading: false,
+  data: [],
+  error: null
 }
 const initialSaleState: SaleState = {
   loading: false,
@@ -84,10 +108,15 @@ const initialStateDistributor: PurchaseDistributorState = {
   data: [],
   error: null,
 }
+const initialStateProduct: productState ={
+  loading: false,
+  data: [],
+  error: null
+}
 
 export const patientReducer = (state = initialPatientState, action: any) => {
   switch (action.type) {
-    case FETCH_DOCTOR_REQUEST:
+    case FETCH_PATIENT_REQUEST:
       return { ...state, loading: true }
     case FETCH_PATIENT_SUCCESS:
       return { ...state, loading: false, data: action.payload }
@@ -117,6 +146,18 @@ export const customerReducer = (state = initialCustomerState, action: any) => {
     case FETCH_CUSTOMER_SUCCESS:
       return { ...state, loading: false, data: action.payload };
     case FETCH_CUSTOMER_FAILURE:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+export const currentStockReducer = (state = initialCurrentStock, action: any) => {
+  switch (action.type) {
+    case FETCH_CURRENT_STOCKS_REQUEST:
+      return { ...state, loading: true };
+    case FETCH_CURRENT_STOCKS_SUCCESS:
+      return { ...state, loading: false, data: action.payload };
+    case FETCH_CURRENT_STOCKS_FAILURE:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
@@ -160,3 +201,16 @@ export const purchaseDistributerReducer = (state = initialStateDistributor, acti
       return state;
   }
 };
+
+export const productReducer = (state = initialStateProduct, action: any) =>{
+  switch (action.type) {
+    case FETCH_PRODUCT_REQUEST:
+      return {...state, loading: true}
+    case FETCH_PRODUCT_SUCCESS:
+      return {...state, loading: false, data: action.payload}
+    case  FETCH_PRODUCT_FAILURE:
+      return {...state, loading: false, error: action.payload}
+    default:
+      return state;
+  }
+}
