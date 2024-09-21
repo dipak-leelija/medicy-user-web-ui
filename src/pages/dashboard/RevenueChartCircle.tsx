@@ -4,7 +4,7 @@ import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
 // components
-import ChartStatistics from "../../../components/ChartStatistics";
+import ChartStatistics from "../../components/ChartStatistics";
 
 const RevenueChartCircle = () => {
   const apexOpts: ApexOptions = {

@@ -3,7 +3,7 @@ import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
 // components
-import { BasicPortlet } from "../../../components/Portlet";
+import { BasicPortlet } from "../../components/Portlet";
 
 const StatisticsChart = () => {
   const apexOpts: ApexOptions = {

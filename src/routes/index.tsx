@@ -25,7 +25,7 @@ const MyAccount = React.lazy(() => import("../pages/profile/Myaccount"));
 //settings
 const Settings = React.lazy(() => import("../pages/settings/Settings"));
 // dashboard
-const Dashboard3 = React.lazy(() => import("../pages/dashboard/Dashboard3/"));
+const Dashboard = React.lazy(() => import("../pages/dashboard"));
 
 // pharmacy
 const Product = React.lazy(() => import("../pages/pharmacy/products/product/Products"));
@@ -227,12 +227,37 @@ export interface RoutesProps {
 //     route: Route,
 // };
 
+// dashboards
 const dashboardRoutes: RoutesProps = {
   path: "/dashboard",
   name: "Dashboards",
-  route: PrivateRoute,
-  element: <Dashboard3 />,
+  element: <Dashboard />,
+
+  icon: "airplay",
+  header: "Navigation",
+  children: [
+    {
+      path: "/",
+      name: "Root",
+      element: <Navigate to="/dashboard" />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/dashboard",
+      name: "Dashboard",
+      element: <Dashboard />,
+      route: PrivateRoute,
+    },
+  ],
 };
+
+
+// const dashboardRoutes: RoutesProps = {
+//   path: "/dashboard",
+//   name: "Dashboards",
+//   route: PrivateRoute,
+//   element: <Dashboard3 />,
+// };
 
 const profileRoutes: RoutesProps = {
   path: "/Myaccount",

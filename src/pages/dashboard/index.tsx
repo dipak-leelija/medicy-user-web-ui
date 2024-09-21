@@ -2,16 +2,16 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 
 // components
-import PageTitle from "../../../components/PageTitle";
-import Messages from "../../../components/Messages";
-import TodoList from "../../../components/TodoList";
-import ChatList from "../../../components/ChatList";
+import PageTitle from "../../components/PageTitle";
+import Messages from "../../components/Messages";
+import TodoList from "../../components/TodoList";
+import ChatList from "../../components/ChatList";
 
 
 
-import SalesChart from "../../../components/SalesChart";
-import IncomeChart from "../../../components/IncomeChart";
-import UsersChart from "../../../components/UsersChart";
+import SalesChart from "../../components/SalesChart";
+import IncomeChart from "../../components/IncomeChart";
+import UsersChart from "../../components/UsersChart";
 
 
 

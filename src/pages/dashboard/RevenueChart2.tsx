@@ -1,8 +1,8 @@
 import React from "react";
 
 // components
-import { BasicPortlet } from "../../../components/Portlet";
-import { WorldVectorMap } from "../../../components/VectorMap";
+import { BasicPortlet } from "../../components/Portlet";
+import { WorldVectorMap } from "../../components/VectorMap";
 
 const RevenueChart2 = () => {
   // vector map config

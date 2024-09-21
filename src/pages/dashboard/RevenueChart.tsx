@@ -3,7 +3,7 @@ import { Row, Col, Card } from "react-bootstrap";
 import { Line, defaults as ChartjsDefaults } from "react-chartjs-2";
 
 // components
-import ChartStatistics from "../../../components/ChartStatistics";
+import ChartStatistics from "../../components/ChartStatistics";
 
 const RevenueChart = () => {
   ChartjsDefaults.color = "#8391a2";

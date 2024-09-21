@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 
 // componets
-import StatisticsWidget3 from "../../../components/StatisticsWidget3";
+import StatisticsWidget3 from "../../components/StatisticsWidget3";
 
 const Statistics = () => {
   return (

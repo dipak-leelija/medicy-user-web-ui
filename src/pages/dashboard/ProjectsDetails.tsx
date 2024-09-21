@@ -4,7 +4,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import classNames from "classnames";
 
 // components
-import { BasicPortlet } from "../../../components/Portlet";
+import { BasicPortlet } from "../../components/Portlet";
 
 // dummy data
 import { ProjectDetailType } from "./data4";

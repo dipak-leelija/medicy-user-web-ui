@@ -1,5 +1,5 @@
-import profilePic from "../../../assets/images/users/user-1.jpg";
-import profilePic2 from "../../../assets/images/users/user-5.jpg";
+import profilePic from "../../assets/images/users/user-1.jpg";
+import profilePic2 from "../../assets/images/users/user-5.jpg";
 
 const chatMessages = [
   {
