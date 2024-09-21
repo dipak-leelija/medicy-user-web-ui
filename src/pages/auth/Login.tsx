@@ -127,8 +127,8 @@ const Login = () => {
                     type={showPassword.password ? "text" : "password"}
                     name="password"
                     placeholder=""
-                    minLength={6}
-                    maxLength={20} // Adjusted maxLength
+                    minLength={8}
+                    maxLength={8} // Adjusted maxLength
                     required
                   />
                   <Form.Label>Password</Form.Label>

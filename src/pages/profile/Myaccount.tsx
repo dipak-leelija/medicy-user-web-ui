@@ -240,7 +240,7 @@ export default function Myaccount() {
                                 <div className="section-2">
 
                                     <Tabs
-                                        defaultActiveKey="profile"
+                                        defaultActiveKey="profile-form"
                                         id="fill-tab-example"
                                         className="mb-3 tab-account"
 

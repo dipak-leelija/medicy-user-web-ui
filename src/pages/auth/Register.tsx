@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Navigate, Link } from "react-router-dom";
 import { Button, Alert, Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import classNames from "classnames";
+import classNames from "classnames"; 
+// Ensure Font Awesome is available in your project
 
 //actions
 import { resetAuth, signupUser } from "../../redux/actions";
@@ -111,58 +112,56 @@ const Register = () => {
 
   return (
     <>
+      {userSignUp ? <Navigate to={"/auth/confirm"} /> : null}
 
-      
-        {userSignUp ? <Navigate to={"/auth/confirm"} /> : null}
-
-        <AuthLayout  customWidth="35vw">
-          {error && (
-            <Alert variant="danger" className="my-2">
-              {error}
-            </Alert>
-          )}
-          <div className=" register-box custom-form">
+      <AuthLayout customWidth="35vw">
+        {error && (
+          <Alert variant="danger" className="my-2">
+            {error}
+          </Alert>
+        )}
+        <div className="register-box custom-form">
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Row className="form-group mb-0">
-              <Col  className=" floating-label">
-              <Form.Group className="floating-label mb-3">
-                <Form.Control
-                  type="text"
-                  name="fname"
-                  id="fname"
-                  className="med-input"
-                  placeholder=""
-                  value={formData.fname}
-                  onChange={handleChange}
-                  required
-                />
-                <Form.Label htmlFor="fname">
-                  First Name <span className="form-asterisk">*</span>
-                </Form.Label>
-                <Form.Control.Feedback type="invalid">
-                  {t("First name is required")}
-                </Form.Control.Feedback>
+              <Col className="floating-label">
+                <Form.Group className="floating-label mb-3">
+                  <Form.Control
+                    type="text"
+                    name="fname"
+                    id="fname"
+                    className="med-input"
+                    placeholder=""
+                    value={formData.fname}
+                    onChange={handleChange}
+                    required
+                  />
+                  <Form.Label htmlFor="fname">
+                    First Name <span className="form-asterisk">*</span>
+                  </Form.Label>
+                  <Form.Control.Feedback type="invalid">
+                    {t("First name is required")}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
 
-              <Col sm={6} className="floating-label  mb-3">
-              <Form.Group className="floating-label ">
-                <Form.Control
-                  type="text"
-                  name="lname"
-                  id="lname"
-                  className="med-input"
-                  placeholder=""
-                  value={formData.lname}
-                  onChange={handleChange}
-                  required
-                />
-                <Form.Label htmlFor="lname">
-                  Last Name <span className="form-asterisk">*</span>
-                </Form.Label>
-                <Form.Control.Feedback type="invalid">
-                  {t("Last name is required")}
-                </Form.Control.Feedback>
+              <Col sm={6} className="floating-label mb-3">
+                <Form.Group className="floating-label">
+                  <Form.Control
+                    type="text"
+                    name="lname"
+                    id="lname"
+                    className="med-input"
+                    placeholder=""
+                    value={formData.lname}
+                    onChange={handleChange}
+                    required
+                  />
+                  <Form.Label htmlFor="lname">
+                    Last Name <span className="form-asterisk">*</span>
+                  </Form.Label>
+                  <Form.Control.Feedback type="invalid">
+                    {t("Last name is required")}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
             </Row>
@@ -226,62 +225,83 @@ const Register = () => {
             </Form.Group>
 
             <Row className="form-group mb-0">
-              <Col  className=" floating-label">
-              <Form.Group className="floating-label mb-3">
-                <Form.Control
-                  type="password"
-                  name="password"
-                  id="  password"
-                  className="med-input"
-                  placeholder=""
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-                <Form.Label htmlFor="password">
-                  Password <span className="form-asterisk">*</span>
-                </Form.Label>
-                <Form.Control.Feedback type="invalid">
-                  {t("Invalid Password")}
-                </Form.Control.Feedback>
+              <Col className="floating-label">
+                <Form.Group className="floating-label mb-3">
+              
+                    <Form.Control
+                      type={showPassword.password ? "text" : "password"}
+                      name="password"
+                      id="password"
+                      className="med-input"
+                      placeholder=""
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                    />
+                    <span
+                      className="input-group-text password-toggle-icon"
+                      onClick={() => togglePasswordVisibility("password")}
+                      style={{ border:'0px',backgroundColor:'transparent' ,position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                    >
+                      <i
+                        className={`fas ${
+                          showPassword.password ? "fa-eye-slash" : "fa-eye"
+                        }`}
+                      ></i>
+                    </span>
+                  
+                  <Form.Label htmlFor="password">
+                    Password <span className="form-asterisk">*</span>
+                  </Form.Label>
+                  <Form.Control.Feedback type="invalid">
+                    {t("Invalid Password")}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
 
-              <Col sm={6} className="floating-label mb-2 ">
-              <Form.Group className="floating-label ">
-                <Form.Control
-                  type="password"
-                  name="cpassword"
-                  id="cpassword"
-                  className="med-input"
-                  placeholder=""
-                  value={formData.cpassword}
-                  onChange={handleChange}
-                  required
-                />
-                <Form.Label htmlFor="cpassword">
-                  Forgot password <span className="form-asterisk">*</span>
-                </Form.Label>
-                <Form.Control.Feedback type="invalid">
-                  {t("Invalid password")}
-                </Form.Control.Feedback>
+              <Col sm={6} className="floating-label mb-2">
+                <Form.Group className="floating-label">
+                 
+                    <Form.Control
+                      type={showPassword.cpassword ? "text" : "password"}
+                      name="cpassword"
+                      id="cpassword"
+                      className="med-input"
+                      placeholder=""
+                      value={formData.cpassword}
+                      onChange={handleChange}
+                      required
+                    />
+                    <span
+                      className="input-group-text password-toggle-icon"
+                      onClick={() => togglePasswordVisibility("cpassword")}
+                      style={{ border:'0px',backgroundColor:'transparent',position: 'absolute', right: '-4px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                    >
+                      <i
+                        className={`fas ${
+                          showPassword.cpassword ? "fa-eye-slash" : "fa-eye"
+                        }`}
+                      ></i>
+                    </span>
+                  
+                  <Form.Label htmlFor="cpassword">
+                    Confirm Password <span className="form-asterisk">*</span>
+                  </Form.Label>
+                  <Form.Control.Feedback type="invalid">
+                    {t("Invalid password")}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
             </Row>
 
-
-            <Button className="btn btn-primary btn-block  w-100" type="submit" name="register">
+            <Button className="btn btn-primary btn-block w-100" type="submit" name="register">
               Register Account
             </Button>
           </Form>
-         
 
-
-      </div>
-      <BottomLink />
-      </AuthLayout >
-
-
+          <BottomLink />
+        </div>
+      </AuthLayout>
     </>
   );
 };
