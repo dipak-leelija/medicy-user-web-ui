@@ -7,7 +7,7 @@ import classNames from "classnames";
 import { BasicPortlet } from "../../../components/Portlet";
 
 // dummy data
-import { ProjectDetailType } from "./data";
+import { ProjectDetailType } from "./data4";
 
 interface ProjectsDetailsProps {
   projectsDetails: ProjectDetailType[];

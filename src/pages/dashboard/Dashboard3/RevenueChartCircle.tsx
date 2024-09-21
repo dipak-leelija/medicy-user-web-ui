@@ -6,7 +6,7 @@ import { ApexOptions } from "apexcharts";
 // components
 import ChartStatistics from "../../../components/ChartStatistics";
 
-const RevenueChart = () => {
+const RevenueChartCircle = () => {
   const apexOpts: ApexOptions = {
     chart: {
       height: 242,
@@ -93,4 +93,4 @@ const RevenueChart = () => {
   );
 };
 
-export default RevenueChart;
+export default RevenueChartCircle;
