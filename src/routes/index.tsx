@@ -20,19 +20,16 @@ const LockScreen = React.lazy(() => import("../pages/auth/LockScreen"));
 const Landing = React.lazy(() => import("../pages/landing/"));
 
 //profile
-const MyAccount= React.lazy(() => import("../pages/profile/Myaccount"));
+const MyAccount = React.lazy(() => import("../pages/profile/Myaccount"));
 
 //settings
-const Settings= React.lazy(() => import("../pages/settings/Settings"));
+const Settings = React.lazy(() => import("../pages/settings/Settings"));
 // dashboard
-const Dashboard1 = React.lazy(() => import("../pages/dashboard/Dashboard1/"));
-const Dashboard2 = React.lazy(() => import("../pages/dashboard/Dashboard2/"));
 const Dashboard3 = React.lazy(() => import("../pages/dashboard/Dashboard3/"));
-const Dashboard4 = React.lazy(() => import("../pages/dashboard/Dashboard4/"));
 
 // pharmacy
-const Product     = React.lazy(() => import("../pages/pharmacy/products/product/Products"));
-const AddProduct  = React.lazy(() => import("../pages/pharmacy/products/addProduct/ProductEdit")); 
+const Product = React.lazy(() => import("../pages/pharmacy/products/product/Products"));
+const AddProduct = React.lazy(() => import("../pages/pharmacy/products/addProduct/ProductEdit"));
 const ProductDetail = React.lazy(() => import("../pages/pharmacy/products/productDetails/ProductDetails"));
 
 const Sales = React.lazy(() => import("../pages/pharmacy/sales/sale/Sale"));
@@ -230,73 +227,37 @@ export interface RoutesProps {
 //     route: Route,
 // };
 
-// dashboards
 const dashboardRoutes: RoutesProps = {
   path: "/dashboard",
   name: "Dashboards",
-  icon: "airplay",
-  header: "Navigation",
-  children: [
-    {
-      path: "/",
-      name: "Root",
-      element: <Navigate to="/dashboard-1" />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/dashboard-1",
-      name: "Dashboard 1",
-      element: <Dashboard1 />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/dashboard-2",
-      name: "Dashboard 2",
-      element: <Dashboard2 />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/dashboard-3",
-      name: "Dashboard 3",
-      element: <Dashboard3 />,
-      route: PrivateRoute,
-    },
-    {
-      path: "/dashboard-4",
-      name: "Dashboard 4",
-      element: <Dashboard4 />,
-      route: PrivateRoute,
-    },
-  ],
+  route: PrivateRoute,
+  element: <Dashboard3 />,
+};
+
+const profileRoutes: RoutesProps = {
+  path: "/Myaccount",
+  name: "Myaccount",
+  route: PrivateRoute,
+  element: <MyAccount />,
+  // header: "Apps",
+};
+
+
+// settings Routes
+const settingsRoutes: RoutesProps = {
+  path: "/Settings",
+  name: "Settings",
+  route: PrivateRoute,
+  element: <Settings />,
+  // header: "Apps",
 };
 
 
 
 
-      const profileRoutes: RoutesProps = {
-        path: "/Myaccount",
-        name: "Myaccount",
-        route: PrivateRoute,
-        element: <MyAccount/>,
-        // header: "Apps",
-      };
-
-
-       // settings Routes
-      const settingsRoutes: RoutesProps = {
-        path: "/Settings",
-        name: "Settings",
-        route: PrivateRoute,
-        element: <Settings/>,
-        // header: "Apps",
-      };
 
 
 
-
-
-
-  
 
 // Pharmacy Routes
 const pharmacyRoutes: RoutesProps = {
