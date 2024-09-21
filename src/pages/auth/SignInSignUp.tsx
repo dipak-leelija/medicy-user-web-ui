@@ -79,7 +79,7 @@ const SignInSignUp = () => {
     <>
       {user ? <Navigate to="/"></Navigate> : null}
 
-      {userSignUp ? <Navigate to={"/auth/confirm"}></Navigate> : null}
+      {userSignUp ? <Navigate to={"/confirm"}></Navigate> : null}
 
       <AuthLayout isCombineForm={true}>
         <Row>
@@ -114,7 +114,7 @@ const SignInSignUp = () => {
                   containerClass={"mb-3"}
                 >
                   <Link
-                    to="/auth/forget-password"
+                    to="/forget-password"
                     className="text-muted float-end"
                   >
                     <small>{t("Forgot your password?")}</small>

@@ -112,7 +112,7 @@ const Register = () => {
 
   return (
     <>
-      {userSignUp ? <Navigate to={"/auth/confirm"} /> : null}
+      {userSignUp ? <Navigate to={"/confirm"} /> : null}
 
       <AuthLayout customWidth="35vw">
         {error && (
