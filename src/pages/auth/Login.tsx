@@ -54,11 +54,16 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState(""); // State to track password errors
   const [showError, setShowError] = useState(false); // Control error visibility
 
- 
+  useEffect(() => {
+    dispatch(resetAuth());
+  }, [dispatch]);
+
   const onSubmit = (formData: { username: string; password: string }) => {
     dispatch(loginUser(formData.username, formData.password));
   };
 
+  const location = useLocation();
+  const redirectUrl = location?.search?.slice(6) || "/";
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -92,14 +97,14 @@ const Login = () => {
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
     // Clear error when the user starts typing
-    // setShowError(false);
+    setShowError(false);
   };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setPassword(value);
     // Clear error when the user starts typing
-    // setShowError(false);
+    setShowError(false);
 
     // Check length and set error if necessary
     if (value.length < 8 || value.length > 16) {
@@ -111,7 +116,7 @@ const Login = () => {
 
   return (
     <>
-    
+      {(userLoggedIn || user) && <Navigate to={redirectUrl} />}
 
       <AuthLayout>
         {/* Show error when form is submitted or credentials are incorrect */}
