@@ -25,11 +25,12 @@ import MegaMenu from "../components/MegaMenu";
 
 import profilePic from "../assets/images/users/user-1.jpg";
 import avatar4 from "../assets/images/users/user-4.jpg";
-import logoSm from "../assets/images/logo-sm.png";
-import logoDark from "../assets/images/logo-dark.png";
-import logoDark2 from "../assets/images/logo-dark-2.png";
-import logoLight from "../assets/images/logo-light.png";
-import logoLight2 from "../assets/images/logo-light-2.png";
+// import logoSm from "../assets/images/logo-sm.png";
+import LogoLight from "../assets/images/m-logo.png";
+// import logoDark from "../assets/images/logo-dark.png";
+// import logoDark2 from "../assets/images/logo-dark-2.png";
+// import logoLight from "../assets/images/logo-light.png";
+// import logoLight2 from "../assets/images/logo-light-2.png";
 import { useViewport } from "../hooks/useViewPort";
 
 export interface NotificationItem {
@@ -309,14 +310,14 @@ const Topbar = ({
               <div className="logo-box">
                 <Link to="/" className="logo logo-dark text-center">
                   <span className="logo-sm">
-                    <img src={logoSm} alt="" height="22" />
+                    <img src={LogoLight} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
                     <img
                       src={
                         layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                          ? logoDark2
-                          : logoDark
+                          ? LogoLight
+                          : LogoLight
                       }
                       alt=""
                       height="20"
@@ -325,14 +326,14 @@ const Topbar = ({
                 </Link>
                 <Link to="/" className="logo logo-light text-center">
                   <span className="logo-sm">
-                    <img src={logoSm} alt="" height="22" />
+                    <img src={LogoLight} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
                     <img
                       src={
                         layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                          ? logoLight2
-                          : logoLight
+                          ? LogoLight
+                          : LogoLight
                       }
                       alt=""
                       height="20"

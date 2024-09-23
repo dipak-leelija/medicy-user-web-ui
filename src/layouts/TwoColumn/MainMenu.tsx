@@ -12,11 +12,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 // images
-import logoSm from "../../assets/images/logo-sm.png";
-import logoDark from "../../assets/images/logo-dark.png";
-import logoDark2 from "../../assets/images/logo-dark-2.png";
-import logoLight from "../../assets/images/logo-light.png";
-import logoLight2 from "../../assets/images/logo-light-2.png";
+// import logoSm from "../../assets/images/logo-sm.png";
+// import logoDark from "../../assets/images/logo-dark.png";
+// import logoDark2 from "../../assets/images/logo-dark-2.png";
+// import logoLight from "../../assets/images/logo-light.png";
+// import logoLight2 from "../../assets/images/logo-light-2.png";
+import LogoLight from "../../assets/images/m-logo.png";
 
 interface SubMenus {
   item: MenuItemTypes;
@@ -179,14 +180,14 @@ const MainMenu = ({
           <div className="logo-box">
             <Link to="/" className="logo logo-dark text-center">
               <span className="logo-sm">
-                <img src={logoSm} alt="" height="22" />
+                <img src={LogoLight} alt="" height="22" />
               </span>
               <span className="logo-lg">
                 <img
                   src={
                     layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                      ? logoDark2
-                      : logoDark
+                      ? LogoLight
+                      : LogoLight
                   }
                   alt=""
                   height="20"
@@ -195,14 +196,14 @@ const MainMenu = ({
             </Link>
             <Link to="/" className="logo logo-light text-center">
               <span className="logo-sm">
-                <img src={logoSm} alt="" height="22" />
+                <img src={LogoLight} alt="" height="22" />
               </span>
               <span className="logo-lg">
                 <img
                   src={
                     layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                      ? logoLight2
-                      : logoLight
+                      ? LogoLight
+                      : LogoLight
                   }
                   alt=""
                   height="20"

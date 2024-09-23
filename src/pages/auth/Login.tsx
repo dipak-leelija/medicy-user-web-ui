@@ -103,9 +103,7 @@ const Login = () => {
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setPassword(value);
-    // Clear error when the user starts typing
-    setShowError(false);
-
+   
     // Check length and set error if necessary
     if (value.length < 8 || value.length > 16) {
       setPasswordError("Password must be between 8 and 16 characters.");

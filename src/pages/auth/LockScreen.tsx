@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 
 // components
 import AuthLayout from "./AuthLayout";
-
 import userImg from "../../assets/images/users/user-1.jpg";
 
 /* bottom link */
@@ -29,21 +28,24 @@ const LockScreen = () => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState({ password: false });
   const [validated, setValidated] = useState(false);
+  const [password, setPassword] = useState("");
 
   // Toggle password visibility
-  const toggleShowPassword = (field: keyof typeof showPassword) => {
-    setShowPassword({ ...showPassword, [field]: !showPassword[field] });
+  const toggleShowPassword = () => {
+    setShowPassword((prev) => ({ password: !prev.password }));
   };
 
   // Handle form submission
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const form = event.currentTarget;
+
     if (form.checkValidity() === false) {
-      event.preventDefault();
       event.stopPropagation();
     } else {
       // Handle successful form submission logic here
-      console.log("Password submitted:", form["password"].value);
+      console.log("Password submitted:", password);
+      // Add further actions, like redirecting or unlocking
     }
 
     setValidated(true);
@@ -66,43 +68,41 @@ const LockScreen = () => {
             {t("Enter your password to access the admin.")}
           </p>
         </div>
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
-          <div className="form-group">
-            <div className="floating-label">
-              <Form.Group controlId="password">
-                <FormControl
-                  type={showPassword.password ? "text" : "password"}
-                  name="password"
-                  placeholder=""
-                  minLength={6}
-                  maxLength={20} // Adjusted maxLength
-                  required
-                />
-                <Form.Label>Password</Form.Label>
-                <Form.Control.Feedback type="invalid">
-                  Please enter a valid password.
-                </Form.Control.Feedback>
-                <i
-                  className={`fas ${
-                    showPassword.password ? "fa-eye-slash" : "fa-eye"
-                  } password-toggle-icon`}
-                  onClick={() => toggleShowPassword("password")}
-                  style={{
-                    position: "absolute",
-                    right: "10px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    cursor: "pointer",
-                  }}
-                ></i>
-              </Form.Group>
-            </div>
-          </div>
-          <Button type="submit" className="w-100 mt-2">
-            {t("Unlock")}
-          </Button>
-        </Form>
-        <BottomLink/>
+        <div className="custom-form">
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form.Group controlId="password" className="floating-label">
+              <FormControl
+                type={showPassword.password ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder=""
+                minLength={6}
+                maxLength={16}
+                required
+              />
+              <Form.Label>Password</Form.Label>
+              <Form.Control.Feedback type="invalid">
+                Please enter a valid password.
+              </Form.Control.Feedback>
+              <i
+                className={`fas ${showPassword.password ? "fa-eye-slash" : "fa-eye"} password-toggle-icon`}
+                onClick={toggleShowPassword}
+                style={{
+                  position: "absolute",
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                }}
+              ></i>
+            </Form.Group>
+            <Button type="submit" className="w-100 mt-2">
+              {t("Unlock")}
+            </Button>
+          </Form>
+        </div>
+       
+        <BottomLink />
       </AuthLayout>
     </>
   );
