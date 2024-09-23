@@ -12,11 +12,6 @@ import { RootState, AppDispatch } from "../../redux/store";
 
 import AuthLayout from "./AuthLayout";
 
-interface UserData {
-  username: string;
-  password: string;
-}
-
 const BottomLink = () => {
   const { t } = useTranslation();
 
@@ -42,7 +37,7 @@ const BottomLink = () => {
 const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
-  
+
   const { user, userLoggedIn, loading, error } = useSelector(
     (state: RootState) => ({
       user: state.Auth.user,
@@ -53,58 +48,74 @@ const Login = () => {
   );
 
   const [validated, setValidated] = useState(false);
-  const [password, setPassword] = useState(""); // Add state to track password
-  const [username, setUsername] = useState(""); // Add state to track username
-  const [showPassword, setShowPassword] = useState({
-    Currrentpassword: false,
-    password: false,
-    ConfirmPassword: false,
-  });
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState(""); // State to track password errors
+  const [showError, setShowError] = useState(false); // Control error visibility
 
-  useEffect(() => {
-    dispatch(resetAuth());
-  }, [dispatch]);
-
-  const onSubmit = (formData: UserData) => {
+ 
+  const onSubmit = (formData: { username: string; password: string }) => {
     dispatch(loginUser(formData.username, formData.password));
   };
 
-  const location = useLocation();
-  const redirectUrl = location?.search?.slice(6) || "/";
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
+
     if (form.checkValidity() === false) {
       event.stopPropagation();
     }
+   
+    if (username === "" || password === "") {
+      setValidated(true);
+      return; // Prevent submission
+    }
+    // Validate password length
+    if (password.length < 8 || password.length > 16) {
+      setPasswordError("Password must be between 8 and 16 characters.");
+      setShowError(true); // Show the error message if validation fails
+      return; // Prevent submission
+    }
+
+    setPasswordError(""); // Clear error if valid
     setValidated(true);
+    setShowError(true); // Show error if credentials are incorrect
     onSubmit({ username, password });
   };
 
-  const toggleShowPassword = (field: keyof typeof showPassword) => {
-    setShowPassword((prev) => ({
-      ...prev,
-      [field]: !prev[field]
-    }));
+  const toggleShowPassword = () => {
+    setShowPassword((prev) => !prev);
   };
 
-  // Handle the username change
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
+    // Clear error when the user starts typing
+    // setShowError(false);
   };
 
-  // Handle the password change
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
+    const value = event.target.value;
+    setPassword(value);
+    // Clear error when the user starts typing
+    // setShowError(false);
+
+    // Check length and set error if necessary
+    if (value.length < 8 || value.length > 16) {
+      setPasswordError("Password must be between 8 and 16 characters.");
+    } else {
+      setPasswordError(""); // Clear error if valid
+    }
   };
 
   return (
     <>
-      {(userLoggedIn || user) && <Navigate to={redirectUrl} />}
+    
 
       <AuthLayout>
-        {error && (
+        {/* Show error when form is submitted or credentials are incorrect */}
+        {showError && error && (
           <Alert variant="danger" className="my-2">
             {error}
           </Alert>
@@ -118,65 +129,63 @@ const Login = () => {
             autoComplete="off"
             className="custom-form"
           >
-            <div className="form-group">
-              <div className="floating-label">
-                <Form.Group controlId="username">
-                  <FormControl
-                    type="text"
-                    name="username"
-                    value={username} // Track username state
-                    onChange={handleUsernameChange}
-                    placeholder=""
-                    required
-                    autoComplete="off"
-                  />
-                  <Form.Label>Username</Form.Label>
-                  <Form.Control.Feedback type="invalid">
-                    Please enter your username.
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </div>
-            </div>
+            <Form.Group controlId="username" className="floating-label mb-2">
+              <FormControl
+                type="text"
+                name="username"
+                value={username}
+                onChange={handleUsernameChange}
+                placeholder=""
+                required
+                autoComplete="off"
+              />
+              <Form.Label htmlFor="fname">
+                User Name <span className="form-asterisk">*</span>
+              </Form.Label>
+              <Form.Control.Feedback type="invalid">
+                Please enter your username.
+              </Form.Control.Feedback>
+            </Form.Group>
 
-            <div className="form-group">
-              <div className="floating-label">
-                <Form.Group controlId="password">
-                  <FormControl
-                    type={showPassword.password ? "text" : "password"}
-                    name="password"
-                    value={password} // Track password state
-                    onChange={handlePasswordChange}
-                    placeholder=""
-                    minLength={8}
-                    maxLength={16} // Set maxLength if needed
-                    required
-                    autoComplete="new-password"
-                    isInvalid={password.length > 0 && password.length < 8} // Validation based on length
-                  />
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control.Feedback type="invalid">
-                    Password must be at least 8 characters long.
-                  </Form.Control.Feedback>
-                  <i
-                    className={`fas ${showPassword.password ? 'fa-eye-slash' : 'fa-eye'} password-toggle-icon`}
-                    onClick={() => toggleShowPassword('password')}
-                    style={{
-                      position: 'absolute',
-                      right: '10px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      cursor: 'pointer',
-                    }}
-                  ></i>
-                </Form.Group>
-              </div>
-            </div>
+            <Form.Group controlId="password" className="floating-label mb-2">
+              <FormControl
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={password}
+                onChange={handlePasswordChange}
+                placeholder=""
+                minLength={8}
+                maxLength={16}
+                required
+                autoComplete="new-password"
+                isInvalid={passwordError !== ""}
+              />
+              <Form.Label htmlFor="fname">
+                Password <span className="form-asterisk">*</span>
+              </Form.Label>
+              <Form.Control.Feedback type="invalid">
+                {passwordError || "Please enter your password."}
+              </Form.Control.Feedback>
+              <i
+                className={`fas ${
+                  showPassword ? "fa-eye-slash" : "fa-eye"
+                } password-toggle-icon`}
+                onClick={toggleShowPassword}
+                style={{
+                  position: "absolute",
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                }}
+              ></i>
+            </Form.Group>
 
             <div className="text-center d-grid">
               <Button
                 variant="primary"
                 type="submit"
-                disabled={loading || password.length < 8} // Disable if password is less than 8 characters
+                disabled={loading || password.length < 8 || password.length > 16}
               >
                 {t("Log In")}
               </Button>
