@@ -18,9 +18,9 @@ import AppMenu from "./Menu";
 import profileImg from "../assets/images/users/user-1.jpg";
 import logoSm from "../assets/images/medicy-logo.png";
 import logoDark from "../assets/images/m-logo.png";
-import logoDark2 from "../assets/images/logo-dark-2.png";
-import logoLight from "../assets/images/logo-light.png";
-import logoLight2 from "../assets/images/logo-light-2.png";
+import logoDark2 from "../assets/images/medicy-logo.png";
+// import logoLight from "../assets/images/logo-light.png";
+// import logoLight2 from "../assets/images/logo-light-2.png";
 
 /* user box */
 const UserBox = () => {

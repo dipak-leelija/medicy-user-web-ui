@@ -14,8 +14,8 @@ import classNames from "classnames";
 // components
 import PageTitle from "../../components/PageTitle";
 
-import logodark from "../../assets/images/logo-dark.png";
-import logolight from "../../assets/images/logo-light.png";
+import logodark from "../../assets/images/medicy-logo.png";
+import logolight from "../../assets/images/medicy-logo.png";
 
 const ModalSizes = () => {
   const [standard, setStandard] = useState<boolean>(false);

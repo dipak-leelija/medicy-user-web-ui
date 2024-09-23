@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
 
-import logoDark from "../../assets/images/logo-dark.png";
-import logoLight from "../../assets/images/logo-light.png";
+import logoDark from "../../assets/images/medicy-logo.png";
+import logoLight from "../../assets/images/medicy-logo.png";
 
 const Error500Two = () => {
   useEffect(() => {

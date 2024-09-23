@@ -5,7 +5,7 @@ import { Row, Col, Card } from "react-bootstrap";
 // components
 import PageTitle from "../../components/PageTitle";
 
-import logosm from "../../assets/images/logo-sm.png";
+import logosm from "../../assets/images/medicy-logo.png";
 
 const SweetAlerts = withSwal((props: any) => {
   const { swal } = props;

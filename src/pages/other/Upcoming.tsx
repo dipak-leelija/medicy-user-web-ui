@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import Countdown, { CountdownTimeDelta } from "react-countdown";
 
-import logoLight from "../../assets/images/logo-light.png";
+import logoLight from "../../assets/images/medicy-logo.png";
 
 const RocketSvg = () => {
   return (

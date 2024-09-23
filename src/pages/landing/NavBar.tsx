@@ -8,8 +8,8 @@ import { Link } from "react-router-dom";
 // store
 // import { RootState } from "../../redux/store";
 
-import logo from "../../assets/images/logo-light.png";
-import logo1 from "../../assets/images/logo-dark.png";
+import logo from "../../assets/images/medicy-logo.png";
+import logo1 from "../../assets/images/medicy-logo.png";
 
 const NavBar = () => {
   // const { user, userLoggedIn } = useSelector((state: RootState) => ({

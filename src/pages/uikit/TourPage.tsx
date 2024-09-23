@@ -6,7 +6,7 @@ import { Row, Col, Card } from "react-bootstrap";
 // components
 import PageTitle from "../../components/PageTitle";
 
-import logo from "../../assets/images/logo-dark.png";
+import logo from "../../assets/images/medicy-logo.png";
 
 const TourPage = () => {
   const [run, setRun] = useState<boolean>(true);

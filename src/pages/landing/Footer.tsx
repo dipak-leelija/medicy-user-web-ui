@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import logo from "../../assets/images/logo-light.png";
+import logo from "../../assets/images/medicy-logo.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();

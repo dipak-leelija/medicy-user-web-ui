@@ -14,7 +14,7 @@ import classNames from "classnames";
 // components
 import PageTitle from "../../components/PageTitle";
 
-import logo from "../../assets/images/logo-sm.png";
+import logo from "../../assets/images/medicy-logo.png";
 
 const colors: string[] = [
   "primary",

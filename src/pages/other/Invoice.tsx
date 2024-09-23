@@ -4,8 +4,8 @@ import { Row, Col, Card } from "react-bootstrap";
 // components
 import PageTitle from "../../components/PageTitle";
 
-import logoDark from "../../assets/images/logo-dark.png";
-import logoLight from "../../assets/images/logo-light.png";
+import logoDark from "../../assets/images/medicy-logo.png";
+import logoLight from "../../assets/images/medicy-logo.png";
 
 interface Address {
   line_1: string;
