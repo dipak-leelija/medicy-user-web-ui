@@ -100,7 +100,7 @@ const ProfileMenus = [
   {
     label: "Lock Screen",
     icon: "fe-lock",
-    redirectTo: "/auth/lock-screen",
+    redirectTo: "/lock-screen",
   },
   {
     label: "Customize UI",
@@ -110,7 +110,7 @@ const ProfileMenus = [
   {
     label: "Logout",
     icon: "fe-log-out",
-    redirectTo: "/auth/logout",
+    redirectTo: "/logout",
   },
 ];
 

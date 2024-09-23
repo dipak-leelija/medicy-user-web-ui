@@ -2,7 +2,7 @@ import React from "react";
 import { Table } from "react-bootstrap";
 
 // components
-import { BasicPortlet } from "../../../components/Portlet";
+import { BasicPortlet } from "../../components/Portlet";
 
 interface TopSellingProductsProps {
   products: {

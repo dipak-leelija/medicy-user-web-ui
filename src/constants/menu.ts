@@ -15,38 +15,13 @@ export interface MenuItemTypes {
 
 const MENU_ITEMS: MenuItemTypes[] = [
   { key: "navigation", label: "Navigation", isTitle: true },
+
   {
-    key: "dashboards",
-    label: "Dashboards",
+    key: "dashboard",
+    label: "Dashboard",
     isTitle: false,
     icon: "airplay",
-    badge: { variant: "success", text: "4" },
-    children: [
-      {
-        key: "ds-dashboard-1",
-        label: "Dashboard 1",
-        url: "/dashboard-1",
-        parentKey: "dashboards",
-      },
-      {
-        key: "ds-dashboard-2",
-        label: "Dashboard 2",
-        url: "/dashboard-2",
-        parentKey: "dashboards",
-      },
-      {
-        key: "ds-dashboard-3",
-        label: "Dashboard 3",
-        url: "/dashboard-3",
-        parentKey: "dashboards",
-      },
-      {
-        key: "ds-dashboard-4",
-        label: "Dashboard 4",
-        url: "/dashboard-4",
-        parentKey: "dashboards",
-      },
-    ],
+    url: "/dashboard",
   },
 
   // pharmacy componants 

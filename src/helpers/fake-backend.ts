@@ -18,7 +18,7 @@ export function configureFakeBackend() {
     {
       id: 1,
       username: "test",
-      password: "test",
+      password: "12345678",
       firstName: "Test",
       lastName: "User",
       role: "Admin",
@@ -32,7 +32,7 @@ export function configureFakeBackend() {
       setTimeout(function () {
         // get parameters from post request
         let params = JSON.parse(config.data);
-
+        
         // find if any user matches login credentials
         let filteredUsers = users.filter((user) => {
           return (

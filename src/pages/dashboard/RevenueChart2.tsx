@@ -1,10 +1,10 @@
 import React from "react";
 
 // components
-import { BasicPortlet } from "../../../components/Portlet";
-import { WorldVectorMap } from "../../../components/VectorMap/";
+import { BasicPortlet } from "../../components/Portlet";
+import { WorldVectorMap } from "../../components/VectorMap";
 
-const RevenueChart = () => {
+const RevenueChart2 = () => {
   // vector map config
   const options = {
     markers: [
@@ -130,4 +130,4 @@ const RevenueChart = () => {
   );
 };
 
-export default RevenueChart;
+export default RevenueChart2;

@@ -12,7 +12,6 @@ import { RootState, AppDispatch } from "../../redux/store";
 
 import AuthLayout from "./AuthLayout";
 
-// PasswordFields type is not used, so it can be removed if not needed
 interface UserData {
   username: string;
   password: string;
@@ -25,13 +24,13 @@ const BottomLink = () => {
     <Row className="mt-3">
       <Col className="text-center">
         <p>
-          <Link to={"/auth/forget-password"} className="text-black-50 ms-1">
+          <Link to={"/forget-password"} className="text-black-50 ms-1">
             {t("Forgot your password?")}
           </Link>
         </p>
         <p className="text-black-50 p-margin ">
           {t("Don't have an account?")}{" "}
-          <Link to={"/auth/register"} className="text-black ms-1">
+          <Link to={"/register"} className="text-black ms-1">
             <b>{t("Sign Up")}</b>
           </Link>
         </p>
@@ -43,7 +42,7 @@ const BottomLink = () => {
 const Login = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
-
+  
   const { user, userLoggedIn, loading, error } = useSelector(
     (state: RootState) => ({
       user: state.Auth.user,
@@ -54,6 +53,8 @@ const Login = () => {
   );
 
   const [validated, setValidated] = useState(false);
+  const [password, setPassword] = useState(""); // Add state to track password
+  const [username, setUsername] = useState(""); // Add state to track username
   const [showPassword, setShowPassword] = useState({
     Currrentpassword: false,
     password: false,
@@ -64,11 +65,8 @@ const Login = () => {
     dispatch(resetAuth());
   }, [dispatch]);
 
-  /*
-  handle form submission
-  */
   const onSubmit = (formData: UserData) => {
-    dispatch(loginUser(formData["username"], formData["password"]));
+    dispatch(loginUser(formData.username, formData.password));
   };
 
   const location = useLocation();
@@ -81,7 +79,7 @@ const Login = () => {
       event.stopPropagation();
     }
     setValidated(true);
-    onSubmit({ username: form.username.value, password: form.password.value });
+    onSubmit({ username, password });
   };
 
   const toggleShowPassword = (field: keyof typeof showPassword) => {
@@ -91,11 +89,21 @@ const Login = () => {
     }));
   };
 
+  // Handle the username change
+  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
+  };
+
+  // Handle the password change
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
   return (
     <>
       {(userLoggedIn || user) && <Navigate to={redirectUrl} />}
 
-      <AuthLayout >
+      <AuthLayout>
         {error && (
           <Alert variant="danger" className="my-2">
             {error}
@@ -103,15 +111,24 @@ const Login = () => {
         )}
 
         <div className="custom-form">
-          <Form noValidate validated={validated} onSubmit={handleSubmit} className="custom-form">
+          <Form
+            noValidate
+            validated={validated}
+            onSubmit={handleSubmit}
+            autoComplete="off"
+            className="custom-form"
+          >
             <div className="form-group">
               <div className="floating-label">
                 <Form.Group controlId="username">
                   <FormControl
                     type="text"
                     name="username"
+                    value={username} // Track username state
+                    onChange={handleUsernameChange}
                     placeholder=""
                     required
+                    autoComplete="off"
                   />
                   <Form.Label>Username</Form.Label>
                   <Form.Control.Feedback type="invalid">
@@ -120,32 +137,47 @@ const Login = () => {
                 </Form.Group>
               </div>
             </div>
+
             <div className="form-group">
               <div className="floating-label">
                 <Form.Group controlId="password">
                   <FormControl
                     type={showPassword.password ? "text" : "password"}
                     name="password"
+                    value={password} // Track password state
+                    onChange={handlePasswordChange}
                     placeholder=""
                     minLength={8}
-                    maxLength={8} // Adjusted maxLength
+                    maxLength={16} // Set maxLength if needed
                     required
+                    autoComplete="new-password"
+                    isInvalid={password.length > 0 && password.length < 8} // Validation based on length
                   />
                   <Form.Label>Password</Form.Label>
                   <Form.Control.Feedback type="invalid">
-                    Please enter a valid password.
+                    Password must be at least 8 characters long.
                   </Form.Control.Feedback>
                   <i
                     className={`fas ${showPassword.password ? 'fa-eye-slash' : 'fa-eye'} password-toggle-icon`}
                     onClick={() => toggleShowPassword('password')}
-                    style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                    style={{
+                      position: 'absolute',
+                      right: '10px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      cursor: 'pointer',
+                    }}
                   ></i>
                 </Form.Group>
               </div>
             </div>
 
             <div className="text-center d-grid">
-              <Button variant="primary" type="submit" disabled={loading}>
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={loading || password.length < 8} // Disable if password is less than 8 characters
+              >
                 {t("Log In")}
               </Button>
             </div>

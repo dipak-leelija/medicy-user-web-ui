@@ -30,7 +30,7 @@ const Confirm = () => {
           </p>
           <Link
             className="btn w-100 btn-pink waves-effect waves-light mt-3"
-            to="/auth/login"
+            to="/login"
           >
             {t("Back to Login")}
           </Link>

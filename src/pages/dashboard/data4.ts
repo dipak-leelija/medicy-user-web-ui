@@ -1,13 +1,13 @@
-import avatar1 from "../../../assets/images/users/user-1.jpg";
-import avatar2 from "../../../assets/images/users/user-2.jpg";
-import avatar3 from "../../../assets/images/users/user-3.jpg";
-import avatar4 from "../../../assets/images/users/user-4.jpg";
-import avatar5 from "../../../assets/images/users/user-5.jpg";
-import avatar6 from "../../../assets/images/users/user-6.jpg";
-import avatar7 from "../../../assets/images/users/user-7.jpg";
-import avatar8 from "../../../assets/images/users/user-8.jpg";
-import avatar9 from "../../../assets/images/users/user-9.jpg";
-import avatar10 from "../../../assets/images/users/user-10.jpg";
+import avatar1 from "../../assets/images/users/user-1.jpg";
+import avatar2 from "../../assets/images/users/user-2.jpg";
+import avatar3 from "../../assets/images/users/user-3.jpg";
+import avatar4 from "../../assets/images/users/user-4.jpg";
+import avatar5 from "../../assets/images/users/user-5.jpg";
+import avatar6 from "../../assets/images/users/user-6.jpg";
+import avatar7 from "../../assets/images/users/user-7.jpg";
+import avatar8 from "../../assets/images/users/user-8.jpg";
+import avatar9 from "../../assets/images/users/user-9.jpg";
+import avatar10 from "../../assets/images/users/user-10.jpg";
 
 interface TeamMembers {
   id?: number;
