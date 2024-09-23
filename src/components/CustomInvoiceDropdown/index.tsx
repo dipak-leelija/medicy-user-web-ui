@@ -126,7 +126,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, sellerItemInpu
                     type="text"
                     placeholder="Search Invoice No"
                     className='borderRemove bg-transparent'
-                    value={inputValue}
+                    value={inputValue ?? ""}
                     onChange={searchItems}
                     onKeyDown={handleKeyDown}
                     style={sellerItemInput ? { width: '150px', paddingLeft: '5px' } : { width: '100%' }}
@@ -150,7 +150,8 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, sellerItemInpu
                     {filteredItems.length > 0 ? (
                         filteredItems.map((item, index) => (
                             <div
-                                key={'product_id' in item ? item.product_id // Check if product_id exists
+                                key={'product_id' in item
+                                    ? (item as Seller).product_id || 'fallback-id'// Check if product_id exists
                                     : ('id' in item ? item.id : (item as stocks).bill_id)}
                                 className={`dropdown-item ${index === focusIndex ? 'focused' : ''}`}
                                 onClick={() => {
@@ -159,9 +160,11 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ sellers, sellerItemInpu
                                     } else if ('bill_id' in item) {
                                         handleSelect(item.bill_id);
                                     }
-                                    // else if(sellers(item)){
-                                    //     handleSelect(item.product_id);
-                                    // }
+                                    else if ('product_id' in item) {
+                                        // handleSelect((item as Seller).product_id);
+                                        const productId = (item as Seller).product_id ?? 'fallback-id'; //Ensure product_id is not undefined
+                                        handleSelect(productId);
+                                    }
                                 }}
                             >
                                 {searchType === 'id' ? (

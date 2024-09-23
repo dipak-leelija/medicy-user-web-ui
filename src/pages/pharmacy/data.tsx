@@ -2155,7 +2155,7 @@ const currentStock: CurrentStockTypes[] = [
   {
     id: 370,
     stock_in_details_id: 370,
-    product_id: "PR147532812610",
+    product_id: "PR100000578618",
     batch_no: "SR1TLMC40S1",
     exp_date: "01/2090",
     distributor_id: 3,
@@ -2195,7 +2195,7 @@ const currentStock: CurrentStockTypes[] = [
   {
     id: 372,
     stock_in_details_id: 372,
-    product_id: "PR103777220125",
+    product_id: "PR100000578618",
     batch_no: "SR1PMPS1",
     exp_date: "01/2090",
     distributor_id: 3,

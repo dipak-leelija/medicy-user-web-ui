@@ -330,8 +330,13 @@ input[type=number] {
     padding: 0.5rem 1rem;
     cursor: pointer;
 }
+.batchDivInput{
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
 .dropdown-item:hover,
-.dropdown-item.focused {
+.dropdown-item.focused,
+.batchDivInput:hover{
     color: #ffff;
     background-color: #7e72e6;
     border-radius: 8px;

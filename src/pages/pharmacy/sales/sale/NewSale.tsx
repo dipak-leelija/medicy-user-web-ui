@@ -10,7 +10,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store";
-import { fetchPatientRequest, fetchDoctorRequest, fetchCurrentStockRequest, fetchSalesRequest, fetchPurchaseItemsRequest, fetchProductRequest} from "../../../../redux/DataFetch/actions";
+import { fetchPatientRequest, fetchDoctorRequest, fetchCurrentStockRequest, fetchSalesRequest, fetchPurchaseItemsRequest, fetchProductRequest } from "../../../../redux/DataFetch/actions";
 
 // Utility function to convert MM/DD/YYYY to yyyy-MM-dd
 const formatDate = (dateStr: string): string => {
@@ -22,9 +22,10 @@ const formatDate = (dateStr: string): string => {
 export default function NewSale() {
     const [inputValue, setInputValue] = useState<string>('');
     const [saleCustomer, setSaleCustomer] = useState<string>('');
-    const { id } = useParams<{ id: string }>();
-    
+    const [showBatchDiv, setShowBatchDiv] = useState<any>(false);
+    const [batchData, setBatchData] = useState<any[]>([]);
     const [saleData, setSaleData] = useState<any | null>(null);
+    const { id } = useParams<{ id: string }>();
     const dispatch = useDispatch();
 
     const patients = useSelector((state: RootState) => state.patient.data)
@@ -33,8 +34,8 @@ export default function NewSale() {
     const sellers = useSelector((state: RootState) => state.sales.data);
     const purchaseItem = useSelector((state: RootState) => state.purchase.data)
     const productItem = useSelector((state: RootState) => state.product.data);
-    console.log('productItem data-', productItem);
-    
+    console.log('batchData data-', batchData);
+
 
     useEffect(() => {
         dispatch(fetchPatientRequest());
@@ -60,7 +61,7 @@ export default function NewSale() {
         Qty: '',
         // ratings: '',
         balance: '',
-        createdOn: '',
+        exp_date: '',
         revenue: '',
     });
 
@@ -69,7 +70,7 @@ export default function NewSale() {
     //         // Find the sale by ID
     //         const sale = sellers.find((seller: { invoice_id: string; }) => seller.invoice_id === id);
     //         // console.log('find sale data in newsale page-',sale);
-            
+
     //         if (sale) {
     //             setSaleData(sale);
     //             // setFormValues({
@@ -86,7 +87,7 @@ export default function NewSale() {
     // }, [id, sellers]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = event.target as HTMLInputElement | HTMLSelectElement;
+        const { name, value } = event.target as HTMLInputElement | HTMLSelectElement || "";
 
         setFormValues(prevValues => ({
             ...prevValues,
@@ -96,33 +97,41 @@ export default function NewSale() {
 
     const handleSelectSele = (selectedSale: number | string) => {
         const selectedSales = patients.find((item: { id: any; }) => item.id === selectedSale);
-        console.log('selected sale-',selectedSales);
-        
+        console.log('selected sale-', selectedSales);
+
         if (selectedSales) {
             setSaleCustomer(selectedSales ? selectedSales.name.toString() : '');
         }
     }
 
     const handleSelect = (selectedItemId: number | string) => {
-        console.log('selectedItemId', selectedItemId);
-        
         const selectedItem = productItem.find((item: { product_id: any }) => item.product_id === selectedItemId);
-        console.log('search item is-',selectedItem);
-        if (selectedItem) {
-            setInputValue(selectedItem ? selectedItem.name.toString() : '');
-            setSellerDetails({
-                batch_no: selectedItem.batch_no,
-                unit: selectedItem.unit,
-                mrp: selectedItem.mrp,
-                Qty: selectedItem.qty,
-                storeName: selectedItem.store,
-                balance: selectedItem.balance,
-                createdOn: selectedItem.created_on,
-                revenue: selectedItem.revenue,
-            });
+        if (selectedItem && selectedItem.product_id) {
+            console.log('search item is-', typeof (selectedItem.product_id));
+            // const selectedId = String(selectedItem.product_id)
+            const currentProduct = currentStock.filter((item: { product_id: string }) => item.product_id.trim() === selectedItem.product_id.trim());
+
+            if (selectedItem) {
+                setInputValue(selectedItem ? selectedItem.name.toString() : '');
+                setShowBatchDiv(true)
+                setBatchData(currentProduct);
+            }
         }
     };
-    
+    const batchSelect = (item: any) => {
+        setSellerDetails({
+            batch_no: item.batch_no,
+            unit: item.unit,
+            mrp: item.mrp,
+            Qty: item.qty,
+            storeName: item.store,
+            balance: item.balance,
+            exp_date: item.exp_date,
+            revenue: item.revenue,
+        });
+        setShowBatchDiv(false)
+    }
+
     return (
         <>
             {/* <PageTitle breadCrumbItems={[]} title={"New Seles"} /> */}
@@ -139,7 +148,7 @@ export default function NewSale() {
                                                 label="Bill Date"
                                                 className="mb-3"
                                             >
-                                                <Form.Control type="date" placeholder="" className='borderRemove' value={formValues.billDate }
+                                                <Form.Control type="date" placeholder="" className='borderRemove' value={formValues.billDate}
                                                     name="billDate"
                                                     onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>}
                                                 />
@@ -154,8 +163,8 @@ export default function NewSale() {
                                                     value={formValues.doctor}
                                                     onChange={handleChange as React.ChangeEventHandler<HTMLSelectElement>}
                                                 >
-                                                     <option>Select Doctor</option>
-                                                    {doctors.map((doctor:any, index: any) => (
+                                                    <option>Select Doctor</option>
+                                                    {doctors.map((doctor: any, index: any) => (
                                                         <option value={doctor.doctor_id} key={doctor.doctor_id} >{doctor.doctor_name}</option>
                                                     ))}
                                                 </Form.Select>
@@ -180,7 +189,7 @@ export default function NewSale() {
                                             // className="w-75"
                                             >
                                                 <Form.Select aria-label="Floating label select example" className='borderRemove' name="paymentMode" value={formValues.paymentMode}
-                                                onChange={handleChange as React.ChangeEventHandler<HTMLSelectElement>}>
+                                                    onChange={handleChange as React.ChangeEventHandler<HTMLSelectElement>}>
                                                     <option>Select Payment</option>
                                                     <option value="1">Cash</option>
                                                     <option value="2">Credit</option>
@@ -206,19 +215,40 @@ export default function NewSale() {
                                         sellerItemInput={true}
                                     />
                                 </Col>
-                                <Col md className='px-1'>
+                                <Col md className='px-1 '>
                                     <FloatingLabel className='invlabel' controlId="floatingBatch" label="Batch">
                                         <Form.Control type="text" value={sellerDetails.batch_no} placeholder="" className='borderRemove px-0 ps-1' readOnly />
                                     </FloatingLabel>
                                 </Col>
-                                <Col md className='px-1'>
+
+                                <Col md className='px-1 position-relative'>
                                     <FloatingLabel className='invlabel' controlId="floatingInputGrid" label="Unit/Pack">
                                         <Form.Control type="text" value={sellerDetails.unit} placeholder="" className='borderRemove px-0 ps-1' readOnly />
                                     </FloatingLabel>
                                 </Col>
+                                {showBatchDiv && (
+                                    <div className='position-absolute bg-white shadow-lg w-50 h-auto p-0 mt-5 z-3' style={{ left: '25%' }}>
+                                        <div className='p-2 py-1 bg-secondary bg-opacity-25 text-dark'>
+                                            <div className='row'>
+                                                <div className='col-md-6'>Batch No</div>
+                                                <div className='col-md-6'>Stock</div>
+                                            </div>
+                                        </div>
+                                        {Array.isArray(batchData) && batchData.length > 0 ? (
+                                            batchData.map((item, index) => (
+                                                <div className={`batchDivInput ${index ? 'row focused' : ''}`} key={index} onClick={() => batchSelect(item)}>
+                                                    <div className='col-md-6'>{item.batch_no}</div>
+                                                    <div className='col-md-6'>{item.qty}</div>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div>No batches available</div>
+                                        )}
+                                    </div>
+                                )}
                                 <Col md className='px-1'>
                                     <FloatingLabel className='invlabel' controlId="floatingInputGrid" label="Expiry">
-                                        <Form.Control type="text" value={sellerDetails.createdOn} placeholder="" className='borderRemove px-0 ps-1' readOnly />
+                                        <Form.Control type="text" value={sellerDetails.exp_date} placeholder="" className='borderRemove px-0 ps-1' readOnly />
                                     </FloatingLabel>
                                 </Col>
                                 <Col md className='px-1'>
@@ -229,7 +259,7 @@ export default function NewSale() {
                                 <Col md className='px-1'>
                                     <FloatingLabel className='invlabel' controlId="floatingInputGrid" label="Qty.">
                                         <Form.Control type="text" name='Qty' value={sellerDetails.Qty} placeholder="" className='borderRemove px-0 ps-1'
-                                        onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} />
+                                            onChange={handleChange as React.ChangeEventHandler<HTMLInputElement>} />
                                     </FloatingLabel>
                                 </Col>
                                 <Col md className='px-1'>
